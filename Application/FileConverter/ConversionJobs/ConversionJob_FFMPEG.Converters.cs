@@ -48,9 +48,19 @@ namespace FileConverter.ConversionJobs
         private static string ComputeTransformArgs(ConversionPreset conversionPreset, bool cudaFrames = false, string pixelFormat = "yuv420p")
         {
             float scaleFactor = conversionPreset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoScale);
+            int resolution = conversionPreset.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.VideoResolution);
             string scaleArgs = string.Empty;
 
-            if (conversionPreset.OutputType == OutputType.Mkv || conversionPreset.OutputType == OutputType.Mp4)
+            if (resolution > 0)
+            {
+                // Target resolution ("720p"): the shorter side becomes the given size (landscape: height, portrait: width),
+                // the other side keeps the aspect ratio and is rounded to an even value (-2) for 4:2:0 encoders.
+                // The commas are quoted because they would otherwise separate filters.
+                string width = $"'if(gte(iw,ih),-2,{resolution})'";
+                string height = $"'if(gte(iw,ih),{resolution},-2)'";
+                scaleArgs = cudaFrames ? $"scale_cuda=w={width}:h={height}:format={pixelFormat}" : $"scale=w={width}:h={height}";
+            }
+            else if (conversionPreset.OutputType == OutputType.Mkv || conversionPreset.OutputType == OutputType.Mp4)
             {
                 // This presets use h264 codec, the size of the video need to be divisible by 2.
                 if (cudaFrames)

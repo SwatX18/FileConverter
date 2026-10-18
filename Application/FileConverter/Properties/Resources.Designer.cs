@@ -1587,5 +1587,23 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("VideoCodecAv1Name", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scale factor.
+        /// </summary>
+        public static string VideoResolutionScaleFactorName {
+            get {
+                return ResourceManager.GetString("VideoResolutionScaleFactorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output resolution. 720p, 1080p... resize the shorter side of the video to that size and keep the aspect ratio (portrait videos too). 'Scale factor' uses the slider instead..
+        /// </summary>
+        public static string VideoResolutionTooltip {
+            get {
+                return ResourceManager.GetString("VideoResolutionTooltip", resourceCulture);
+            }
+        }
     }
 }

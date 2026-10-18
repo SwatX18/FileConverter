@@ -604,4 +604,10 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="VideoCodecAv1Name" xml:space="preserve">
     <value>AV1</value>
   </data>
+  <data name="VideoResolutionScaleFactorName" xml:space="preserve">
+    <value>Facteur d'échelle</value>
+  </data>
+  <data name="VideoResolutionTooltip" xml:space="preserve">
+    <value>Résolution de sortie. 720p, 1080p... redimensionnent le plus petit côté de la vidéo à cette taille en conservant les proportions (vidéos verticales comprises). « Facteur d'échelle » utilise le curseur.</value>
+  </data>
 </root>

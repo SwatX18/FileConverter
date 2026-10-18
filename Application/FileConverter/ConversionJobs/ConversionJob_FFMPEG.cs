@@ -53,6 +53,12 @@ namespace FileConverter.ConversionJobs
            };
 
         /// <summary>
+        /// Gets the target resolutions offered by the video presets (preset setting <c>VideoResolution</c>):
+        /// 0 uses the scale factor, otherwise the shorter side of the video is resized to that size.
+        /// </summary>
+        public static int[] VideoResolutions => new[] { 0, 2160, 1440, 1080, 720, 480, 360 };
+
+        /// <summary>
         /// Gets the video codecs offered by the Mp4 / Mkv presets. AV1 is only offered when a hardware AV1 encoder is
         /// detected: the CPU fallback (libaom) is slower than real time.
         /// </summary>

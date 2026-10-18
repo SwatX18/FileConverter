@@ -637,4 +637,10 @@ use maj for uppercase version</value>
   <data name="VideoCodecAv1Name" xml:space="preserve">
     <value>AV1</value>
   </data>
+  <data name="VideoResolutionScaleFactorName" xml:space="preserve">
+    <value>Scale factor</value>
+  </data>
+  <data name="VideoResolutionTooltip" xml:space="preserve">
+    <value>Output resolution. 720p, 1080p... resize the shorter side of the video to that size and keep the aspect ratio (portrait videos too). 'Scale factor' uses the slider instead.</value>
+  </data>
 </root>
