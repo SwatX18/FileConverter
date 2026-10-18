@@ -610,4 +610,13 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="VideoResolutionTooltip" xml:space="preserve">
     <value>Résolution de sortie. 720p, 1080p... redimensionnent le plus petit côté de la vidéo à cette taille en conservant les proportions (vidéos verticales comprises). « Facteur d'échelle » utilise le curseur.</value>
   </data>
+  <data name="ConversionStateRemux" xml:space="preserve">
+    <value>Remuxage (sans réencodage)</value>
+  </data>
+  <data name="CopyStreamsWhenPossible" xml:space="preserve">
+    <value>Copier les flux sans réencodage si possible</value>
+  </data>
+  <data name="CopyStreamsWhenPossibleTooltip" xml:space="preserve">
+    <value>Quand le format de sortie accepte les codecs vidéo et audio de la source et que le préréglage ne change ni la taille, ni la rotation, ni la qualité, les flux sont copiés tels quels : la conversion est quasi instantanée et sans perte. Convertir un fichier dans son propre format le réencode toujours.</value>
+  </data>
 </root>

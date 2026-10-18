@@ -370,6 +370,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" Content="{x:Static project:Resources.Language}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
@@ -410,6 +411,9 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+
+                    <Label Grid.Row="7" Grid.Column="0" Content="{x:Static project:Resources.CopyStreamsWhenPossible}" ToolTip="{x:Static project:Resources.CopyStreamsWhenPossibleTooltip}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                    <CheckBox Grid.Row="7" Grid.Column="1" IsChecked="{Binding Settings.CopyStreamsWhenPossible, Mode=TwoWay}" ToolTip="{x:Static project:Resources.CopyStreamsWhenPossibleTooltip}" Margin="0,5,0,5" />
                 </Grid>
             </TabItem>
 

@@ -1605,5 +1605,32 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("VideoResolutionTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remux (no re-encoding).
+        /// </summary>
+        public static string ConversionStateRemux {
+            get {
+                return ResourceManager.GetString("ConversionStateRemux", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy streams without re-encoding when possible.
+        /// </summary>
+        public static string CopyStreamsWhenPossible {
+            get {
+                return ResourceManager.GetString("CopyStreamsWhenPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When the output format accepts the source's video and audio codecs and the preset changes neither size, rotation nor quality, the streams are copied as they are: the conversion is almost instant and lossless. Converting a file to its own format always re-encodes it..
+        /// </summary>
+        public static string CopyStreamsWhenPossibleTooltip {
+            get {
+                return ResourceManager.GetString("CopyStreamsWhenPossibleTooltip", resourceCulture);
+            }
+        }
     }
 }

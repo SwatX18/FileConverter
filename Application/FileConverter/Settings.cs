@@ -24,6 +24,7 @@ namespace FileConverter
         private bool copyFilesInClipboardAfterConversion = false;
         private Helpers.HardwareAccelerationMode hardwareAccelerationMode = Helpers.HardwareAccelerationMode.Auto;
         private int maximumNumberOfSimultaneousGpuConversions = Hardware.GpuSessionLimiter.DefaultMaximumSessions;
+        private bool copyStreamsWhenPossible = true;
 
         public ConversionPreset GetPresetFromName(string presetName)
         {
@@ -192,6 +193,25 @@ namespace FileConverter
             set
             {
                 this.maximumNumberOfSimultaneousGpuConversions = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Copy audio / video streams without re-encoding when the output container accepts them and the preset asks for
+        /// no change (see <see cref="Media.RemuxPlanner"/>).
+        /// </summary>
+        [XmlElement]
+        public bool CopyStreamsWhenPossible
+        {
+            get
+            {
+                return this.copyStreamsWhenPossible;
+            }
+
+            set
+            {
+                this.copyStreamsWhenPossible = value;
                 this.OnPropertyChanged();
             }
         }

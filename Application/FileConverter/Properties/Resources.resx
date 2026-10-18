@@ -643,4 +643,13 @@ use maj for uppercase version</value>
   <data name="VideoResolutionTooltip" xml:space="preserve">
     <value>Output resolution. 720p, 1080p... resize the shorter side of the video to that size and keep the aspect ratio (portrait videos too). 'Scale factor' uses the slider instead.</value>
   </data>
+  <data name="ConversionStateRemux" xml:space="preserve">
+    <value>Remux (no re-encoding)</value>
+  </data>
+  <data name="CopyStreamsWhenPossible" xml:space="preserve">
+    <value>Copy streams without re-encoding when possible</value>
+  </data>
+  <data name="CopyStreamsWhenPossibleTooltip" xml:space="preserve">
+    <value>When the output format accepts the source's video and audio codecs and the preset changes neither size, rotation nor quality, the streams are copied as they are: the conversion is almost instant and lossless. Converting a file to its own format always re-encodes it.</value>
+  </data>
 </root>

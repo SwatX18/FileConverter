@@ -13,6 +13,11 @@ namespace FileConverter.ConversionJobs
         public const string Default = "ffmpeg";
 
         /// <summary>
+        /// Stream copy without re-encoding (some audio streams may be re-encoded next to a copied video), see <see cref="Media.RemuxPlanner"/>.
+        /// </summary>
+        public const string Remux = "remux";
+
+        /// <summary>
         /// CPU encode, no hardware encoder selected.
         /// </summary>
         public const string Cpu = "cpu";

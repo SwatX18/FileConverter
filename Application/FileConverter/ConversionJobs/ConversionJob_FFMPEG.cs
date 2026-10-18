@@ -29,6 +29,11 @@ namespace FileConverter.ConversionJobs
 
         private string attemptError;
 
+        private MediaInfo sourceInfo;
+        private bool sourceProbed;
+
+        private static readonly TimeSpan MaximumRemuxDurationDifference = TimeSpan.FromSeconds(0.5);
+
         ISettingsService settingsService = Ioc.Default.GetRequiredService<ISettingsService>();
 
         public ConversionJob_FFMPEG() : base()
@@ -312,7 +317,7 @@ namespace FileConverter.ConversionJobs
                         bool tenBit = false;
                         if (videoCodec != VideoCodec.H264)
                         {
-                            MediaStream sourceVideo = MediaProbe.Default.TryProbe(this.InputFilePath)?.PrimaryVideo;
+                            MediaStream sourceVideo = this.GetSourceInfo()?.PrimaryVideo;
                             tenBit = sourceVideo != null && sourceVideo.BitsPerComponent > 8;
                             Diagnostics.Debug.Log($"Source video: {sourceVideo?.ToString() ?? "unknown"}, output {(tenBit ? "10-bit" : "8-bit")} 4:2:0.");
                         }
@@ -447,6 +452,8 @@ namespace FileConverter.ConversionJobs
                 throw new Exception("No ffmpeg arguments generated.");
             }
 
+            this.AddRemuxAttempt(baseArgs, MP3MetadataArgs, AACMetadataArgs);
+
             for (int index = 0; index < this.ffmpegArgumentStringByPass.Count; index++)
             {
                 FFMpegPass pass = this.ffmpegArgumentStringByPass[index];
@@ -455,6 +462,144 @@ namespace FileConverter.ConversionJobs
                     throw new Exception("Invalid ffmpeg process arguments.");
                 }
             }
+        }
+
+        /// <summary>
+        /// When the source streams can be copied instead of re-encoded (see <see cref="RemuxPlanner"/>), tries that first:
+        /// the conversion's attempts become the fallback if the copy fails or produces a file of the wrong duration.
+        /// </summary>
+        private void AddRemuxAttempt(string baseArgs, string mp3MetadataArgs, string aacMetadataArgs)
+        {
+            OutputType outputType = this.ConversionPreset.OutputType;
+            if (!this.settingsService.Settings.CopyStreamsWhenPossible || this.ffmpegArgumentStringByPass.Count != 1 || !RemuxCompatibility.Default.SupportsRemux(outputType))
+            {
+                return;
+            }
+
+            MediaInfo source = this.GetSourceInfo();
+            RemuxPlan plan = RemuxPlanner.Default.Plan(this.ConversionPreset, this.InputFilePath, source, out string reason);
+            if (plan == null)
+            {
+                Diagnostics.Debug.Log($"Remux: no, {reason}.");
+                return;
+            }
+
+            Diagnostics.Debug.Log($"Remux plan: {plan}.");
+
+            int audioBitrate = this.ConversionPreset.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.AudioBitrate);
+            List<string> streamArgs = new List<string>();
+            for (int outputIndex = 0; outputIndex < plan.Streams.Count; outputIndex++)
+            {
+                RemuxStreamDecision decision = plan.Streams[outputIndex];
+                streamArgs.Add($"-map 0:{decision.Stream.Index}");
+                switch (decision.Action)
+                {
+                    case RemuxStreamAction.Copy:
+                        streamArgs.Add($"-c:{outputIndex} copy");
+                        break;
+
+                    case RemuxStreamAction.Convert:
+                        streamArgs.Add($"-c:{outputIndex} {decision.TargetCodec}");
+                        break;
+
+                    case RemuxStreamAction.Encode:
+                        // Same audio encoders as the full conversion of these output types.
+                        streamArgs.Add(outputType == OutputType.Mp4 || outputType == OutputType.Mkv ?
+                            $"-c:{outputIndex} aac -qscale:{outputIndex} {this.AACBitrateToQualityIndex(audioBitrate)}" :
+                            $"-c:{outputIndex} libvorbis -qscale:{outputIndex} {this.OGGVBRBitrateToQualityIndex(audioBitrate)}");
+                        break;
+                }
+            }
+
+            string containerArgs = string.Empty;
+            switch (outputType)
+            {
+                case OutputType.Mp4:
+                    // HEVC in MP4 needs the hvc1 tag to play on Windows and Apple devices.
+                    bool hevc = plan.Streams.Any(decision => decision.Stream.IsVideo && decision.Stream.CodecName == "hevc");
+                    containerArgs = hevc ? "-tag:v hvc1 -movflags +faststart" : "-movflags +faststart";
+                    break;
+
+                case OutputType.Mp3:
+                    containerArgs = mp3MetadataArgs;
+                    break;
+
+                case OutputType.Aac:
+                    containerArgs = aacMetadataArgs;
+                    break;
+            }
+
+            string arguments = $"{baseArgs} -i \"{this.InputFilePath}\" {string.Join(" ", streamArgs)} {containerArgs} \"{this.OutputFilePath}\"";
+            FFMpegAttempt remux = new FFMpegAttempt(EncodingPaths.Remux, arguments, usesGpu: false)
+            {
+                Label = Properties.Resources.ConversionStateRemux,
+                Validate = () => this.ValidateRemuxOutput(source, plan),
+            };
+
+            FFMpegPass pass = this.ffmpegArgumentStringByPass[0];
+            this.ffmpegArgumentStringByPass[0] = new FFMpegPass(pass.Name, new[] { remux }.Concat(pass.Attempts).ToList(), pass.FileToDelete);
+        }
+
+        /// <summary>
+        /// Checks that a remuxed file is readable and as long as the source streams it contains (copied streams with
+        /// broken timestamps can produce truncated or stretched files without an ffmpeg error).
+        /// </summary>
+        /// <returns>Null if the output is valid, the problem otherwise.</returns>
+        private string ValidateRemuxOutput(MediaInfo source, RemuxPlan plan)
+        {
+            MediaInfo output = MediaProbe.Default.TryProbe(this.OutputFilePath);
+            if (output == null)
+            {
+                return "the remuxed file can't be read";
+            }
+
+            // Compare with the written streams, not the source container: an audio track extracted from a video can be
+            // shorter than the video. Fall back to the container duration if a stream's duration is unknown.
+            List<MediaStream> mediaStreams = plan.Streams.Select(decision => decision.Stream).Where(stream => (stream.IsVideo || stream.IsAudio) && !stream.IsAttachedPicture).ToList();
+            TimeSpan? expected = mediaStreams.Count > 0 && mediaStreams.All(stream => stream.Duration.HasValue) ? mediaStreams.Max(stream => stream.Duration.Value) : source.Duration;
+
+            // ADTS (.aac) files store no duration: ffprobe estimates it from the bitrate. Use the duration ffmpeg muxed.
+            TimeSpan? actual = output.Duration;
+            if (this.ConversionPreset.OutputType == OutputType.Aac && this.actualConvertedDuration.Ticks > 0)
+            {
+                actual = this.actualConvertedDuration;
+            }
+
+            if (!expected.HasValue)
+            {
+                return null;
+            }
+
+            if (!actual.HasValue)
+            {
+                return "the remuxed file has no duration";
+            }
+
+            if (Math.Abs((actual.Value - expected.Value).TotalSeconds) > MaximumRemuxDurationDifference.TotalSeconds)
+            {
+                return string.Format(CultureInfo.InvariantCulture, "the remuxed file lasts {0:0.00} s instead of {1:0.00} s", actual.Value.TotalSeconds, expected.Value.TotalSeconds);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Probes the input file once per job (null if ffprobe is missing or fails).
+        /// </summary>
+        private MediaInfo GetSourceInfo()
+        {
+            if (!this.sourceProbed)
+            {
+                this.sourceInfo = MediaProbe.Default.TryProbe(this.InputFilePath);
+                this.sourceProbed = true;
+                if (this.sourceInfo != null)
+                {
+                    string duration = this.sourceInfo.Duration?.TotalSeconds.ToString("0.00", CultureInfo.InvariantCulture) ?? "?";
+                    Diagnostics.Debug.Log($"Source: {this.sourceInfo.FormatName}, {duration} s, streams: {string.Join(", ", this.sourceInfo.Streams)}.");
+                }
+            }
+
+            return this.sourceInfo;
         }
 
         protected override void Convert()
@@ -467,8 +612,6 @@ namespace FileConverter.ConversionJobs
             for (int index = 0; index < this.ffmpegArgumentStringByPass.Count; index++)
             {
                 FFMpegPass currentPass = this.ffmpegArgumentStringByPass[index];
-
-                this.UserState = currentPass.Name;
 
                 if (!this.ExecutePass(currentPass))
                 {
@@ -511,7 +654,18 @@ namespace FileConverter.ConversionJobs
                     Diagnostics.Debug.Log($"Encoding path: {attempt.Path}.");
                 }
 
+                this.UserState = attempt.Label ?? pass.Name;
+
                 string error = this.ExecuteAttempt(attempt);
+                if (error == null && attempt.Validate != null && !this.CancelIsRequested)
+                {
+                    error = attempt.Validate();
+                    if (error != null)
+                    {
+                        Diagnostics.Debug.Log($"Output validation failed: {error}.");
+                    }
+                }
+
                 if (error == null)
                 {
                     this.EncodingPath = attempt.Path;
@@ -731,6 +885,17 @@ namespace FileConverter.ConversionJobs
             public string Arguments { get; }
 
             public bool UsesGpu { get; }
+
+            /// <summary>
+            /// Gets the job state shown while the attempt runs (null: the pass name).
+            /// </summary>
+            public string Label { get; set; }
+
+            /// <summary>
+            /// Gets the check run on the output once ffmpeg succeeded: null if the output is valid, the problem otherwise
+            /// (the attempt then fails and the next one runs).
+            /// </summary>
+            public Func<string> Validate { get; set; }
         }
     }
 }
