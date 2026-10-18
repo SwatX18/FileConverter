@@ -675,6 +675,11 @@ namespace FileConverter.ConversionJobs
                     // It is normal for a transport stream to start with a broken frame.
                     // https://trac.ffmpeg.org/ticket/1622
                 }
+                else if (inputWithoutFileNames.EndsWith("Error parsing Opus packet header."))
+                {
+                    // ffmpeg 8 logs this for Opus audio in Matroska / WebM files that decode correctly. A real
+                    // failure still makes ffmpeg exit with an error code.
+                }
                 else if (this.attemptError == null)
                 {
                     // Keep the first error: the attempt fails (or falls back) once ffmpeg has exited.
