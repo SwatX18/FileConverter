@@ -616,4 +616,7 @@ use maj for uppercase version</value>
   <data name="HardwareAccelerationModeVulkanName" xml:space="preserve">
     <value>Vulkan</value>
   </data>
+  <data name="ErrorFFMPEGExitCode" xml:space="preserve">
+    <value>ffmpeg failed (exit code {0}).</value>
+  </data>
 </root>

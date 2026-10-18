@@ -446,6 +446,11 @@ namespace FileConverter.ConversionJobs
                 {
                     using (Process exeProcess = Process.Start(this.ffmpegProcessStartInfo))
                     {
+                        // ffmpeg writes -progress key/value blocks on stdout. Drain it, otherwise the pipe buffer fills
+                        // up after a few seconds of encoding and ffmpeg blocks forever (progress is parsed from stderr).
+                        exeProcess.OutputDataReceived += (sender, args) => { };
+                        exeProcess.BeginOutputReadLine();
+
                         using (StreamReader reader = exeProcess.StandardError)
                         {
                             while (!reader.EndOfStream)
@@ -464,6 +469,12 @@ namespace FileConverter.ConversionJobs
                         }
 
                         exeProcess.WaitForExit();
+
+                        if (exeProcess.ExitCode != 0 && !this.CancelIsRequested)
+                        {
+                            Diagnostics.Debug.Log($"ffmpeg exited with code {exeProcess.ExitCode}.");
+                            this.ConversionFailed(string.Format(Properties.Resources.ErrorFFMPEGExitCode, exeProcess.ExitCode));
+                        }
                     }
                 }
                 catch

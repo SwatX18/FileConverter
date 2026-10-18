@@ -1524,5 +1524,14 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("ZeroDegreesRotationTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ffmpeg failed (exit code {0})..
+        /// </summary>
+        public static string ErrorFFMPEGExitCode {
+            get {
+                return ResourceManager.GetString("ErrorFFMPEGExitCode", resourceCulture);
+            }
+        }
     }
 }

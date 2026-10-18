@@ -583,4 +583,7 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
     <value>Impossible de charger la configuration de File Converter. Voulez vous appliquer la configuration par défaut ?</value>
   </data>
+  <data name="ErrorFFMPEGExitCode" xml:space="preserve">
+    <value>ffmpeg a échoué (code de sortie {0}).</value>
+  </data>
 </root>
