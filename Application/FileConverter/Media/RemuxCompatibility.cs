@@ -25,6 +25,7 @@ namespace FileConverter.Media
         private RemuxCompatibility(CompatibilityTable table)
         {
             this.table = table;
+            this.table.SourceExtensions = this.table.SourceExtensions ?? new List<string>();
             this.table.TextSubtitleCodecs = this.table.TextSubtitleCodecs ?? new List<string>();
             this.table.Containers = this.table.Containers ?? new Dictionary<string, ContainerRules>();
         }
@@ -49,6 +50,15 @@ namespace FileConverter.Media
         public bool SupportsRemux(OutputType outputType)
         {
             return this.GetRules(outputType) != null;
+        }
+
+        /// <summary>
+        /// Gets whether a file with this extension (with or without the dot) can contain streams worth copying.
+        /// Other files (wav, flac, mp3...) are never remuxed, and not probed.
+        /// </summary>
+        public bool IsRemuxSource(string extension)
+        {
+            return Accepts(this.table.SourceExtensions, (extension ?? string.Empty).TrimStart('.'));
         }
 
         public bool CanCopyVideo(OutputType outputType, string codec) => Accepts(this.GetRules(outputType)?.Video, codec);
@@ -101,6 +111,9 @@ namespace FileConverter.Media
         [DataContract]
         private class CompatibilityTable
         {
+            [DataMember(Name = "sourceExtensions")]
+            public List<string> SourceExtensions { get; set; }
+
             [DataMember(Name = "textSubtitleCodecs")]
             public List<string> TextSubtitleCodecs { get; set; }
 

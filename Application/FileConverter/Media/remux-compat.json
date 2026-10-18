@@ -1,5 +1,6 @@
 {
-  "_comment": "Codecs (ffprobe codec_name) that each output container accepts as a stream copy. '*' accepts any codec. textSubtitlesTo: codec that text subtitles which can't be copied are converted to (empty: dropped); bitmap subtitles that can't be copied are always dropped. coverArt: attached pictures kept by audio-only outputs. Output types without an entry are never remuxed: Flac is left out because a flac stream copied out of another container keeps no total sample count (no duration, no seeking). See RemuxPlanner.",
+  "_comment": "Codecs (ffprobe codec_name) that each output container accepts as a stream copy. '*' accepts any codec. textSubtitlesTo: codec that text subtitles which can't be copied are converted to (empty: dropped); bitmap subtitles that can't be copied are always dropped. coverArt: attached pictures kept by audio-only outputs. sourceExtensions: input files that can contain copyable streams (other inputs are not even probed, which saves an ffprobe launch). Output types without an entry are never remuxed: Flac is left out because a flac stream copied out of another container keeps no total sample count (no duration, no seeking). See RemuxPlanner.",
+  "sourceExtensions": [ "mp4", "m4v", "m4a", "m4b", "mov", "3gp", "3g2", "mkv", "mka", "webm", "avi", "ogg", "oga", "ogv", "opus", "ts", "mts", "m2ts", "flv" ],
   "textSubtitleCodecs": [ "subrip", "srt", "ass", "ssa", "webvtt", "mov_text", "text" ],
   "containers": {
     "Mp4": {

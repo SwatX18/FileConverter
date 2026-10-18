@@ -23,6 +23,9 @@ namespace FileConverter.ConversionJobs
         private TimeSpan fileDuration;
         private TimeSpan actualConvertedDuration;
 
+        // Duration written so far by the running attempt (ffmpeg -progress "out_time_us"), null until reported.
+        private TimeSpan? attemptOutputDuration;
+
         private ProcessStartInfo ffmpegProcessStartInfo;
 
         private readonly List<FFMpegPass> ffmpegArgumentStringByPass = new List<FFMpegPass>();
@@ -476,6 +479,14 @@ namespace FileConverter.ConversionJobs
                 return;
             }
 
+            // Don't pay an ffprobe launch (~0.3 s) for files that can't be remuxed anyway.
+            string extension = Path.GetExtension(this.InputFilePath);
+            if (!RemuxCompatibility.Default.IsRemuxSource(extension))
+            {
+                Diagnostics.Debug.Log($"Remux: no, {extension.ToLowerInvariant()} files are not remuxed.");
+                return;
+            }
+
             MediaInfo source = this.GetSourceInfo();
             RemuxPlan plan = RemuxPlanner.Default.Plan(this.ConversionPreset, this.InputFilePath, source, out string reason);
             if (plan == null)
@@ -541,16 +552,20 @@ namespace FileConverter.ConversionJobs
         }
 
         /// <summary>
-        /// Checks that a remuxed file is readable and as long as the source streams it contains (copied streams with
-        /// broken timestamps can produce truncated or stretched files without an ffmpeg error).
+        /// Checks that a remuxed file is as long as the source streams it contains (copied streams with broken
+        /// timestamps can produce truncated or stretched files without an ffmpeg error).
         /// </summary>
+        /// <remarks>
+        /// The output duration is the one ffmpeg reports for what it muxed (-progress out_time_us), not an ffprobe of
+        /// the output: that would cost another process launch (~0.3 s, as much as the remux of a short file), and
+        /// ADTS (.aac) files store no duration (ffprobe only estimates it from the bitrate).
+        /// </remarks>
         /// <returns>Null if the output is valid, the problem otherwise.</returns>
         private string ValidateRemuxOutput(MediaInfo source, RemuxPlan plan)
         {
-            MediaInfo output = MediaProbe.Default.TryProbe(this.OutputFilePath);
-            if (output == null)
+            if (!File.Exists(this.OutputFilePath))
             {
-                return "the remuxed file can't be read";
+                return "the remuxed file was not written";
             }
 
             // Compare with the written streams, not the source container: an audio track extracted from a video can be
@@ -558,13 +573,7 @@ namespace FileConverter.ConversionJobs
             List<MediaStream> mediaStreams = plan.Streams.Select(decision => decision.Stream).Where(stream => (stream.IsVideo || stream.IsAudio) && !stream.IsAttachedPicture).ToList();
             TimeSpan? expected = mediaStreams.Count > 0 && mediaStreams.All(stream => stream.Duration.HasValue) ? mediaStreams.Max(stream => stream.Duration.Value) : source.Duration;
 
-            // ADTS (.aac) files store no duration: ffprobe estimates it from the bitrate. Use the duration ffmpeg muxed.
-            TimeSpan? actual = output.Duration;
-            if (this.ConversionPreset.OutputType == OutputType.Aac && this.actualConvertedDuration.Ticks > 0)
-            {
-                actual = this.actualConvertedDuration;
-            }
-
+            TimeSpan? actual = this.attemptOutputDuration;
             if (!expected.HasValue)
             {
                 return null;
@@ -733,6 +742,7 @@ namespace FileConverter.ConversionJobs
             {
                 this.ffmpegProcessStartInfo.Arguments = attempt.Arguments;
                 this.attemptError = null;
+                this.attemptOutputDuration = null;
 
                 Diagnostics.Debug.Log($"Execute command: {this.ffmpegProcessStartInfo.FileName} {this.ffmpegProcessStartInfo.Arguments}.");
                 Diagnostics.Debug.Log(string.Empty);
@@ -743,7 +753,7 @@ namespace FileConverter.ConversionJobs
                     {
                         // ffmpeg writes -progress key/value blocks on stdout. Drain it, otherwise the pipe buffer fills
                         // up after a few seconds of encoding and ffmpeg blocks forever (progress is parsed from stderr).
-                        exeProcess.OutputDataReceived += (sender, args) => { };
+                        exeProcess.OutputDataReceived += (sender, args) => this.ParseFFMPEGProgress(args.Data);
                         exeProcess.BeginOutputReadLine();
 
                         using (StreamReader reader = exeProcess.StandardError)
@@ -782,6 +792,19 @@ namespace FileConverter.ConversionJobs
                 }
 
                 return this.attemptError;
+            }
+        }
+
+        /// <summary>
+        /// Parses ffmpeg's -progress key=value lines (stdout).
+        /// </summary>
+        private void ParseFFMPEGProgress(string line)
+        {
+            const string OutTimeKey = "out_time_us=";
+            if (line != null && line.StartsWith(OutTimeKey, StringComparison.Ordinal) &&
+                long.TryParse(line.Substring(OutTimeKey.Length), NumberStyles.Integer, CultureInfo.InvariantCulture, out long microseconds) && microseconds >= 0)
+            {
+                this.attemptOutputDuration = TimeSpan.FromTicks(microseconds * 10);
             }
         }
 

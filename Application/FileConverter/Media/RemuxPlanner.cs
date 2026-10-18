@@ -85,13 +85,19 @@ namespace FileConverter.Media
                 return null;
             }
 
+            string extension = Path.GetExtension(inputFilePath ?? string.Empty).TrimStart('.');
+            if (!this.compatibility.IsRemuxSource(extension))
+            {
+                reason = $".{extension.ToLowerInvariant()} files are not remuxed";
+                return null;
+            }
+
             if (source == null)
             {
                 reason = "the source could not be probed";
                 return null;
             }
 
-            string extension = Path.GetExtension(inputFilePath ?? string.Empty).TrimStart('.');
             if (OutputTypeByExtension.TryGetValue(extension, out OutputType sameFormat) && sameFormat == outputType)
             {
                 reason = $"a .{extension.ToLowerInvariant()} file converted to {outputType} is re-encoded";
