@@ -144,6 +144,8 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Media\MediaInfo.cs" />
     <Compile Include="Media\MediaProbe.cs" />
+    <Compile Include="Media\RemuxCompatibility.cs" />
+    <Compile Include="Media\RemuxPlanner.cs" />
     <Compile Include="InputPostConversionAction.cs" />
     <Compile Include="IXmlSerializable.cs" />
     <Compile Include="Services\ConversionJobsTerminatedEventArgs.cs" />
@@ -292,6 +294,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Media\remux-compat.json">
+      <LogicalName>FileConverter.Media.remux-compat.json</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\FileConverter.ur.resx" />
     <EmbeddedResource Include="Properties\Resources.ar-EG.resx" />
     <EmbeddedResource Include="Properties\Resources.cs-CZ.resx" />

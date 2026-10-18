@@ -1,0 +1,56 @@
+{
+  "_comment": "Codecs (ffprobe codec_name) that each output container accepts as a stream copy. '*' accepts any codec. textSubtitlesTo: codec that text subtitles which can't be copied are converted to (empty: dropped); bitmap subtitles that can't be copied are always dropped. coverArt: attached pictures kept by audio-only outputs. Output types without an entry are never remuxed: Flac is left out because a flac stream copied out of another container keeps no total sample count (no duration, no seeking). See RemuxPlanner.",
+  "textSubtitleCodecs": [ "subrip", "srt", "ass", "ssa", "webvtt", "mov_text", "text" ],
+  "containers": {
+    "Mp4": {
+      "video": [ "h264", "hevc", "av1", "mpeg4" ],
+      "audio": [ "aac", "mp3", "ac3", "eac3", "alac", "opus" ],
+      "subtitles": [ "mov_text" ],
+      "textSubtitlesTo": "mov_text",
+      "attachments": false
+    },
+    "Mkv": {
+      "video": [ "*" ],
+      "audio": [ "*" ],
+      "subtitles": [ "subrip", "ass", "ssa", "webvtt", "hdmv_pgs_subtitle", "dvd_subtitle", "dvb_subtitle" ],
+      "textSubtitlesTo": "subrip",
+      "attachments": true
+    },
+    "Webm": {
+      "video": [ "vp8", "vp9", "av1" ],
+      "audio": [ "opus", "vorbis" ],
+      "subtitles": [ "webvtt" ],
+      "textSubtitlesTo": "webvtt",
+      "attachments": false
+    },
+    "Ogv": {
+      "video": [ "theora" ],
+      "audio": [ "vorbis", "opus" ],
+      "subtitles": [],
+      "textSubtitlesTo": "",
+      "attachments": false
+    },
+    "Aac": {
+      "video": [],
+      "audio": [ "aac" ],
+      "subtitles": [],
+      "textSubtitlesTo": "",
+      "attachments": false
+    },
+    "Mp3": {
+      "video": [],
+      "audio": [ "mp3" ],
+      "coverArt": [ "mjpeg", "png" ],
+      "subtitles": [],
+      "textSubtitlesTo": "",
+      "attachments": false
+    },
+    "Ogg": {
+      "video": [],
+      "audio": [ "vorbis", "opus" ],
+      "subtitles": [],
+      "textSubtitlesTo": "",
+      "attachments": false
+    }
+  }
+}
