@@ -41,6 +41,9 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
   `-Repeat 3`, and record the median (e.g. 56.1 / 54.5 / 55.8 s → 55.8 s). Use `-Repeat 3` for image comparisons.
 - **`phase1.csv`**: Phase 1 (GPU encoding, Auto mode). See `docs/HARDWARE-ENCODING.md` for the comparison.
 - **`phase1-fixes.csv`**: cases changed by the post-Phase-1 fixes (Scale presets now regular presets on the GPU).
+- **`phase2.csv`**: Phase 2 (remux), video and audio cases, `-Repeat 3`. See `docs/REMUXING.md` for the comparison.
+  Cases that convert a file to its own format (`video_h264_1080p_to_mp4`, `video_sintel_mkv_to_mkv`) are re-encoded by
+  design, so they measure the same path as Phase 1.
 
 `try-case.ps1` runs a single preset on one or more files with setting overrides and prints the encoding path taken
 (useful for checking fallbacks), e.g.
