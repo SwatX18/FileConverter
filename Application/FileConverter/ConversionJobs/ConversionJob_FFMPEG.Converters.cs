@@ -43,7 +43,9 @@ namespace FileConverter.ConversionJobs
 
         /// <param name="cudaFrames">True when the frames stay in GPU memory (<c>-hwaccel_output_format cuda</c>):
         /// only CUDA filters can be used, so rotation is not supported (callers must check <see cref="HasRotation"/>).</param>
-        private static string ComputeTransformArgs(ConversionPreset conversionPreset, bool cudaFrames = false)
+        /// <param name="pixelFormat">Output pixel format of the Mp4 / Mkv presets (8-bit <c>yuv420p</c>, or a 10-bit 4:2:0
+        /// format for HEVC / AV1 from 10-bit sources, see <see cref="VideoPixelFormats"/>).</param>
+        private static string ComputeTransformArgs(ConversionPreset conversionPreset, bool cudaFrames = false, string pixelFormat = "yuv420p")
         {
             float scaleFactor = conversionPreset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoScale);
             string scaleArgs = string.Empty;
@@ -53,7 +55,7 @@ namespace FileConverter.ConversionJobs
                 // This presets use h264 codec, the size of the video need to be divisible by 2.
                 if (cudaFrames)
                 {
-                    scaleArgs = string.Format("scale_cuda=trunc(iw*{0}/2)*2:trunc(ih*{0}/2)*2:format=yuv420p", scaleFactor.ToString("#.##", CultureInfo.InvariantCulture));
+                    scaleArgs = string.Format("scale_cuda=trunc(iw*{0}/2)*2:trunc(ih*{0}/2)*2:format={1}", scaleFactor.ToString("#.##", CultureInfo.InvariantCulture), pixelFormat);
                 }
                 else
                 {
@@ -111,11 +113,11 @@ namespace FileConverter.ConversionJobs
 
             if (!cudaFrames && (conversionPreset.OutputType == OutputType.Mkv || conversionPreset.OutputType == OutputType.Mp4))
             {
-                // For MP4/MKV (H.264, and HEVC/AV1 too), force 8-bit yuv420p for broad player compatibility:
+                // For MP4/MKV, force 4:2:0 (8-bit for H.264) for broad player compatibility:
                 // http://trac.ffmpeg.org/wiki/Encode/H.264#Encodingfordumbplayers
                 // - Software encoding and hardware encoders fed from system memory come through this path.
-                // - CUDA frames are excluded here because the scale_cuda path above already sets format=yuv420p.
-                transformArgs += (transformArgs.Length > 0 ? "," : string.Empty) + "format=yuv420p";
+                // - CUDA frames are excluded here because the scale_cuda path above already sets the format.
+                transformArgs += (transformArgs.Length > 0 ? "," : string.Empty) + $"format={pixelFormat}";
                 //// TODO: maybe there should be an option for this on the settings?
             }
 
@@ -133,11 +135,16 @@ namespace FileConverter.ConversionJobs
         /// encoder is selected), and always the CPU encoder last, so a failing GPU path never fails the conversion.
         /// </summary>
         /// <param name="inputOutputArgs">Formats the final command from (input args, encoder args, -vf args).</param>
-        private List<FFMpegAttempt> BuildVideoEncodeAttempts(VideoCodec codec, int quality, VideoEncodingSpeed speed, Func<string, string, string, string> inputOutputArgs)
+        /// <param name="tenBit">Encode 10-bit 4:2:0 (HEVC / AV1 from a 10-bit source), 8-bit 4:2:0 otherwise.</param>
+        private List<FFMpegAttempt> BuildVideoEncodeAttempts(VideoCodec codec, int quality, VideoEncodingSpeed speed, bool tenBit, Func<string, string, string, string> inputOutputArgs)
         {
             List<FFMpegAttempt> attempts = new List<FFMpegAttempt>();
-            string cpuTransformArgs = ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset);
-            string cpuFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", cpuTransformArgs);
+
+            // Hardware encoders take 10-bit as P010, the CPU encoders (libx265, libaom) as planar yuv420p10le.
+            string hardwarePixelFormat = tenBit ? VideoPixelFormats.Hardware10Bit : VideoPixelFormats.Yuv420p;
+            string cpuPixelFormat = tenBit ? VideoPixelFormats.Cpu10Bit : VideoPixelFormats.Yuv420p;
+            string hardwareFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset, pixelFormat: hardwarePixelFormat));
+            string cpuFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset, pixelFormat: cpuPixelFormat));
 
             HardwareEncoder encoder = this.ResolveHardwareEncoder(codec);
             if (encoder != null)
@@ -150,13 +157,13 @@ namespace FileConverter.ConversionJobs
                         {
                             // Full GPU pipeline: NVDEC decode, scale_cuda, NVENC encode. Fails at startup (and falls back) when
                             // NVDEC can't decode the source (e.g. ProRes) or scale_cuda can't convert its pixel format.
-                            string cudaFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset, cudaFrames: true));
+                            string cudaFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset, cudaFrames: true, pixelFormat: hardwarePixelFormat));
                             attempts.Add(new FFMpegAttempt(EncodingPaths.Nvenc, inputOutputArgs("-hwaccel cuda -hwaccel_output_format cuda", encoderArgs, cudaFilteringArgs), usesGpu: true));
                         }
 
                         // Frames downloaded to system memory: CPU filters (rotation, pixel format), NVENC encode.
                         // ffmpeg decodes on the CPU by itself when NVDEC doesn't support the source.
-                        attempts.Add(new FFMpegAttempt(EncodingPaths.NvencCpuFilters, inputOutputArgs("-hwaccel cuda", encoderArgs, cpuFilteringArgs), usesGpu: true));
+                        attempts.Add(new FFMpegAttempt(EncodingPaths.NvencCpuFilters, inputOutputArgs("-hwaccel cuda", encoderArgs, hardwareFilteringArgs), usesGpu: true));
                         break;
 
                     case HardwareEncoderVendor.Amf:
@@ -165,8 +172,8 @@ namespace FileConverter.ConversionJobs
                         // (e.g. NVIDIA dGPU + AMD iGPU) the decoder's device is not the encoder's, and AMF fails to initialize
                         // ("Failed to create derived AMF device context"). That failure is immediate, so the retry is cheap.
                         bool isAmf = encoder.Vendor == HardwareEncoderVendor.Amf;
-                        attempts.Add(new FFMpegAttempt(isAmf ? EncodingPaths.Amf : EncodingPaths.Qsv, inputOutputArgs("-hwaccel auto", encoderArgs, cpuFilteringArgs), usesGpu: true));
-                        attempts.Add(new FFMpegAttempt(isAmf ? EncodingPaths.AmfCpuDecode : EncodingPaths.QsvCpuDecode, inputOutputArgs(string.Empty, encoderArgs, cpuFilteringArgs), usesGpu: true));
+                        attempts.Add(new FFMpegAttempt(isAmf ? EncodingPaths.Amf : EncodingPaths.Qsv, inputOutputArgs("-hwaccel auto", encoderArgs, hardwareFilteringArgs), usesGpu: true));
+                        attempts.Add(new FFMpegAttempt(isAmf ? EncodingPaths.AmfCpuDecode : EncodingPaths.QsvCpuDecode, inputOutputArgs(string.Empty, encoderArgs, hardwareFilteringArgs), usesGpu: true));
                         break;
                 }
             }
@@ -221,6 +228,24 @@ namespace FileConverter.ConversionJobs
         private const int AmfQpOffset = 4;
         private const int QsvQualityOffset = 4;
         private const int LibaomCrfOffset = 4;
+
+        private static class VideoPixelFormats
+        {
+            /// <summary>
+            /// 8-bit 4:2:0: H.264 always (10-bit H.264 barely plays anywhere), HEVC / AV1 from 8-bit sources.
+            /// </summary>
+            public const string Yuv420p = "yuv420p";
+
+            /// <summary>
+            /// 10-bit 4:2:0 for NVENC / AMF / QSV and scale_cuda.
+            /// </summary>
+            public const string Hardware10Bit = "p010le";
+
+            /// <summary>
+            /// 10-bit 4:2:0 for libx265 / libaom.
+            /// </summary>
+            public const string Cpu10Bit = "yuv420p10le";
+        }
 
         private static int Clamp(int value, int minimum, int maximum)
         {

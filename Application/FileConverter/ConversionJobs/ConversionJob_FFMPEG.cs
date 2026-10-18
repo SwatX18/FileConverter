@@ -12,6 +12,7 @@ namespace FileConverter.ConversionJobs
     using CommunityToolkit.Mvvm.DependencyInjection;
     using FileConverter.Controls;
     using FileConverter.Hardware;
+    using FileConverter.Media;
     using FileConverter.Services;
 
     public partial class ConversionJob_FFMPEG : ConversionJob
@@ -301,6 +302,15 @@ namespace FileConverter.ConversionJobs
                             audioArgs = $"-c:a aac -qscale:a {this.AACBitrateToQualityIndex(audioEncodingBitrate)}";
                         }
 
+                        // HEVC / AV1 keep 10-bit sources (HDR phone videos, camera footage) in 10-bit; H.264 is always 8-bit.
+                        bool tenBit = false;
+                        if (videoCodec != VideoCodec.H264)
+                        {
+                            MediaStream sourceVideo = MediaProbe.Default.TryProbe(this.InputFilePath)?.PrimaryVideo;
+                            tenBit = sourceVideo != null && sourceVideo.BitsPerComponent > 8;
+                            Diagnostics.Debug.Log($"Source video: {sourceVideo?.ToString() ?? "unknown"}, output {(tenBit ? "10-bit" : "8-bit")} 4:2:0.");
+                        }
+
                         // HEVC in MP4 needs the hvc1 tag to play on Windows and Apple devices.
                         string containerArgs = videoCodec == VideoCodec.Hevc && this.ConversionPreset.OutputType == OutputType.Mp4 ? "-tag:v hvc1" : string.Empty;
 
@@ -308,6 +318,7 @@ namespace FileConverter.ConversionJobs
                             videoCodec,
                             videoEncodingQuality,
                             videoEncodingSpeed,
+                            tenBit,
                             (inputArgs, encoderArgs, videoFilteringArgs) =>
                                 $"{baseArgs} {inputArgs} -i \"{this.InputFilePath}\" {encoderArgs} {containerArgs} {audioArgs} {videoFilteringArgs} \"{this.OutputFilePath}\"");
 
