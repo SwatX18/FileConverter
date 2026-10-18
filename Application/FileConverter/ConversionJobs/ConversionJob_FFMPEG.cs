@@ -556,9 +556,11 @@ namespace FileConverter.ConversionJobs
         /// timestamps can produce truncated or stretched files without an ffmpeg error).
         /// </summary>
         /// <remarks>
-        /// The output duration is the one ffmpeg reports for what it muxed (-progress out_time_us), not an ffprobe of
-        /// the output: that would cost another process launch (~0.3 s, as much as the remux of a short file), and
-        /// ADTS (.aac) files store no duration (ffprobe only estimates it from the bitrate).
+        /// A single-stream output (audio extraction) is checked with the duration ffmpeg reports for what it muxed
+        /// (-progress out_time_us): an ffprobe of the output would cost another process launch (~0.3 s, as much as the
+        /// remux of a short track), and ADTS (.aac) files store no duration (ffprobe only estimates it from the bitrate).
+        /// With several streams ffmpeg's figure is not the file's duration (Sintel with 10 subtitle tracks: 629.8 s
+        /// reported for 888 s written), so the output is probed.
         /// </remarks>
         /// <returns>Null if the output is valid, the problem otherwise.</returns>
         private string ValidateRemuxOutput(MediaInfo source, RemuxPlan plan)
@@ -573,10 +575,25 @@ namespace FileConverter.ConversionJobs
             List<MediaStream> mediaStreams = plan.Streams.Select(decision => decision.Stream).Where(stream => (stream.IsVideo || stream.IsAudio) && !stream.IsAttachedPicture).ToList();
             TimeSpan? expected = mediaStreams.Count > 0 && mediaStreams.All(stream => stream.Duration.HasValue) ? mediaStreams.Max(stream => stream.Duration.Value) : source.Duration;
 
-            TimeSpan? actual = this.attemptOutputDuration;
             if (!expected.HasValue)
             {
                 return null;
+            }
+
+            TimeSpan? actual;
+            if (plan.Streams.Count == 1)
+            {
+                actual = this.attemptOutputDuration;
+            }
+            else
+            {
+                MediaInfo output = MediaProbe.Default.TryProbe(this.OutputFilePath);
+                if (output == null)
+                {
+                    return "the remuxed file can't be read";
+                }
+
+                actual = output.Duration;
             }
 
             if (!actual.HasValue)
