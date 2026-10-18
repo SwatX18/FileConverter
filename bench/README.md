@@ -36,5 +36,11 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
   run (3/3): this is the stdout `-progress pipe:1` deadlock described in `docs/ARCHITECTURE.md` §2.
   `video_h264_1080p_to_mp4` (about 10 s of encoding, right at the threshold) hung in 1 of 4 runs. Any longer video job hangs.
   The Sintel, ProRes and 4:2:2 cases were added after this run.
-- Image batch timings vary between runs (`img_jpg200_scale25_webp`: 56.9 s, then 39.4 s, with the same image code),
-  most likely because of cold or warm disk cache. Compare image cases over several runs.
+- Image batch timings vary between runs. `img_jpg200_scale25_webp` measured 56.9, **39.4** (baseline.csv), 55.9, 58.0 and
+  55.8 s with the same image code, so the baseline.csv value is an outlier. Re-measure the image cases over several runs
+  before comparing Phase 3 against them.
+- **`phase1.csv`**: Phase 1 (GPU encoding, Auto mode). See `docs/HARDWARE-ENCODING.md` for the comparison.
+
+`try-case.ps1` runs a single preset on one or more files with setting overrides and prints the encoding path taken
+(useful for checking fallbacks), e.g.
+`.ench	ry-case.ps1 -Preset "To Mp4" -InputFile bench\samplesideo\prores422_1080p.mov -Settings "HardwareAccelerationMode=AMF"`.

@@ -169,11 +169,25 @@ try {
     New-Item -ItemType Directory -Force $userDir | Out-Null
     $settings.Save($userSettings)
     $effMax = $settings.Settings.MaximumNumberOfSimultaneousConversions
-    $effHw = if ($settings.Settings.HardwareAccelerationMode) { $settings.Settings.HardwareAccelerationMode } else { 'Off' }
+    # Not written in Settings.default.xml: the app's built-in default applies (Off up to settings v4, Auto from v5).
+    $effHw = if ($settings.Settings.HardwareAccelerationMode) { $settings.Settings.HardwareAccelerationMode } else { "default(v$($settings.Settings.SerializationVersion))" }
 
     Write-Host "Exe: $Exe (commit $commit)"
     Write-Host "Machine: $cpu | $gpu"
     Write-Host "Settings: MaximumNumberOfSimultaneousConversions=$effMax HardwareAccelerationMode=$effHw"
+
+    # Unrecorded warm-up: hardware encoder detection (cached in %LOCALAPPDATA%\FileConverter\hw-cache.json for the rest
+    # of the run), first CUDA/driver initialization and disk cache for the exe. Otherwise the first video case pays for it.
+    $warmupSample = Join-Path $Samples 'video\tiny.mp4'
+    if (Test-Path $warmupSample) {
+        $warmupDir = Join-Path $WorkRoot 'warmup'
+        New-Item -ItemType Directory -Force $warmupDir | Out-Null
+        Copy-Item $warmupSample $warmupDir
+        $warm = Start-Process -FilePath $Exe -ArgumentList @('--conversion-preset', '"To Mp4"', "`"$(Join-Path $warmupDir 'tiny.mp4')`"") -PassThru
+        if (-not $warm.WaitForExit(120000)) { Stop-Tree $warm.Id }
+        Remove-Item -Recurse -Force $warmupDir -ErrorAction SilentlyContinue
+        Write-Host 'Warm-up done (not recorded).'
+    }
 
     foreach ($c in $cases) {
         $inputs = @(foreach ($pattern in $c.Inputs) { Get-ChildItem (Join-Path $Samples $pattern) -File -ErrorAction SilentlyContinue }) | Sort-Object FullName -Unique

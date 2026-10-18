@@ -113,6 +113,11 @@ Invoke-FFmpeg "$video\iphone_hevc10.mov" @(
     '-metadata', 'creation_time=2026-06-01T12:00:00Z', '-metadata', 'com.apple.quicktime.make=Apple',
     '-metadata', 'com.apple.quicktime.model=iPhone 15 Pro', '-movflags', '+use_metadata_tags', '-shortest', "$video\iphone_hevc10.mov")
 
+# 2 s clip: benchmark warm-up and quick fallback checks (try-case.ps1).
+Invoke-FFmpeg "$video\tiny.mp4" @(
+    '-f', 'lavfi', '-i', 'testsrc2=s=1280x720:r=30:d=2', '-f', 'lavfi', '-i', 'sine=d=2',
+    '-c:v', 'libx264', '-preset', 'fast', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-shortest', "$video\tiny.mp4")
+
 # 4:2:2 / 10-bit sources (PLAN 1.3): ProRes 422 (no NVDEC support -> exercises the decode fallback)
 # and H.264 High 4:2:2 10-bit.
 Invoke-FFmpeg "$video\prores422_1080p.mov" @(

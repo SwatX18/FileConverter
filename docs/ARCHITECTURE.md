@@ -58,6 +58,8 @@ So image routing depends only on the **output** type, and any image input (RAW, 
 
 ## 3. Hardware acceleration (the AMF mode as the model)
 
+> Upstream state. The fork's implementation (Auto mode, detection, fallback, calibration) is described in `docs/HARDWARE-ENCODING.md`.
+
 | Piece | Location |
 |---|---|
 | Enum `HardwareAccelerationMode { Off, CUDA, AMF }` | `Helpers.cs` (bottom) |
