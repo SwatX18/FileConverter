@@ -19,10 +19,20 @@ namespace FileConverter.Hardware
             };
 
             StringBuilder standardError = new StringBuilder();
+            StringBuilder standardOutput = new StringBuilder();
             using (Process process = new Process { StartInfo = startInfo })
             {
                 // Both streams are drained asynchronously so the child can never block on a full pipe.
-                process.OutputDataReceived += (sender, args) => { };
+                process.OutputDataReceived += (sender, args) =>
+                {
+                    if (args.Data != null)
+                    {
+                        lock (standardOutput)
+                        {
+                            standardOutput.AppendLine(args.Data);
+                        }
+                    }
+                };
                 process.ErrorDataReceived += (sender, args) =>
                 {
                     if (args.Data != null)
@@ -55,8 +65,9 @@ namespace FileConverter.Hardware
                 process.WaitForExit();
 
                 lock (standardError)
+                lock (standardOutput)
                 {
-                    return new ProcessResult(timedOut ? -1 : process.ExitCode, timedOut, standardError.ToString());
+                    return new ProcessResult(timedOut ? -1 : process.ExitCode, timedOut, standardError.ToString(), standardOutput.ToString());
                 }
             }
         }

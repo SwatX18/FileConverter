@@ -14,11 +14,12 @@ namespace FileConverter.Hardware
 
     public sealed class ProcessResult
     {
-        public ProcessResult(int exitCode, bool timedOut, string standardError)
+        public ProcessResult(int exitCode, bool timedOut, string standardError, string standardOutput = null)
         {
             this.ExitCode = exitCode;
             this.TimedOut = timedOut;
             this.StandardError = standardError ?? string.Empty;
+            this.StandardOutput = standardOutput ?? string.Empty;
         }
 
         public int ExitCode { get; }
@@ -26,6 +27,8 @@ namespace FileConverter.Hardware
         public bool TimedOut { get; }
 
         public string StandardError { get; }
+
+        public string StandardOutput { get; }
 
         public bool Succeeded => !this.TimedOut && this.ExitCode == 0;
     }

@@ -142,6 +142,8 @@
     <Compile Include="Hardware\ProcessRunner.cs" />
     <Compile Include="Hardware\VideoCodec.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="Media\MediaInfo.cs" />
+    <Compile Include="Media\MediaProbe.cs" />
     <Compile Include="InputPostConversionAction.cs" />
     <Compile Include="IXmlSerializable.cs" />
     <Compile Include="Services\ConversionJobsTerminatedEventArgs.cs" />
@@ -431,6 +433,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(SolutionDir)Middleware\ffmpeg\ffmpeg.exe" "$(TargetDir)ffmpeg.exe"
+copy /Y "$(SolutionDir)Middleware\ffmpeg\ffprobe.exe" "$(TargetDir)ffprobe.exe"
 copy /Y "$(SolutionDir)Middleware\gs\gsdll64.dll" "$(TargetDir)gsdll64.dll"
 copy /Y "$(SolutionDir)Middleware\gs\gswin64c.exe" "$(TargetDir)gswin64c.exe"
 copy /Y "$(ProjectDir)Settings.default.xml" "$(TargetDir)Settings.default.xml"

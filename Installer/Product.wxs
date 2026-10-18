@@ -131,6 +131,9 @@
             <Component Guid="{BEEAAC73-C479-4080-83B1-2B1448C7378C}">
                 <File Id="ffmpeg.exe" Source="$(var.FileConverter.TargetDir)ffmpeg.exe" KeyPath="yes" Checksum="yes" />
             </Component>
+            <Component Guid="{79D766D3-3FDC-46EE-9009-A6C31919A234}">
+                <File Id="ffprobe.exe" Source="$(var.FileConverter.TargetDir)ffprobe.exe" KeyPath="yes" Checksum="yes" />
+            </Component>
             <Component Guid="{6925974E-AFE0-4833-B797-36AE33DF9D4D}">
                 <File Id="gsdll64.dll" Source="$(var.FileConverter.TargetDir)gsdll64.dll" KeyPath="yes" Checksum="yes" />
             </Component>
