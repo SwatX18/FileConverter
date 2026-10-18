@@ -7,9 +7,11 @@ namespace FileConverter.ConversionJobs
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using CommunityToolkit.Mvvm.DependencyInjection;
     using FileConverter.Controls;
+    using FileConverter.Hardware;
     using FileConverter.Services;
 
     public partial class ConversionJob_FFMPEG : ConversionJob
@@ -23,6 +25,8 @@ namespace FileConverter.ConversionJobs
         private ProcessStartInfo ffmpegProcessStartInfo;
 
         private readonly List<FFMpegPass> ffmpegArgumentStringByPass = new List<FFMpegPass>();
+
+        private string attemptError;
 
         ISettingsService settingsService = Ioc.Default.GetRequiredService<ISettingsService>();
 
@@ -46,6 +50,29 @@ namespace FileConverter.ConversionJobs
                VideoEncodingSpeed.Slower,
                VideoEncodingSpeed.VerySlow,
            };
+
+        /// <summary>
+        /// Gets the video codecs offered by the Mp4 / Mkv presets. AV1 is only offered when a hardware AV1 encoder is
+        /// detected: the CPU fallback (libaom) is slower than real time.
+        /// </summary>
+        public static VideoCodec[] VideoCodecs
+        {
+            get
+            {
+                IHardwareEncoderDetector detector = Ioc.Default.GetService<IHardwareEncoderDetector>();
+                bool hardwareAv1 = detector?.GetPreferredEncoder(VideoCodec.Av1) != null;
+                return hardwareAv1 ? new[] { VideoCodec.H264, VideoCodec.Hevc, VideoCodec.Av1 } : new[] { VideoCodec.H264, VideoCodec.Hevc };
+            }
+        }
+
+        /// <summary>
+        /// Gets the encoding path of the last successful pass (see <see cref="EncodingPaths"/>), for diagnostics.
+        /// </summary>
+        public string EncodingPath
+        {
+            get;
+            private set;
+        }
 
         protected virtual string FfmpegPath
         {
@@ -260,10 +287,13 @@ namespace FileConverter.ConversionJobs
                         VideoEncodingSpeed videoEncodingSpeed = this.ConversionPreset.GetSettingsValue<VideoEncodingSpeed>(ConversionPreset.ConversionSettingKeys.VideoEncodingSpeed);
                         int audioEncodingBitrate = this.ConversionPreset.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.AudioBitrate);
 
-                        Helpers.HardwareAccelerationMode hwAccel = settingsService.Settings.HardwareAccelerationMode;
-
-                        string transformArgs = ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset, hwAccel);
-                        string videoFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", transformArgs);
+                        VideoCodec videoCodec = VideoCodec.H264;
+                        string videoCodecSetting = this.ConversionPreset.GetSettingsValue(ConversionPreset.ConversionSettingKeys.VideoCodec);
+                        if (!string.IsNullOrEmpty(videoCodecSetting) && !Enum.TryParse(videoCodecSetting, out videoCodec))
+                        {
+                            Diagnostics.Debug.Log($"Unknown video codec '{videoCodecSetting}', using H.264.");
+                            videoCodec = VideoCodec.H264;
+                        }
 
                         string audioArgs = "-an";
                         if (this.ConversionPreset.GetSettingsValue<bool>(ConversionPreset.ConversionSettingKeys.EnableAudio))
@@ -271,33 +301,17 @@ namespace FileConverter.ConversionJobs
                             audioArgs = $"-c:a aac -qscale:a {this.AACBitrateToQualityIndex(audioEncodingBitrate)}";
                         }
 
-                        string videoCodec = "libx264";
-                        string videoCodecArgs = $"-preset {this.H264EncodingSpeedToPreset(videoEncodingSpeed)} -crf {this.H264QualityToCRF(videoEncodingQuality)}";
-                        string hwAccelArg = string.Empty;
+                        // HEVC in MP4 needs the hvc1 tag to play on Windows and Apple devices.
+                        string containerArgs = videoCodec == VideoCodec.Hevc && this.ConversionPreset.OutputType == OutputType.Mp4 ? "-tag:v hvc1" : string.Empty;
 
-                        switch (hwAccel)
-                        {
-                            case Helpers.HardwareAccelerationMode.CUDA:
-                                videoCodec = "h264_nvenc";
-                                int nvencQP = this.H264QualityToCRF(videoEncodingQuality);
-                                videoCodecArgs = $"-preset {this.H264EncodingSpeedToNVENCPreset(videoEncodingSpeed)} -rc constqp -qp {nvencQP}";
+                        List<FFMpegAttempt> attempts = this.BuildVideoEncodeAttempts(
+                            videoCodec,
+                            videoEncodingQuality,
+                            videoEncodingSpeed,
+                            (inputArgs, encoderArgs, videoFilteringArgs) =>
+                                $"{baseArgs} {inputArgs} -i \"{this.InputFilePath}\" {encoderArgs} {containerArgs} {audioArgs} {videoFilteringArgs} \"{this.OutputFilePath}\"");
 
-                                hwAccelArg = "-hwaccel cuda -hwaccel_output_format cuda";
-                                break;
-
-                            case Helpers.HardwareAccelerationMode.AMF:
-                                int amfQP = this.H264QualityToCRF(videoEncodingQuality);
-                                int amfBFrameQP = Math.Min(51, amfQP + 2);
-                                videoCodec = "h264_amf";
-                                videoCodecArgs = $"-usage transcoding -quality {this.H264EncodingSpeedToAMFQuality(videoEncodingSpeed)} -qp_i {amfQP} -qp_p {amfQP} -qp_b {amfBFrameQP}";
-                                break;
-                        }
-
-                        string encoderArgs = $"-c:v {videoCodec} {videoCodecArgs} {audioArgs} {videoFilteringArgs}";
-
-                        string arguments = $"{baseArgs} {hwAccelArg} -i \"{this.InputFilePath}\" {encoderArgs} \"{this.OutputFilePath}\"";
-
-                        this.ffmpegArgumentStringByPass.Add(new FFMpegPass(arguments));
+                        this.ffmpegArgumentStringByPass.Add(new FFMpegPass("Conversion", attempts, string.Empty));
                     }
 
                     break;
@@ -418,13 +432,14 @@ namespace FileConverter.ConversionJobs
 
             for (int index = 0; index < this.ffmpegArgumentStringByPass.Count; index++)
             {
-                if (string.IsNullOrEmpty(this.ffmpegArgumentStringByPass[index].Arguments))
+                FFMpegPass pass = this.ffmpegArgumentStringByPass[index];
+                if (pass.Attempts.Count == 0 || pass.Attempts.Any(attempt => string.IsNullOrEmpty(attempt.Arguments)))
                 {
                     throw new Exception("Invalid ffmpeg process arguments.");
                 }
             }
         }
-        
+
         protected override void Convert()
         {
             if (this.ConversionPreset == null)
@@ -437,7 +452,116 @@ namespace FileConverter.ConversionJobs
                 FFMpegPass currentPass = this.ffmpegArgumentStringByPass[index];
 
                 this.UserState = currentPass.Name;
-                this.ffmpegProcessStartInfo.Arguments = currentPass.Arguments;
+
+                if (!this.ExecutePass(currentPass))
+                {
+                    break;
+                }
+            }
+
+            Diagnostics.Debug.Log(string.Empty);
+
+            // Clean intermediate files.
+            for (int index = 0; index < this.ffmpegArgumentStringByPass.Count; index++)
+            {
+                FFMpegPass currentPass = this.ffmpegArgumentStringByPass[index];
+
+                if (string.IsNullOrEmpty(currentPass.FileToDelete))
+                {
+                    continue;
+                }
+
+                Diagnostics.Debug.Log($"Delete intermediate file {currentPass.FileToDelete}.");
+
+                File.Delete(currentPass.FileToDelete);
+            }
+        }
+
+        /// <summary>
+        /// Runs the attempts of a pass in order until one succeeds (e.g. GPU pipeline, then GPU encode with CPU filters,
+        /// then CPU). The job only fails if the last attempt fails.
+        /// </summary>
+        /// <returns>True if the pass succeeded.</returns>
+        private bool ExecutePass(FFMpegPass pass)
+        {
+            for (int attemptIndex = 0; attemptIndex < pass.Attempts.Count; attemptIndex++)
+            {
+                FFMpegAttempt attempt = pass.Attempts[attemptIndex];
+                bool isLastAttempt = attemptIndex == pass.Attempts.Count - 1;
+
+                if (pass.Attempts.Count > 1)
+                {
+                    Diagnostics.Debug.Log($"Encoding path: {attempt.Path}.");
+                }
+
+                string error = this.ExecuteAttempt(attempt);
+                if (error == null)
+                {
+                    this.EncodingPath = attempt.Path;
+                    if (attemptIndex > 0)
+                    {
+                        Diagnostics.Debug.Log($"Conversion succeeded with fallback encoding path '{attempt.Path}'.");
+                    }
+
+                    return true;
+                }
+
+                if (this.CancelIsRequested)
+                {
+                    return false;
+                }
+
+                if (isLastAttempt)
+                {
+                    this.ConversionFailed(error);
+                    return false;
+                }
+
+                FFMpegAttempt nextAttempt = pass.Attempts[attemptIndex + 1];
+                Diagnostics.Debug.Log($"Encoding path '{attempt.Path}' failed ({error}). Falling back to '{nextAttempt.Path}'.");
+
+                // The next attempt writes the same output, and ffmpeg is started with -n (no overwrite).
+                try
+                {
+                    if (File.Exists(this.OutputFilePath))
+                    {
+                        File.Delete(this.OutputFilePath);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    this.ConversionFailed(error);
+                    Diagnostics.Debug.Log($"Can't delete the partial output before falling back: {exception.Message}");
+                    return false;
+                }
+
+                this.Progress = 0f;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Runs ffmpeg once.
+        /// </summary>
+        /// <returns>Null on success, the error message otherwise.</returns>
+        private string ExecuteAttempt(FFMpegAttempt attempt)
+        {
+            IDisposable gpuSession = null;
+            if (attempt.UsesGpu)
+            {
+                GpuSessionLimiter.Configure(this.settingsService.Settings.MaximumNumberOfSimultaneousGpuConversions);
+                gpuSession = GpuSessionLimiter.Acquire(() => this.CancelIsRequested);
+                if (gpuSession == null)
+                {
+                    return Properties.Resources.ErrorCanceled;
+                }
+            }
+
+            using (gpuSession)
+            {
+                this.ffmpegProcessStartInfo.Arguments = attempt.Arguments;
+                this.attemptError = null;
 
                 Diagnostics.Debug.Log($"Execute command: {this.ffmpegProcessStartInfo.FileName} {this.ffmpegProcessStartInfo.Arguments}.");
                 Diagnostics.Debug.Log(string.Empty);
@@ -473,7 +597,10 @@ namespace FileConverter.ConversionJobs
                         if (exeProcess.ExitCode != 0 && !this.CancelIsRequested)
                         {
                             Diagnostics.Debug.Log($"ffmpeg exited with code {exeProcess.ExitCode}.");
-                            this.ConversionFailed(string.Format(Properties.Resources.ErrorFFMPEGExitCode, exeProcess.ExitCode));
+                            if (this.attemptError == null)
+                            {
+                                this.attemptError = string.Format(Properties.Resources.ErrorFFMPEGExitCode, exeProcess.ExitCode);
+                            }
                         }
                     }
                 }
@@ -482,23 +609,8 @@ namespace FileConverter.ConversionJobs
                     this.ConversionFailed(Properties.Resources.ErrorFailedToLaunchFFMPEG);
                     throw;
                 }
-            }
 
-            Diagnostics.Debug.Log(string.Empty);
-
-            // Clean intermediate files.
-            for (int index = 0; index < this.ffmpegArgumentStringByPass.Count; index++)
-            {
-                FFMpegPass currentPass = this.ffmpegArgumentStringByPass[index];
-
-                if (string.IsNullOrEmpty(currentPass.FileToDelete))
-                {
-                    continue;
-                }
-
-                Diagnostics.Debug.Log($"Delete intermediate file {currentPass.FileToDelete}.");
-
-                File.Delete(currentPass.FileToDelete);
+                return this.attemptError;
             }
         }
 
@@ -546,32 +658,57 @@ namespace FileConverter.ConversionJobs
                     // It is normal for a transport stream to start with a broken frame.
                     // https://trac.ffmpeg.org/ticket/1622
                 }
-                else
+                else if (this.attemptError == null)
                 {
-                    this.ConversionFailed(input);
+                    // Keep the first error: the attempt fails (or falls back) once ffmpeg has exited.
+                    this.attemptError = input;
                 }
             }
         }
 
-        private struct FFMpegPass
+        private class FFMpegPass
         {
-            public string Name;
-            public string Arguments;
-            public string FileToDelete;
-
-            public FFMpegPass(string name, string arguments, string fileToDelete)
+            public FFMpegPass(string name, IReadOnlyList<FFMpegAttempt> attempts, string fileToDelete)
             {
                 this.Name = name;
-                this.Arguments = arguments;
+                this.Attempts = attempts;
                 this.FileToDelete = fileToDelete;
             }
 
-            public FFMpegPass(string arguments)
+            public FFMpegPass(string name, string arguments, string fileToDelete)
+                : this(name, new[] { new FFMpegAttempt(EncodingPaths.Default, arguments, usesGpu: false) }, fileToDelete)
             {
-                this.Name = "Conversion";
-                this.Arguments = arguments;
-                this.FileToDelete = string.Empty;
             }
+
+            public FFMpegPass(string arguments)
+                : this("Conversion", arguments, string.Empty)
+            {
+            }
+
+            public string Name { get; }
+
+            public IReadOnlyList<FFMpegAttempt> Attempts { get; }
+
+            public string FileToDelete { get; }
+        }
+
+        private class FFMpegAttempt
+        {
+            public FFMpegAttempt(string path, string arguments, bool usesGpu)
+            {
+                this.Path = path;
+                this.Arguments = arguments;
+                this.UsesGpu = usesGpu;
+            }
+
+            /// <summary>
+            /// Diagnostics label of the encoding path (see <see cref="EncodingPaths"/>).
+            /// </summary>
+            public string Path { get; }
+
+            public string Arguments { get; }
+
+            public bool UsesGpu { get; }
         }
     }
 }

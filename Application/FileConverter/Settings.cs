@@ -13,7 +13,7 @@ namespace FileConverter
     [XmlType]
     public class Settings : ObservableObject, IXmlSerializable
     {
-        public const int Version = 4;
+        public const int Version = 5;
 
         private bool exitApplicationWhenConversionsFinished = false;
         private float durationBetweenEndOfConversionsAndApplicationExit = 3f;
@@ -22,7 +22,8 @@ namespace FileConverter
         private CultureInfo applicationLanguage;
         private int maximumNumberOfSimultaneousConversions;
         private bool copyFilesInClipboardAfterConversion = false;
-        private Helpers.HardwareAccelerationMode hardwareAccelerationMode = Helpers.HardwareAccelerationMode.Off;
+        private Helpers.HardwareAccelerationMode hardwareAccelerationMode = Helpers.HardwareAccelerationMode.Auto;
+        private int maximumNumberOfSimultaneousGpuConversions = Hardware.GpuSessionLimiter.DefaultMaximumSessions;
 
         public ConversionPreset GetPresetFromName(string presetName)
         {
@@ -172,6 +173,25 @@ namespace FileConverter
             set
             {
                 this.maximumNumberOfSimultaneousConversions = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Maximum number of simultaneous hardware (GPU) encodes, on top of <see cref="MaximumNumberOfSimultaneousConversions"/>.
+        /// Consumer GPUs limit the number of concurrent encode sessions.
+        /// </summary>
+        [XmlElement]
+        public int MaximumNumberOfSimultaneousGpuConversions
+        {
+            get
+            {
+                return this.maximumNumberOfSimultaneousGpuConversions;
+            }
+
+            set
+            {
+                this.maximumNumberOfSimultaneousGpuConversions = value;
                 this.OnPropertyChanged();
             }
         }

@@ -11,6 +11,8 @@ namespace FileConverter.ValueConverters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch (value) {
+                case Helpers.HardwareAccelerationMode.Auto:
+                    return Properties.Resources.HardwareAccelerationModeAutoName;
                 case Helpers.HardwareAccelerationMode.Off:
                     return Properties.Resources.HardwareAccelerationModeOffName;
                 case Helpers.HardwareAccelerationMode.CUDA:

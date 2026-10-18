@@ -27,6 +27,7 @@ namespace FileConverter
     using CommunityToolkit.Mvvm.DependencyInjection;
 
     using FileConverter.ConversionJobs;
+    using FileConverter.Hardware;
     using FileConverter.Services;
     using FileConverter.ViewModels;
     using FileConverter.Views;
@@ -202,7 +203,13 @@ namespace FileConverter
             services
               .AddSingleton<INavigationService, NavigationService>()
               .AddSingleton<IConversionService, ConversionService>()
-              .AddSingleton<ISettingsService, SettingsService>();
+              .AddSingleton<ISettingsService, SettingsService>()
+              .AddSingleton<IHardwareEncoderDetector>(provider =>
+              {
+                  string applicationDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                  string cacheFilePath = System.IO.Path.Combine(FileConverterExtension.PathHelpers.GetUserDataFolderPath, "hw-cache.json");
+                  return new HardwareEncoderDetector(new ProcessRunner(), System.IO.Path.Combine(applicationDirectory, "ffmpeg.exe"), cacheFilePath);
+              });
 
             Ioc.Default.ConfigureServices(services.BuildServiceProvider());
 
@@ -418,6 +425,14 @@ namespace FileConverter
             if (conversionPreset != null)
             {
                 IConversionService conversionService = Ioc.Default.GetRequiredService<IConversionService>();
+
+                if ((conversionPreset.OutputType == OutputType.Mp4 || conversionPreset.OutputType == OutputType.Mkv) &&
+                    settingsService.Settings.HardwareAccelerationMode == Helpers.HardwareAccelerationMode.Auto)
+                {
+                    // Warm up the hardware encoder detection (cache load or test encodes) while the UI starts.
+                    IHardwareEncoderDetector detector = Ioc.Default.GetService<IHardwareEncoderDetector>();
+                    System.Threading.Tasks.Task.Run(() => detector?.AvailableEncoders);
+                }
 
                 // Create conversion jobs.
                 Debug.Log($"Create jobs for conversion preset: '{conversionPreset.FullName}'");

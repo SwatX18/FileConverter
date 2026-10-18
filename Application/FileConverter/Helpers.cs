@@ -354,6 +354,10 @@ namespace FileConverter
 
         public enum HardwareAccelerationMode
         {
+            /// <summary>
+            /// Use the best hardware encoder found by <see cref="Hardware.IHardwareEncoderDetector"/> (NVENC > AMF > QSV), CPU otherwise.
+            /// </summary>
+            Auto,
             Off,
             CUDA,
             AMF

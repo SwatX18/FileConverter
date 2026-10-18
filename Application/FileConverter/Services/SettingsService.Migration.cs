@@ -11,6 +11,18 @@ namespace FileConverter.Services
         {
             int settingsVersion = settings.SerializationVersion;
 
+            if (settingsVersion <= 4)
+            {
+                // Hardware acceleration 'Auto' (version 5) is the new default. 'Off' was the previous default and was
+                // written to every settings file, so it can't be told apart from a deliberate choice: switch it to
+                // 'Auto', which falls back to the CPU encoder whenever a hardware encode fails.
+                // Explicit CUDA / AMF choices are kept.
+                if (settings.HardwareAccelerationMode == Helpers.HardwareAccelerationMode.Off)
+                {
+                    settings.HardwareAccelerationMode = Helpers.HardwareAccelerationMode.Auto;
+                }
+            }
+
             // Migrate conversion settings.
             if (settings.ConversionPresets != null)
             {

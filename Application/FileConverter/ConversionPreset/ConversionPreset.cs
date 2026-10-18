@@ -465,6 +465,7 @@ namespace FileConverter
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.EnableAudio, "True");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoQuality, "28");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoEncodingSpeed, "Medium");
+                    this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoCodec, nameof(Hardware.VideoCodec.H264));
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoScale, "1");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoRotation, "0");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.AudioBitrate, "128");
@@ -476,6 +477,7 @@ namespace FileConverter
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.EnableAudio, "True");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoQuality, "28");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoEncodingSpeed, "Medium");
+                    this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoCodec, nameof(Hardware.VideoCodec.H264));
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoScale, "1");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.VideoRotation, "0");
                     this.InitializeSettingsValue(ConversionPreset.ConversionSettingKeys.AudioBitrate, "128");
@@ -615,6 +617,7 @@ namespace FileConverter
             public const string VideoScale = "VideoScale";
             public const string VideoRotation = "VideoRotation";
             public const string VideoFramesPerSecond = "VideoFramesPerSecond";
+            public const string VideoCodec = "VideoCodec";
             public const string FFMPEGCustomCommand = "FFMPEGCustomCommand";
 
             public const string EnableAudio = "EnableAudio";

@@ -1533,5 +1533,59 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("ErrorFFMPEGExitCode", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto (best available GPU).
+        /// </summary>
+        public static string HardwareAccelerationModeAutoName {
+            get {
+                return ResourceManager.GetString("HardwareAccelerationModeAutoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codec.
+        /// </summary>
+        public static string VideoCodec {
+            get {
+                return ResourceManager.GetString("VideoCodec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video codec. HEVC and AV1 produce smaller files than H.264 at the same quality, but are not supported by every player. AV1 is only offered when a hardware AV1 encoder is detected..
+        /// </summary>
+        public static string VideoCodecTooltip {
+            get {
+                return ResourceManager.GetString("VideoCodecTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to H.264.
+        /// </summary>
+        public static string VideoCodecH264Name {
+            get {
+                return ResourceManager.GetString("VideoCodecH264Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HEVC (H.265).
+        /// </summary>
+        public static string VideoCodecHevcName {
+            get {
+                return ResourceManager.GetString("VideoCodecHevcName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AV1.
+        /// </summary>
+        public static string VideoCodecAv1Name {
+            get {
+                return ResourceManager.GetString("VideoCodecAv1Name", resourceCulture);
+            }
+        }
     }
 }

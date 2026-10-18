@@ -3,9 +3,13 @@
 namespace FileConverter.ConversionJobs
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
 
+    using CommunityToolkit.Mvvm.DependencyInjection;
+
     using FileConverter.Controls;
+    using FileConverter.Hardware;
 
     public partial class ConversionJob_FFMPEG
     {
@@ -37,7 +41,9 @@ namespace FileConverter.ConversionJobs
             return channelArgs;
         }
 
-        private static string ComputeTransformArgs(ConversionPreset conversionPreset, Helpers.HardwareAccelerationMode hwAccel = Helpers.HardwareAccelerationMode.Off)
+        /// <param name="cudaFrames">True when the frames stay in GPU memory (<c>-hwaccel_output_format cuda</c>):
+        /// only CUDA filters can be used, so rotation is not supported (callers must check <see cref="HasRotation"/>).</param>
+        private static string ComputeTransformArgs(ConversionPreset conversionPreset, bool cudaFrames = false)
         {
             float scaleFactor = conversionPreset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoScale);
             string scaleArgs = string.Empty;
@@ -45,14 +51,13 @@ namespace FileConverter.ConversionJobs
             if (conversionPreset.OutputType == OutputType.Mkv || conversionPreset.OutputType == OutputType.Mp4)
             {
                 // This presets use h264 codec, the size of the video need to be divisible by 2.
-                switch (hwAccel)
+                if (cudaFrames)
                 {
-                    case Helpers.HardwareAccelerationMode.CUDA:
-                        scaleArgs = string.Format("scale_cuda=trunc(iw*{0}/2)*2:trunc(ih*{0}/2)*2:format=yuv420p", scaleFactor.ToString("#.##", CultureInfo.InvariantCulture));
-                        break;
-                    default:
-                        scaleArgs = string.Format("scale=trunc(iw*{0}/2)*2:trunc(ih*{0}/2)*2", scaleFactor.ToString("#.##", CultureInfo.InvariantCulture));
-                        break;
+                    scaleArgs = string.Format("scale_cuda=trunc(iw*{0}/2)*2:trunc(ih*{0}/2)*2:format=yuv420p", scaleFactor.ToString("#.##", CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    scaleArgs = string.Format("scale=trunc(iw*{0}/2)*2:trunc(ih*{0}/2)*2", scaleFactor.ToString("#.##", CultureInfo.InvariantCulture));
                 }
             }
             else if (Math.Abs(scaleFactor - 1f) >= 0.005f)
@@ -104,17 +109,268 @@ namespace FileConverter.ConversionJobs
                 transformArgs += rotationArgs;
             }
 
-            if (hwAccel != Helpers.HardwareAccelerationMode.CUDA && (conversionPreset.OutputType == OutputType.Mkv || conversionPreset.OutputType == OutputType.Mp4))
+            if (!cudaFrames && (conversionPreset.OutputType == OutputType.Mkv || conversionPreset.OutputType == OutputType.Mp4))
             {
-                // For H.264 in MP4/MKV, force yuv420p for broad player compatibility:
+                // For MP4/MKV (H.264, and HEVC/AV1 too), force 8-bit yuv420p for broad player compatibility:
                 // http://trac.ffmpeg.org/wiki/Encode/H.264#Encodingfordumbplayers
-                // - Software encoding and non-CUDA hardware (e.g., AMF) come through this path.
-                // - CUDA is excluded here because the scale_cuda path above already sets format=yuv420p.
+                // - Software encoding and hardware encoders fed from system memory come through this path.
+                // - CUDA frames are excluded here because the scale_cuda path above already sets format=yuv420p.
                 transformArgs += (transformArgs.Length > 0 ? "," : string.Empty) + "format=yuv420p";
                 //// TODO: maybe there should be an option for this on the settings?
             }
 
             return transformArgs;
+        }
+
+        private static bool HasRotation(ConversionPreset conversionPreset)
+        {
+            float rotationAngleInDegrees = conversionPreset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoRotation);
+            return Math.Abs(rotationAngleInDegrees - 0f) >= 0.05f;
+        }
+
+        /// <summary>
+        /// Builds the ordered encode attempts of the Mp4 / Mkv presets: the hardware paths first (when a hardware
+        /// encoder is selected), and always the CPU encoder last, so a failing GPU path never fails the conversion.
+        /// </summary>
+        /// <param name="inputOutputArgs">Formats the final command from (input args, encoder args, -vf args).</param>
+        private List<FFMpegAttempt> BuildVideoEncodeAttempts(VideoCodec codec, int quality, VideoEncodingSpeed speed, Func<string, string, string, string> inputOutputArgs)
+        {
+            List<FFMpegAttempt> attempts = new List<FFMpegAttempt>();
+            string cpuTransformArgs = ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset);
+            string cpuFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", cpuTransformArgs);
+
+            HardwareEncoder encoder = this.ResolveHardwareEncoder(codec);
+            if (encoder != null)
+            {
+                string encoderArgs = this.HardwareEncoderArgs(encoder, quality, speed);
+                switch (encoder.Vendor)
+                {
+                    case HardwareEncoderVendor.Nvenc:
+                        if (!ConversionJob_FFMPEG.HasRotation(this.ConversionPreset))
+                        {
+                            // Full GPU pipeline: NVDEC decode, scale_cuda, NVENC encode. Fails at startup (and falls back) when
+                            // NVDEC can't decode the source (e.g. ProRes) or scale_cuda can't convert its pixel format.
+                            string cudaFilteringArgs = ConversionJob_FFMPEG.Encapsulate("-vf", ConversionJob_FFMPEG.ComputeTransformArgs(this.ConversionPreset, cudaFrames: true));
+                            attempts.Add(new FFMpegAttempt(EncodingPaths.Nvenc, inputOutputArgs("-hwaccel cuda -hwaccel_output_format cuda", encoderArgs, cudaFilteringArgs), usesGpu: true));
+                        }
+
+                        // Frames downloaded to system memory: CPU filters (rotation, pixel format), NVENC encode.
+                        // ffmpeg decodes on the CPU by itself when NVDEC doesn't support the source.
+                        attempts.Add(new FFMpegAttempt(EncodingPaths.NvencCpuFilters, inputOutputArgs("-hwaccel cuda", encoderArgs, cpuFilteringArgs), usesGpu: true));
+                        break;
+
+                    case HardwareEncoderVendor.Amf:
+                    case HardwareEncoderVendor.Qsv:
+                        // Hardware decode on the default adapter, then the same encoder with CPU decode: on multi-GPU machines
+                        // (e.g. NVIDIA dGPU + AMD iGPU) the decoder's device is not the encoder's, and AMF fails to initialize
+                        // ("Failed to create derived AMF device context"). That failure is immediate, so the retry is cheap.
+                        bool isAmf = encoder.Vendor == HardwareEncoderVendor.Amf;
+                        attempts.Add(new FFMpegAttempt(isAmf ? EncodingPaths.Amf : EncodingPaths.Qsv, inputOutputArgs("-hwaccel auto", encoderArgs, cpuFilteringArgs), usesGpu: true));
+                        attempts.Add(new FFMpegAttempt(isAmf ? EncodingPaths.AmfCpuDecode : EncodingPaths.QsvCpuDecode, inputOutputArgs(string.Empty, encoderArgs, cpuFilteringArgs), usesGpu: true));
+                        break;
+                }
+            }
+
+            string cpuPath = attempts.Count > 0 ? EncodingPaths.CpuFallback : EncodingPaths.Cpu;
+            attempts.Add(new FFMpegAttempt(cpuPath, inputOutputArgs(string.Empty, this.CpuVideoEncoderArgs(codec, quality, speed), cpuFilteringArgs), usesGpu: false));
+
+            return attempts;
+        }
+
+        /// <summary>
+        /// Hardware encoder selected by the hardware acceleration setting, or null to encode on the CPU.
+        /// Explicit modes (CUDA / AMF) are used even if detection didn't confirm them: a failure falls back to the CPU.
+        /// </summary>
+        private HardwareEncoder ResolveHardwareEncoder(VideoCodec codec)
+        {
+            switch (this.settingsService.Settings.HardwareAccelerationMode)
+            {
+                case Helpers.HardwareAccelerationMode.Auto:
+                    IHardwareEncoderDetector detector = Ioc.Default.GetService<IHardwareEncoderDetector>();
+                    return detector?.GetPreferredEncoder(codec);
+
+                case Helpers.HardwareAccelerationMode.CUDA:
+                    return HardwareEncoder.Find(HardwareEncoderVendor.Nvenc, codec);
+
+                case Helpers.HardwareAccelerationMode.AMF:
+                    return HardwareEncoder.Find(HardwareEncoderVendor.Amf, codec);
+
+                default:
+                    return null;
+            }
+        }
+
+        // Quality mapping. The preset quality slider is converted to a CPU CRF (H264QualityToCRF: crf = 51 - quality),
+        // then each encoder gets the parameter that gives the same file size as the CPU encode at that CRF.
+        // Calibrated on three 40 s excerpts of Sintel 1080p (real content), CRF 18 / 21 / 24 / 28, ffmpeg 8.0.1,
+        // RTX 5070 Ti (driver 610.88) and Radeon 7950X3D iGPU, video only, -vf format=yuv420p:
+        //
+        //   encoder      parameter             vs CPU reference      size at equal setting   notes
+        //   h264_nvenc   -rc vbr -cq crf+4     libx264 -crf          -5% .. +5%              VMAF 97.2 vs 96.2 (x264) at CRF 21
+        //   hevc_nvenc   -rc vbr -cq crf+5     libx265 -crf          -5% .. +6%
+        //   av1_nvenc    -rc vbr -cq crf+13    x264 / x265 VMAF      (equal VMAF)            CRF 21 -> cq 34: VMAF 96.4, 7.5 MB vs 17.7 MB x264
+        //   h264_amf     -rc cqp -qp crf+4     libx264 -crf          -3% .. +5%              upstream mapping (qp = crf) was +72%
+        //   hevc_amf     -rc cqp -qp crf+4     libx265 -crf          -5% .. -0%
+        //   libx265      -crf crf              libx264 VMAF          (equal VMAF)            CRF 21: VMAF 96.3 vs 96.2 at 54% of the size
+        //   libaom-av1   -crf crf+4            x264 VMAF slope       (estimated)             3x slower than real time at cpu-used 6
+        //   av1_amf, *_qsv                     not calibrated (no AV1-capable AMD / no Intel GPU on the test machine):
+        //                                      same offsets as the calibrated encoders of the same codec.
+        private const int NvencH264CqOffset = 4;
+        private const int NvencHevcCqOffset = 5;
+        private const int Av1CqOffset = 13;
+        private const int AmfQpOffset = 4;
+        private const int QsvQualityOffset = 4;
+        private const int LibaomCrfOffset = 4;
+
+        private static int Clamp(int value, int minimum, int maximum)
+        {
+            return Math.Max(minimum, Math.Min(maximum, value));
+        }
+
+        private string HardwareEncoderArgs(HardwareEncoder encoder, int quality, VideoEncodingSpeed speed)
+        {
+            int crf = this.H264QualityToCRF(quality);
+            switch (encoder.Vendor)
+            {
+                case HardwareEncoderVendor.Nvenc:
+                    {
+                        int cq;
+                        switch (encoder.Codec)
+                        {
+                            case VideoCodec.Hevc:
+                                cq = Clamp(crf + NvencHevcCqOffset, 0, 51);
+                                break;
+                            case VideoCodec.Av1:
+                                cq = Clamp(crf + Av1CqOffset, 0, 63);
+                                break;
+                            default:
+                                cq = Clamp(crf + NvencH264CqOffset, 0, 51);
+                                break;
+                        }
+
+                        return $"-c:v {encoder.FfmpegName} -preset {this.H264EncodingSpeedToNVENCPreset(speed)} -tune hq -rc vbr -cq {cq} -b:v 0";
+                    }
+
+                case HardwareEncoderVendor.Amf:
+                    {
+                        string amfQuality = this.H264EncodingSpeedToAMFQuality(speed);
+                        switch (encoder.Codec)
+                        {
+                            case VideoCodec.Hevc:
+                                {
+                                    int qp = Clamp(crf + AmfQpOffset, 0, 51);
+                                    return $"-c:v {encoder.FfmpegName} -usage transcoding -quality {amfQuality} -rc cqp -qp_i {qp} -qp_p {qp}";
+                                }
+
+                            case VideoCodec.Av1:
+                                {
+                                    // av1_amf quantizers range from 0 to 255 (AV1 q-index): 4x the 0..63 scale.
+                                    int qp = Clamp((crf + Av1CqOffset) * 4, 0, 255);
+                                    return $"-c:v {encoder.FfmpegName} -usage transcoding -quality {amfQuality} -rc cqp -qp_i {qp} -qp_p {qp}";
+                                }
+
+                            default:
+                                {
+                                    int qp = Clamp(crf + AmfQpOffset, 0, 51);
+                                    int bFrameQp = Math.Min(51, qp + 2);
+                                    return $"-c:v {encoder.FfmpegName} -usage transcoding -quality {amfQuality} -rc cqp -qp_i {qp} -qp_p {qp} -qp_b {bFrameQp}";
+                                }
+                        }
+                    }
+
+                case HardwareEncoderVendor.Qsv:
+                    {
+                        // ICQ mode. Not calibrated (no Intel GPU on the test machine); av1_qsv is assumed to use the
+                        // same global_quality scale as h264/hevc_qsv. A failing encode falls back to the CPU anyway.
+                        int globalQuality = Clamp(crf + QsvQualityOffset, 1, 51);
+                        return $"-c:v {encoder.FfmpegName} -preset {this.EncodingSpeedToQSVPreset(speed)} -global_quality {globalQuality}";
+                    }
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(encoder), encoder, "Unknown hardware encoder.");
+        }
+
+        private string CpuVideoEncoderArgs(VideoCodec codec, int quality, VideoEncodingSpeed speed)
+        {
+            int crf = this.H264QualityToCRF(quality);
+            switch (codec)
+            {
+                case VideoCodec.Hevc:
+                    return $"-c:v libx265 -preset {this.H264EncodingSpeedToPreset(speed)} -crf {crf} -x265-params log-level=error";
+
+                case VideoCodec.Av1:
+                    return $"-c:v libaom-av1 -crf {Clamp(crf + LibaomCrfOffset, 0, 63)} -b:v 0 -cpu-used {this.EncodingSpeedToLibaomCpuUsed(speed)} -row-mt 1";
+
+                default:
+                    return $"-c:v libx264 -preset {this.H264EncodingSpeedToPreset(speed)} -crf {crf}";
+            }
+        }
+
+        /// <summary>
+        /// Convert video encoding speed to Intel Quick Sync preset.
+        /// </summary>
+        private string EncodingSpeedToQSVPreset(VideoEncodingSpeed encodingSpeed)
+        {
+            switch (encodingSpeed)
+            {
+                case VideoEncodingSpeed.UltraFast:
+                case VideoEncodingSpeed.SuperFast:
+                case VideoEncodingSpeed.VeryFast:
+                    return "veryfast";
+
+                case VideoEncodingSpeed.Faster:
+                    return "faster";
+
+                case VideoEncodingSpeed.Fast:
+                    return "fast";
+
+                case VideoEncodingSpeed.Medium:
+                    return "medium";
+
+                case VideoEncodingSpeed.Slow:
+                    return "slow";
+
+                case VideoEncodingSpeed.Slower:
+                    return "slower";
+
+                case VideoEncodingSpeed.VerySlow:
+                    return "veryslow";
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(encodingSpeed), encodingSpeed, "Unknown encoding speed.");
+        }
+
+        /// <summary>
+        /// Convert video encoding speed to libaom <c>-cpu-used</c> (0 = slowest, 8 = fastest).
+        /// libaom is very slow: even the "medium" mapping (6) is slower than real time at 1080p.
+        /// </summary>
+        private int EncodingSpeedToLibaomCpuUsed(VideoEncodingSpeed encodingSpeed)
+        {
+            switch (encodingSpeed)
+            {
+                case VideoEncodingSpeed.UltraFast:
+                case VideoEncodingSpeed.SuperFast:
+                    return 8;
+
+                case VideoEncodingSpeed.VeryFast:
+                case VideoEncodingSpeed.Faster:
+                    return 7;
+
+                case VideoEncodingSpeed.Fast:
+                case VideoEncodingSpeed.Medium:
+                    return 6;
+
+                case VideoEncodingSpeed.Slow:
+                    return 5;
+
+                case VideoEncodingSpeed.Slower:
+                    return 4;
+
+                case VideoEncodingSpeed.VerySlow:
+                    return 3;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(encodingSpeed), encodingSpeed, "Unknown encoding speed.");
         }
 
         /// <summary>

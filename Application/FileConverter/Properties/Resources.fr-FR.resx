@@ -586,4 +586,22 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="ErrorFFMPEGExitCode" xml:space="preserve">
     <value>ffmpeg a échoué (code de sortie {0}).</value>
   </data>
+  <data name="HardwareAccelerationModeAutoName" xml:space="preserve">
+    <value>Auto (meilleur GPU disponible)</value>
+  </data>
+  <data name="VideoCodec" xml:space="preserve">
+    <value>Codec</value>
+  </data>
+  <data name="VideoCodecTooltip" xml:space="preserve">
+    <value>Codec vidéo. HEVC et AV1 produisent des fichiers plus petits que H.264 à qualité égale, mais ne sont pas lus par tous les lecteurs. AV1 n'est proposé que si un encodeur AV1 matériel est détecté.</value>
+  </data>
+  <data name="VideoCodecH264Name" xml:space="preserve">
+    <value>H.264</value>
+  </data>
+  <data name="VideoCodecHevcName" xml:space="preserve">
+    <value>HEVC (H.265)</value>
+  </data>
+  <data name="VideoCodecAv1Name" xml:space="preserve">
+    <value>AV1</value>
+  </data>
 </root>

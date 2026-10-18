@@ -317,11 +317,19 @@
 
             <DockPanel Grid.Row="0" Grid.Column="0">
                 <Label Content="{x:Static project:Resources.VideoTitle}" FontWeight="Bold" Margin="17,0,0,0"/>
-                <Label Content="(H.264)" FontWeight="Light" Foreground="{DynamicResource MainDarkBrush}" />
             </DockPanel>
+            <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" MinWidth="120" Margin="0,2,0,2" ToolTip="{x:Static project:Resources.VideoCodecTooltip}"
+                      ItemsSource="{Binding Path=(conversionJobs:ConversionJob_FFMPEG.VideoCodecs), Mode=OneTime}"
+                      SelectedValue="{Binding Settings, ConverterParameter=VideoCodec|FileConverter.Hardware.VideoCodec, Converter={StaticResource ConversionSettingsToEnum}, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <ContentPresenter Content="{Binding Converter={StaticResource ObjectToLocalizedString}, Mode=OneTime}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <Label Grid.Row="1" Grid.Column="0" Content="{x:Static project:Resources.Quality}" ToolTip="{x:Static project:Resources.VideoEncodingQualityTooltip}" HorizontalContentAlignment="Right"/>
-            <Slider x:Name="QualitySlider" Grid.Row="1" Grid.Column="1" 
+            <Slider x:Name="QualitySlider" Grid.Row="1" Grid.Column="1"
                     Value="{Binding Settings, ConverterParameter=VideoQuality|System.Double, Converter={StaticResource ConversionSettingsToValueType}, Mode=TwoWay}"
                     Margin="0,2,0,0" VerticalAlignment="Top" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True" SelectionStart="20" SelectionEnd="33" Minimum="0" Maximum="51" TickPlacement="BottomRight" SmallChange="1" LargeChange="6" TickFrequency="1" Foreground="{DynamicResource MainDarkBrush}" />
 
