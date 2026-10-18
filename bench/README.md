@@ -43,4 +43,4 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
 
 `try-case.ps1` runs a single preset on one or more files with setting overrides and prints the encoding path taken
 (useful for checking fallbacks), e.g.
-`.ench	ry-case.ps1 -Preset "To Mp4" -InputFile bench\samplesideo\prores422_1080p.mov -Settings "HardwareAccelerationMode=AMF"`.
+`.\bench\try-case.ps1 -Preset "To Mp4" -InputFile bench\samples\video\prores422_1080p.mov -Settings "HardwareAccelerationMode=AMF"`.
