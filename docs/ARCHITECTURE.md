@@ -97,7 +97,7 @@ To add **Auto**: append `Auto` to the enum (serialized by name, so this stays ba
 | `ffmpeg/ffmpeg.exe` | **ffmpeg 8.0.1 essentials_build, www.gyan.dev** (99 MB, static). Copied next to the exe by the post-build event. |
 | `gs/gswin64c.exe`, `gs/gsdll64.dll` | Ghostscript, used by Magick.NET for PDF |
 | `Markdown.Xaml.dll`, `Ripper.dll`, `yeti.mmedia.dll` | Help/changelog rendering, CD ripping |
-| **`ffprobe.exe`** | **Not present.** Phase 2 must add it: the same gyan 8.0.1 essentials build, plus a post-build copy line in `FileConverter.csproj` and a `<File>` in `Installer/Product.wxs`. |
+| **`ffprobe.exe`** | **Not present upstream.** Added in the fork: `Middleware/ffmpeg/ffprobe.exe` from the same gyan.dev 8.0.1 essentials build (its `ffmpeg.exe` has the same SHA-256 as the bundled one), plus a post-build copy line in `FileConverter.csproj` and a `<File>` in `Installer/Product.wxs`. |
 
 Magick.NET (Q16-AnyCPU 14.10.2) comes from NuGet (`Magick.Native-Q16-x64.dll`).
 
@@ -139,6 +139,6 @@ The detection method works as designed: exit codes separate available and unavai
 8. **Phase 3 x86:** there is no x86 build in the solution, so drop `NetVips.Native.win-x86`. PLAN's "TIFF compression" output mapping has no TIFF output to apply to (TIFF is input-only).
 9. **Image resize semantics:** ImageMagick uses `image.Scale(percentage)` (box filter), and "maximum size" uses `Scale(w,h)` without keeping the aspect ratio. `Image.Thumbnail` (lanczos3) will give *better* but not bit-identical results, so the SSIM ≥ 0.98 target is reasonable but shouldn't be judged against byte equality.
 10. **The scheduler is a polling loop** that starts at most one job per ~50–70 ms (§4). Phase 4 should replace it, otherwise fast image batches stay scheduler-bound.
-11. **Several default presets are ffmpeg custom commands** that hard-code the encoder: all `Scale 720p/…` and `Scale 1080p/…` presets (`-c:v libx264 -preset medium -crf 21 … -vf scale=1280:720`), and the `Tempo - Pitch/…` presets. Custom commands bypass the whole argument builder, so Phase 1 (GPU encoding) and Phase 2 (remux) won't apply to them as written. Either convert these presets to regular settings (needs a "target height" setting, since `VideoScale` is a factor), or rewrite the encoder inside custom commands (fragile). Users' own custom commands should be left alone.
+11. *(Resolved in the fork: Scale presets now use the `VideoResolution` setting, see `docs/HARDWARE-ENCODING.md`.)* **Several default presets are ffmpeg custom commands** that hard-code the encoder: all `Scale 720p/…` and `Scale 1080p/…` presets (`-c:v libx264 -preset medium -crf 21 … -vf scale=1280:720`), and the `Tempo - Pitch/…` presets. Custom commands bypass the whole argument builder, so Phase 1 (GPU encoding) and Phase 2 (remux) won't apply to them as written. Either convert these presets to regular settings (needs a "target height" setting, since `VideoScale` is a factor), or rewrite the encoder inside custom commands (fragile). Users' own custom commands should be left alone.
 12. **No test project exists.** Phase 6 has to create one (the legacy csproj style makes an SDK-style test project referencing a net48 exe slightly awkward. Consider moving testable logic into a class library).
 13. `Installer.sign` must be stubbed locally to build Release (see `docs/BUILD.md`).

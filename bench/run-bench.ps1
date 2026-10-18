@@ -39,6 +39,8 @@ param(
     # Leave empty to keep Settings.default.xml's values (2 simultaneous conversions, hardware acceleration Off).
     [string]$MaxSimultaneous = '',
     [string]$HardwareAcceleration = '',
+    # Run every case N times and record the median time (image timings vary a lot between runs).
+    [int]$Repeat = 1,
     [switch]$KeepOutputs
 )
 
@@ -149,7 +151,8 @@ $userSettings = Join-Path $userDir 'Settings.user.xml'
 $settingsBackup = "$userSettings.bench-backup"
 $hadUserSettings = Test-Path $userSettings
 
-$commit = (& git -C $here rev-parse --short HEAD 2>$null)
+# Commit of the build under test (the exe may come from another worktree, e.g. a baseline build).
+$commit = (& git -C (Split-Path $Exe) rev-parse --short HEAD 2>$null)
 $gpu = (@(Get-CimInstance Win32_VideoController | ForEach-Object { $_.Name }) -join ' + ')
 $cpu = (Get-CimInstance Win32_Processor | Select-Object -First 1).Name.Trim()
 
@@ -190,91 +193,110 @@ try {
     }
 
     foreach ($c in $cases) {
-        $inputs = @(foreach ($pattern in $c.Inputs) { Get-ChildItem (Join-Path $Samples $pattern) -File -ErrorAction SilentlyContinue }) | Sort-Object FullName -Unique
-        if ($inputs.Count -eq 0) {
-            Write-Warning "[$($c.Name)] no input found ($($c.Inputs -join ', ')): skipped. Run bench\make-corpus.ps1."
-            $rows.Add([pscustomobject]@{ case = $c.Name; preset = $c.Preset; inputs = 0; input_mb = 0; outputs_ok = 0; outputs_expected = 0; output_mb = 0; seconds = ''; status = 'skipped'; notes = 'missing samples' })
-            continue
-        }
-
-        $work = Join-Path $WorkRoot $c.Name
-        if (Test-Path $work) { Remove-Item -Recurse -Force $work }
-        New-Item -ItemType Directory -Force $work | Out-Null
-        $linked = foreach ($f in $inputs) {
-            $dst = Join-Path $work $f.Name
-            try { New-Item -ItemType HardLink -Path $dst -Target $f.FullName | Out-Null } catch { Copy-Item $f.FullName $dst }
-            $dst
-        }
-        $listFile = Join-Path $WorkRoot "$($c.Name).list.txt"
-        [IO.File]::WriteAllLines($listFile, [string[]]$linked)
-        $before = @{}; Get-ChildItem $work -File | ForEach-Object { $before[$_.Name] = $true }
-        $diagBefore = @(Get-ChildItem $userDir -Directory -Filter 'Diagnostics-*' -ErrorAction SilentlyContinue | ForEach-Object FullName)
-
-        Write-Host ("[{0}] {1} input(s), preset '{2}' ..." -f $c.Name, $inputs.Count, $c.Preset) -NoNewline
-        $sw = [Diagnostics.Stopwatch]::StartNew()
-        $proc = Start-Process -FilePath $Exe -ArgumentList @('--conversion-preset', "`"$($c.Preset)`"", '--input-files', "`"$listFile`"") -PassThru
-        $lastCpu = -1.0; $lastBytes = -1L; $lastActivity = 0.0; $status = $null; $childAlive = $false
-        while ($true) {
-            if ($proc.WaitForExit(1000)) { break }   # returns as soon as the app exits: exact wall time
-            $tree = Get-Tree $proc.Id
-            $cpuNow = (($tree | ForEach-Object { [double]$_.KernelModeTime + [double]$_.UserModeTime } | Measure-Object -Sum).Sum) / 1e7
-            $bytes = Get-DirBytes $work
-            $childAlive = @($tree | Where-Object { $_.ProcessId -ne $proc.Id }).Count -gt 0
-            if (($cpuNow - $lastCpu) -gt 0.05 -or $bytes -ne $lastBytes) { $lastActivity = $sw.Elapsed.TotalSeconds }
-            $lastCpu = $cpuNow; $lastBytes = $bytes
-            if (($sw.Elapsed.TotalSeconds - $lastActivity) -gt $StallSeconds) { $status = if ($childAlive) { 'hung' } else { 'failed' }; break }
-            if ($sw.Elapsed.TotalSeconds -gt $TimeoutSeconds) { $status = 'timeout'; break }
-        }
-        $sw.Stop()
-        if ($status) { Stop-Tree $proc.Id; Start-Sleep -Milliseconds 500; $seconds = $lastActivity } else { $seconds = $sw.Elapsed.TotalSeconds }
-
-        # Validate outputs.
-        $outputs = @(Get-ChildItem $work -File | Where-Object { -not $before.ContainsKey($_.Name) })
-        $okCount = 0; $issues = New-Object System.Collections.Generic.List[string]; $infos = @{}
-        $refDuration = $null
-        if ($inputs.Count -eq 1) { $refDuration = (Test-Media $inputs[0].FullName).Duration }
-        foreach ($o in $outputs) {
-            $m = Test-Media $o.FullName
-            if (-not $m.Ok -or $o.Length -eq 0) { $issues.Add("$($o.Name): $($m.Info)"); continue }
-            $infos[$m.Info] = $true
-            if ($refDuration -and $refDuration -gt 2 -and $m.Duration -and [math]::Abs($m.Duration - $refDuration) -gt 1.0) {
-                # Raw streams (ADTS .aac, ...) have no duration header: ffprobe only estimates it. Decode to be sure.
-                $m.Duration = Get-DecodedDuration $o.FullName
+        $runRows = @()
+        for ($run = 1; $run -le $Repeat; $run++) {
+            $inputs = @(foreach ($pattern in $c.Inputs) { Get-ChildItem (Join-Path $Samples $pattern) -File -ErrorAction SilentlyContinue }) | Sort-Object FullName -Unique
+            if ($inputs.Count -eq 0) {
+                Write-Warning "[$($c.Name)] no input found ($($c.Inputs -join ', ')): skipped. Run bench\make-corpus.ps1."
+                $runRows += [pscustomobject]@{ case = $c.Name; preset = $c.Preset; inputs = 0; input_mb = 0; outputs_ok = 0; outputs_expected = 0; output_mb = 0; seconds = ''; status = 'skipped'; notes = 'missing samples' }
+                break
             }
-            if ($refDuration -and $refDuration -gt 2 -and $m.Duration -and [math]::Abs($m.Duration - $refDuration) -gt 1.0) {
-                $issues.Add(('{0}: duration {1:N1}s vs {2:N1}s' -f $o.Name, $m.Duration, $refDuration)); continue
+
+            $work = Join-Path $WorkRoot $c.Name
+            if (Test-Path $work) { Remove-Item -Recurse -Force $work }
+            New-Item -ItemType Directory -Force $work | Out-Null
+            $linked = foreach ($f in $inputs) {
+                $dst = Join-Path $work $f.Name
+                try { New-Item -ItemType HardLink -Path $dst -Target $f.FullName | Out-Null } catch { Copy-Item $f.FullName $dst }
+                $dst
             }
-            $okCount++
-        }
-        if (-not $status) {
-            $status = if ($okCount -eq $inputs.Count -and $outputs.Count -eq $inputs.Count) { 'ok' } elseif ($okCount -gt 0) { 'partial' } else { 'failed' }
-        } elseif ($status -eq 'failed' -and $okCount -eq $inputs.Count) {
-            $status = 'ok'   # Everything converted; the app just did not exit.
+            $listFile = Join-Path $WorkRoot "$($c.Name).list.txt"
+            [IO.File]::WriteAllLines($listFile, [string[]]$linked)
+            $before = @{}; Get-ChildItem $work -File | ForEach-Object { $before[$_.Name] = $true }
+            $diagBefore = @(Get-ChildItem $userDir -Directory -Filter 'Diagnostics-*' -ErrorAction SilentlyContinue | ForEach-Object FullName)
+
+            $runLabel = if ($Repeat -gt 1) { " run $run/$Repeat" } else { '' }
+            Write-Host ("[{0}{3}] {1} input(s), preset '{2}' ..." -f $c.Name, $inputs.Count, $c.Preset, $runLabel) -NoNewline
+            $sw = [Diagnostics.Stopwatch]::StartNew()
+            $proc = Start-Process -FilePath $Exe -ArgumentList @('--conversion-preset', "`"$($c.Preset)`"", '--input-files', "`"$listFile`"") -PassThru
+            $lastCpu = -1.0; $lastBytes = -1L; $lastActivity = 0.0; $status = $null; $childAlive = $false
+            while ($true) {
+                if ($proc.WaitForExit(1000)) { break }   # returns as soon as the app exits: exact wall time
+                $tree = Get-Tree $proc.Id
+                $cpuNow = (($tree | ForEach-Object { [double]$_.KernelModeTime + [double]$_.UserModeTime } | Measure-Object -Sum).Sum) / 1e7
+                $bytes = Get-DirBytes $work
+                $childAlive = @($tree | Where-Object { $_.ProcessId -ne $proc.Id }).Count -gt 0
+                if (($cpuNow - $lastCpu) -gt 0.05 -or $bytes -ne $lastBytes) { $lastActivity = $sw.Elapsed.TotalSeconds }
+                $lastCpu = $cpuNow; $lastBytes = $bytes
+                if (($sw.Elapsed.TotalSeconds - $lastActivity) -gt $StallSeconds) { $status = if ($childAlive) { 'hung' } else { 'failed' }; break }
+                if ($sw.Elapsed.TotalSeconds -gt $TimeoutSeconds) { $status = 'timeout'; break }
+            }
+            $sw.Stop()
+            if ($status) { Stop-Tree $proc.Id; Start-Sleep -Milliseconds 500; $seconds = $lastActivity } else { $seconds = $sw.Elapsed.TotalSeconds }
+
+            # Validate outputs.
+            $outputs = @(Get-ChildItem $work -File | Where-Object { -not $before.ContainsKey($_.Name) })
+            $okCount = 0; $issues = New-Object System.Collections.Generic.List[string]; $infos = @{}
+            $refDuration = $null
+            if ($inputs.Count -eq 1) { $refDuration = (Test-Media $inputs[0].FullName).Duration }
+            foreach ($o in $outputs) {
+                $m = Test-Media $o.FullName
+                if (-not $m.Ok -or $o.Length -eq 0) { $issues.Add("$($o.Name): $($m.Info)"); continue }
+                $infos[$m.Info] = $true
+                if ($refDuration -and $refDuration -gt 2 -and $m.Duration -and [math]::Abs($m.Duration - $refDuration) -gt 1.0) {
+                    # Raw streams (ADTS .aac, ...) have no duration header: ffprobe only estimates it. Decode to be sure.
+                    $m.Duration = Get-DecodedDuration $o.FullName
+                }
+                if ($refDuration -and $refDuration -gt 2 -and $m.Duration -and [math]::Abs($m.Duration - $refDuration) -gt 1.0) {
+                    $issues.Add(('{0}: duration {1:N1}s vs {2:N1}s' -f $o.Name, $m.Duration, $refDuration)); continue
+                }
+                $okCount++
+            }
+            if (-not $status) {
+                $status = if ($okCount -eq $inputs.Count -and $outputs.Count -eq $inputs.Count) { 'ok' } elseif ($okCount -gt 0) { 'partial' } else { 'failed' }
+            } elseif ($status -eq 'failed' -and $okCount -eq $inputs.Count) {
+                $status = 'ok'   # Everything converted; the app just did not exit.
+            }
+
+            # Failure reasons from the app's diagnostics logs.
+            $newDiag = @(Get-ChildItem $userDir -Directory -Filter 'Diagnostics-*' -ErrorAction SilentlyContinue | Where-Object { $diagBefore -notcontains $_.FullName })
+            $fails = @($newDiag | ForEach-Object { Get-ChildItem $_.FullName -Filter *.log } | Select-String -Pattern '^Fail: (.+)$' | ForEach-Object { $_.Matches[0].Groups[1].Value.Trim() } | Select-Object -Unique -First 2)
+            $notes = @()
+            if ($infos.Count) { $notes += ($infos.Keys | Sort-Object) -join ' / ' }
+            if ($status -eq 'hung') { $notes += 'ffmpeg blocked, no progress for {0}s' -f $StallSeconds }
+            if ($fails.Count) { $notes += 'app: ' + ($fails -join ' | ') }
+            if ($issues.Count) { $notes += ($issues | Select-Object -First 2) }
+
+            $row = [pscustomobject]@{
+                case = $c.Name; preset = $c.Preset; inputs = $inputs.Count
+                input_mb = [math]::Round((($inputs | Measure-Object Length -Sum).Sum) / 1MB, 1)
+                outputs_ok = $okCount; outputs_expected = $inputs.Count
+                output_mb = [math]::Round((($outputs | Measure-Object Length -Sum).Sum) / 1MB, 1)
+                seconds = [math]::Round($seconds, 2); status = $status; notes = ($notes -join '; ')
+            }
+            $runRows += $row
+            Write-Host (' {0} in {1:N1}s ({2}/{3} ok, {4} MB)' -f $status, $seconds, $okCount, $inputs.Count, $row.output_mb)
+            if ($row.notes) { Write-Host "    $($row.notes)" }
+
+            if (-not $KeepOutputs) { Remove-Item -Recurse -Force $work; Remove-Item -Force $listFile }
+            # Diagnostics folders are named by h/m/s: wait so the next run gets its own folder.
+            Start-Sleep -Milliseconds 1100
         }
 
-        # Failure reasons from the app's diagnostics logs.
-        $newDiag = @(Get-ChildItem $userDir -Directory -Filter 'Diagnostics-*' -ErrorAction SilentlyContinue | Where-Object { $diagBefore -notcontains $_.FullName })
-        $fails = @($newDiag | ForEach-Object { Get-ChildItem $_.FullName -Filter *.log } | Select-String -Pattern '^Fail: (.+)$' | ForEach-Object { $_.Matches[0].Groups[1].Value.Trim() } | Select-Object -Unique -First 2)
-        $notes = @()
-        if ($infos.Count) { $notes += ($infos.Keys | Sort-Object) -join ' / ' }
-        if ($status -eq 'hung') { $notes += 'ffmpeg blocked, no progress for {0}s' -f $StallSeconds }
-        if ($fails.Count) { $notes += 'app: ' + ($fails -join ' | ') }
-        if ($issues.Count) { $notes += ($issues | Select-Object -First 2) }
-
-        $row = [pscustomobject]@{
-            case = $c.Name; preset = $c.Preset; inputs = $inputs.Count
-            input_mb = [math]::Round((($inputs | Measure-Object Length -Sum).Sum) / 1MB, 1)
-            outputs_ok = $okCount; outputs_expected = $inputs.Count
-            output_mb = [math]::Round((($outputs | Measure-Object Length -Sum).Sum) / 1MB, 1)
-            seconds = [math]::Round($seconds, 2); status = $status; notes = ($notes -join '; ')
+        # One CSV row per case: median time over the runs; any non-ok run makes the case non-ok.
+        if ($runRows.Count -le 1) {
+            $rows.Add($runRows[0])
+        } else {
+            $times = @($runRows | ForEach-Object { [double]$_.seconds } | Sort-Object)
+            $median = if ($times.Count % 2) { $times[[int][math]::Floor($times.Count / 2)] } else { ($times[$times.Count / 2 - 1] + $times[$times.Count / 2]) / 2 }
+            $worst = @($runRows | Where-Object { $_.status -ne 'ok' } | Select-Object -First 1)
+            $agg = if ($worst.Count) { $worst[0].PSObject.Copy() } else { $runRows[0].PSObject.Copy() }
+            $agg.seconds = [math]::Round($median, 2)
+            $runsNote = 'runs: ' + (($runRows | ForEach-Object { '{0:N1}' -f [double]$_.seconds }) -join ' / ') + ' s (median)'
+            $agg.notes = (@($agg.notes, $runsNote) | Where-Object { $_ }) -join '; '
+            $rows.Add($agg)
+            Write-Host ("  [{0}] median {1:N1}s" -f $c.Name, $median)
         }
-        $rows.Add($row)
-        Write-Host (' {0} in {1:N1}s ({2}/{3} ok, {4} MB)' -f $status, $seconds, $okCount, $inputs.Count, $row.output_mb)
-        if ($row.notes) { Write-Host "    $($row.notes)" }
-
-        if (-not $KeepOutputs) { Remove-Item -Recurse -Force $work; Remove-Item -Force $listFile }
-        # Diagnostics folders are named by h/m/s: wait so the next run gets its own folder.
-        Start-Sleep -Milliseconds 1100
     }
 }
 finally {

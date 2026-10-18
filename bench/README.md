@@ -36,10 +36,11 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
   run (3/3): this is the stdout `-progress pipe:1` deadlock described in `docs/ARCHITECTURE.md` §2.
   `video_h264_1080p_to_mp4` (about 10 s of encoding, right at the threshold) hung in 1 of 4 runs. Any longer video job hangs.
   The Sintel, ProRes and 4:2:2 cases were added after this run.
-- Image batch timings vary between runs. `img_jpg200_scale25_webp` measured 56.9, **39.4** (baseline.csv), 55.9, 58.0 and
-  55.8 s with the same image code, so the baseline.csv value is an outlier. Re-measure the image cases over several runs
-  before comparing Phase 3 against them.
+- Image batch timings vary between single runs (`img_jpg200_scale25_webp` once measured 39.4 s instead of ~56 s).
+  The image rows of `baseline.csv` were therefore re-measured on the baseline build (e3364fc, separate worktree) with
+  `-Repeat 3`, and record the median (e.g. 56.1 / 54.5 / 55.8 s → 55.8 s). Use `-Repeat 3` for image comparisons.
 - **`phase1.csv`**: Phase 1 (GPU encoding, Auto mode). See `docs/HARDWARE-ENCODING.md` for the comparison.
+- **`phase1-fixes.csv`**: cases changed by the post-Phase-1 fixes (Scale presets now regular presets on the GPU).
 
 `try-case.ps1` runs a single preset on one or more files with setting overrides and prints the encoding path taken
 (useful for checking fallbacks), e.g.

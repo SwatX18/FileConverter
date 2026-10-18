@@ -1,0 +1,2 @@
+﻿"timestamp","label","commit","max_simultaneous","hw_accel","case","preset","inputs","input_mb","outputs_ok","outputs_expected","output_mb","seconds","status","notes"
+"2026-10-18T19:05:16","phase1-fixes","4459752","2","default(v5)","video_1080p_scale720_mp4","Scale 720p/To Mp4","1","205.3","1","1","29.8","2.7","ok","video:h264+audio:aac; runs: 2.7 / 2.7 / 2.7 s (median)"

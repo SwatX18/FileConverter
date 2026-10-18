@@ -41,8 +41,25 @@ Why two hardware attempts:
 GPU attempts hold a `GpuSessionLimiter` slot. With 6 simultaneous conversions allowed and 2 GPU sessions, at most 2 ffmpeg
 processes ran at once (checked with `bench/try-case.ps1 -WatchProcesses`).
 
-Output is always 8-bit 4:2:0 (`format=yuv420p`), as before, including HEVC/AV1 and 10-bit sources. Preserving 10-bit needs the
-source pixel format, i.e. ffprobe (Phase 2).
+### Pixel format and 10-bit
+
+H.264 output is always 8-bit 4:2:0 (`yuv420p`), as before: 10-bit H.264 barely plays anywhere. For **HEVC and AV1**, the source
+is probed with ffprobe (`Media/MediaProbe`), and a 10-bit source is encoded as 10-bit 4:2:0: `p010le` for NVENC/AMF/QSV
+and `scale_cuda`, `yuv420p10le` for libx265/libaom. HDR color metadata is preserved (checked with a BT.2020/HLG source on
+HEVC NVENC, AV1 NVENC and libx265). An 8-bit source stays 8-bit, and so does everything when ffprobe is missing.
+
+### Target resolution
+
+Video presets (Avi, Mkv, Mp4, Ogv, Webm) have a `VideoResolution` setting: 0 uses the scale factor, otherwise the
+**shorter side** is resized to that size, keeping the aspect ratio (`scale=w='if(gte(iw,ih),-2,720)':h='if(gte(iw,ih),720,-2)'`,
+or `scale_cuda` on the GPU path). The default "Scale 720p/1080p" presets use it now. They used to be ffmpeg custom commands
+(`scale=1280:720`), which bypassed GPU encoding and stretched non-16:9 videos:
+
+| Source | Old "Scale 720p" | Now |
+|---|---|---|
+| 1920×1080 | 1280×720 | 1280×720 (`nvenc`) |
+| Sintel 1920×818 (2.35:1) | 1280×720, stretched | 1690×720 |
+| Portrait 1080×1920 | 1280×720, distorted | 720×1280 |
 
 ### Verified paths (`bench/try-case.ps1`, test machine)
 
@@ -100,7 +117,7 @@ Default settings (Auto, 2 simultaneous conversions), wall time including about 0
 | iPhone HEVC 10-bit 4K → MP4 | 8.9 s | 5.0 s | 1.8× | +13 % |
 | ProRes 422 → MP4 (fallback `nvenc-cpu-filters`) | 3.9 s | 2.4 s | 1.6× | −26 % |
 | H.264 4:2:2 10-bit → MP4 (fallback `nvenc-cpu-filters`) | 5.8 s | 3.2 s | 1.8× | −27 % |
-| Scale 720p → MP4 (custom-command preset) | 5.4 s | 5.4 s | 1.0× | unchanged: custom commands are not touched |
+| Scale 720p → MP4 | 5.4 s | **2.7 s** | 2.0× | regular preset since the target-resolution change (`bench/phase1-fixes.csv`, median of 3); `phase1.csv` still shows the old custom-command preset (5.4 s, CPU) |
 
 All 25 cases pass. Audio and image cases are unchanged by Phase 1.
 
