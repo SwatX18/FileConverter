@@ -99,7 +99,8 @@ namespace FileConverter.Media
                     (int?)ParseLong(stream.SampleRate),
                     stream.Channels,
                     stream.Tags != null && stream.Tags.TryGetValue("language", out string language) ? language : null,
-                    stream.Disposition != null && stream.Disposition.TryGetValue("attached_pic", out int attachedPicture) && attachedPicture == 1))
+                    stream.Disposition != null && stream.Disposition.TryGetValue("attached_pic", out int attachedPicture) && attachedPicture == 1,
+                    ParseStreamDuration(stream)))
                 .ToList();
 
             ProbeFormat format = output.Format ?? new ProbeFormat();
@@ -107,6 +108,34 @@ namespace FileConverter.Media
             TimeSpan? duration = durationSeconds.HasValue ? TimeSpan.FromSeconds(durationSeconds.Value) : (TimeSpan?)null;
 
             return new MediaInfo(format.FormatName, duration, ParseLong(format.BitRate), streams);
+        }
+
+        /// <summary>
+        /// Stream duration in seconds, or (Matroska) the <c>DURATION</c> tag written by ffmpeg and mkvmerge (<c>00:00:59.424000000</c>).
+        /// </summary>
+        private static TimeSpan? ParseStreamDuration(ProbeStream stream)
+        {
+            double? seconds = ParseDouble(stream.Duration);
+            if (seconds.HasValue)
+            {
+                return TimeSpan.FromSeconds(seconds.Value);
+            }
+
+            if (stream.Tags != null && stream.Tags.TryGetValue("DURATION", out string tag))
+            {
+                string[] parts = tag.Split(':');
+                if (parts.Length == 3 && int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int hours) &&
+                    int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int minutes))
+                {
+                    double? tagSeconds = ParseDouble(parts[2]);
+                    if (tagSeconds.HasValue)
+                    {
+                        return TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes) + TimeSpan.FromSeconds(tagSeconds.Value);
+                    }
+                }
+            }
+
+            return null;
         }
 
         private static long? ParseLong(string value)
@@ -162,6 +191,9 @@ namespace FileConverter.Media
 
             [DataMember(Name = "channels")]
             public int? Channels { get; set; }
+
+            [DataMember(Name = "duration")]
+            public string Duration { get; set; }
 
             [DataMember(Name = "tags")]
             public Dictionary<string, string> Tags { get; set; }

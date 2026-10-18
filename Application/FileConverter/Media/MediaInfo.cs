@@ -45,7 +45,7 @@ namespace FileConverter.Media
     {
         private static readonly Regex BitDepthRegex = new Regex(@"(?:p|gray)0?(\d{1,2})(?:le|be)?$", RegexOptions.Compiled);
 
-        public MediaStream(int index, string codecType, string codecName, string profile, string pixelFormat, int? width, int? height, long? bitRate, int? sampleRate, int? channels, string language, bool isAttachedPicture)
+        public MediaStream(int index, string codecType, string codecName, string profile, string pixelFormat, int? width, int? height, long? bitRate, int? sampleRate, int? channels, string language, bool isAttachedPicture, TimeSpan? duration = null)
         {
             this.Index = index;
             this.CodecType = codecType ?? string.Empty;
@@ -59,6 +59,7 @@ namespace FileConverter.Media
             this.Channels = channels;
             this.Language = language ?? string.Empty;
             this.IsAttachedPicture = isAttachedPicture;
+            this.Duration = duration;
         }
 
         public int Index { get; }
@@ -87,6 +88,11 @@ namespace FileConverter.Media
         public string Language { get; }
 
         public bool IsAttachedPicture { get; }
+
+        /// <summary>
+        /// Gets the stream duration, when the container stores one (null otherwise, e.g. Matroska files without tags).
+        /// </summary>
+        public TimeSpan? Duration { get; }
 
         public bool IsVideo => this.CodecType == "video";
 
