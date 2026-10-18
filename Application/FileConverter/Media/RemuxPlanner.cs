@@ -73,22 +73,9 @@ namespace FileConverter.Media
         /// <returns>The streams to write and how, or null if the conversion must be a full re-encode.</returns>
         public RemuxPlan Plan(ConversionPreset preset, string inputFilePath, MediaInfo source, out string reason)
         {
-            if (preset == null)
+            reason = this.GetBlockerBeforeProbe(preset, inputFilePath);
+            if (reason != null)
             {
-                throw new ArgumentNullException(nameof(preset));
-            }
-
-            OutputType outputType = preset.OutputType;
-            if (!this.compatibility.SupportsRemux(outputType))
-            {
-                reason = $"{outputType} outputs are not remuxed";
-                return null;
-            }
-
-            string extension = Path.GetExtension(inputFilePath ?? string.Empty).TrimStart('.');
-            if (!this.compatibility.IsRemuxSource(extension))
-            {
-                reason = $".{extension.ToLowerInvariant()} files are not remuxed";
                 return null;
             }
 
@@ -98,18 +85,75 @@ namespace FileConverter.Media
                 return null;
             }
 
-            if (OutputTypeByExtension.TryGetValue(extension, out OutputType sameFormat) && sameFormat == outputType)
+            OutputType outputType = preset.OutputType;
+            return RemuxPlanner.IsVideoOutput(outputType) ?
+                this.PlanVideoOutput(preset, GetDefaults(outputType), source, out reason) :
+                this.PlanAudioOutput(preset, source, out reason);
+        }
+
+        /// <summary>
+        /// Checks what can be decided without probing the input (output type, input extension, preset settings), so
+        /// that jobs which can't be remuxed don't pay an ffprobe launch (~0.3 s).
+        /// </summary>
+        /// <returns>Why the file can't be remuxed, or null if the input must be probed to decide.</returns>
+        public string GetBlockerBeforeProbe(ConversionPreset preset, string inputFilePath)
+        {
+            if (preset == null)
             {
-                reason = $"a .{extension.ToLowerInvariant()} file converted to {outputType} is re-encoded";
-                return null;
+                throw new ArgumentNullException(nameof(preset));
             }
 
-            // Let the defaults of a new preset tell what "no lower quality than default" means for this output type.
-            ConversionPreset defaults = new ConversionPreset(string.Empty, outputType);
+            OutputType outputType = preset.OutputType;
+            if (!this.compatibility.SupportsRemux(outputType))
+            {
+                return $"{outputType} outputs are not remuxed";
+            }
 
-            return RemuxPlanner.IsVideoOutput(outputType) ?
-                this.PlanVideoOutput(preset, defaults, source, out reason) :
-                this.PlanAudioOutput(preset, source, out reason);
+            string extension = Path.GetExtension(inputFilePath ?? string.Empty).TrimStart('.');
+            if (!this.compatibility.IsRemuxSource(extension))
+            {
+                return $".{extension.ToLowerInvariant()} files are not remuxed";
+            }
+
+            if (OutputTypeByExtension.TryGetValue(extension, out OutputType sameFormat) && sameFormat == outputType)
+            {
+                return $"a .{extension.ToLowerInvariant()} file converted to {outputType} is re-encoded";
+            }
+
+            return RemuxPlanner.IsVideoOutput(outputType) ? GetVideoPresetBlocker(preset, GetDefaults(outputType)) : null;
+        }
+
+        /// <summary>
+        /// Gets a new preset of the output type: its settings tell what "no lower quality than default" means.
+        /// </summary>
+        private static ConversionPreset GetDefaults(OutputType outputType)
+        {
+            return new ConversionPreset(string.Empty, outputType);
+        }
+
+        /// <returns>Why the preset settings alone prevent copying the video (resize, rotation, lower quality), or null.</returns>
+        private static string GetVideoPresetBlocker(ConversionPreset preset, ConversionPreset defaults)
+        {
+            float scale = preset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoScale);
+            if (Math.Abs(scale - 1f) >= 0.005f)
+            {
+                return "the preset resizes the video";
+            }
+
+            float rotation = preset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoRotation);
+            if (Math.Abs(rotation) >= 0.05f)
+            {
+                return "the preset rotates the video";
+            }
+
+            int quality = preset.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.VideoQuality);
+            int defaultQuality = defaults.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.VideoQuality);
+            if (quality < defaultQuality)
+            {
+                return $"the preset asks for a lower quality than the default ({quality} < {defaultQuality})";
+            }
+
+            return null;
         }
 
         private RemuxPlan PlanVideoOutput(ConversionPreset preset, ConversionPreset defaults, MediaInfo source, out string reason)
@@ -122,7 +166,7 @@ namespace FileConverter.Media
                 return null;
             }
 
-            reason = this.GetVideoCopyBlocker(preset, defaults, video);
+            reason = GetVideoPresetBlocker(preset, defaults) ?? this.GetVideoCopyBlocker(preset, video);
             if (reason != null)
             {
                 return null;
@@ -223,8 +267,8 @@ namespace FileConverter.Media
             return new RemuxPlan(decisions);
         }
 
-        /// <returns>Why the video stream can't be copied, or null if it can.</returns>
-        private string GetVideoCopyBlocker(ConversionPreset preset, ConversionPreset defaults, MediaStream video)
+        /// <returns>Why the video stream can't be copied (codec, target resolution), or null if it can.</returns>
+        private string GetVideoCopyBlocker(ConversionPreset preset, MediaStream video)
         {
             OutputType outputType = preset.OutputType;
             if (!this.compatibility.CanCopyVideo(outputType, video.CodecName))
@@ -247,12 +291,6 @@ namespace FileConverter.Media
                 }
             }
 
-            float scale = preset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoScale);
-            if (Math.Abs(scale - 1f) >= 0.005f)
-            {
-                return "the preset resizes the video";
-            }
-
             int resolution = preset.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.VideoResolution);
             if (resolution > 0)
             {
@@ -261,19 +299,6 @@ namespace FileConverter.Media
                 {
                     return $"the preset resizes the video to {resolution}p";
                 }
-            }
-
-            float rotation = preset.GetSettingsValue<float>(ConversionPreset.ConversionSettingKeys.VideoRotation);
-            if (Math.Abs(rotation) >= 0.05f)
-            {
-                return "the preset rotates the video";
-            }
-
-            int quality = preset.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.VideoQuality);
-            int defaultQuality = defaults.GetSettingsValue<int>(ConversionPreset.ConversionSettingKeys.VideoQuality);
-            if (quality < defaultQuality)
-            {
-                return $"the preset asks for a lower quality than the default ({quality} < {defaultQuality})";
             }
 
             return null;

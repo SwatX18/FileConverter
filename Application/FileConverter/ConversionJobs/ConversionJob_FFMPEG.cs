@@ -479,16 +479,17 @@ namespace FileConverter.ConversionJobs
                 return;
             }
 
-            // Don't pay an ffprobe launch (~0.3 s) for files that can't be remuxed anyway.
-            string extension = Path.GetExtension(this.InputFilePath);
-            if (!RemuxCompatibility.Default.IsRemuxSource(extension))
+            // Don't pay an ffprobe launch (~0.3 s) for jobs that can't be remuxed anyway.
+            RemuxPlanner planner = RemuxPlanner.Default;
+            string blocker = planner.GetBlockerBeforeProbe(this.ConversionPreset, this.InputFilePath);
+            if (blocker != null)
             {
-                Diagnostics.Debug.Log($"Remux: no, {extension.ToLowerInvariant()} files are not remuxed.");
+                Diagnostics.Debug.Log($"Remux: no, {blocker}.");
                 return;
             }
 
             MediaInfo source = this.GetSourceInfo();
-            RemuxPlan plan = RemuxPlanner.Default.Plan(this.ConversionPreset, this.InputFilePath, source, out string reason);
+            RemuxPlan plan = planner.Plan(this.ConversionPreset, this.InputFilePath, source, out string reason);
             if (plan == null)
             {
                 Diagnostics.Debug.Log($"Remux: no, {reason}.");
