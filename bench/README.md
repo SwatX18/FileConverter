@@ -26,10 +26,15 @@ Sample sources: synthesized with the bundled ffmpeg (videos, audio, JPEG/PNG/Web
 [raw.pixls.us](https://raw.pixls.us) (CC0); HEIC from [nokiatech/heif](https://github.com/nokiatech/heif) sample
 content (downloaded locally for benchmarking only, not redistributed).
 
-## Baseline notes (`baseline.csv`, 2026-10-18)
+## Baseline notes (2026-10-18)
 
-- Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Settings defaults: 2 simultaneous conversions, hardware acceleration Off.
-- The app code is the unmodified upstream `integration` (6c157a4). The `commit` column (43bc267) differs only by docs and bench files.
-- `video_h264_4k_to_mp4` **hangs** on every run (3/3): this is the stdout `-progress pipe:1` deadlock described in
-  `docs/ARCHITECTURE.md` §2. `video_h264_1080p_to_mp4` (about 10 s of encoding, right at the threshold) hung in 1 of 4 runs.
-  Any longer video job hangs.
+Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 simultaneous conversions, hardware acceleration Off.
+
+- **`baseline.csv`** is the reference for speedups. It is upstream `integration` plus the ffmpeg stdout-deadlock fix
+  (commit e3364fc), with no performance changes. Every case passes.
+- **`baseline-v2.2-unfixed.csv`** is the untouched upstream build (6c157a4). `video_h264_4k_to_mp4` **hangs** on every
+  run (3/3): this is the stdout `-progress pipe:1` deadlock described in `docs/ARCHITECTURE.md` §2.
+  `video_h264_1080p_to_mp4` (about 10 s of encoding, right at the threshold) hung in 1 of 4 runs. Any longer video job hangs.
+  The Sintel, ProRes and 4:2:2 cases were added after this run.
+- Image batch timings vary between runs (`img_jpg200_scale25_webp`: 56.9 s, then 39.4 s, with the same image code),
+  most likely because of cold or warm disk cache. Compare image cases over several runs.

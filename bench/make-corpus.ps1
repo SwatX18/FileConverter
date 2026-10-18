@@ -113,6 +113,17 @@ Invoke-FFmpeg "$video\iphone_hevc10.mov" @(
     '-metadata', 'creation_time=2026-06-01T12:00:00Z', '-metadata', 'com.apple.quicktime.make=Apple',
     '-metadata', 'com.apple.quicktime.model=iPhone 15 Pro', '-movflags', '+use_metadata_tags', '-shortest', "$video\iphone_hevc10.mov")
 
+# 4:2:2 / 10-bit sources (PLAN 1.3): ProRes 422 (no NVDEC support -> exercises the decode fallback)
+# and H.264 High 4:2:2 10-bit.
+Invoke-FFmpeg "$video\prores422_1080p.mov" @(
+    '-f', 'lavfi', '-i', (VideoSrc '1920x1080' 20 25),
+    '-f', 'lavfi', '-i', (AudioSrc 20),
+    '-c:v', 'prores_ks', '-profile:v', '2', '-pix_fmt', 'yuv422p10le', '-c:a', 'pcm_s16le', '-shortest', "$video\prores422_1080p.mov")
+Invoke-FFmpeg "$video\h264_422_10bit.mkv" @(
+    '-f', 'lavfi', '-i', (VideoSrc '1920x1080' 30),
+    '-f', 'lavfi', '-i', (AudioSrc 30),
+    '-c:v', 'libx264', '-preset', 'fast', '-crf', '20', '-pix_fmt', 'yuv422p10le', '-c:a', 'aac', '-b:a', '160k', '-shortest', "$video\h264_422_10bit.mkv")
+
 # ---------------------------------------------------------------- audio
 $audio = Join-Path $OutDir 'audio'
 New-Item -ItemType Directory -Force $audio | Out-Null
@@ -165,6 +176,11 @@ if (-not $SkipDownloads) {
         'iphone12pro.DNG'  = 'Apple/iPhone%2012%20Pro/IMG_1361.DNG'
     }
     foreach ($name in $raws.Keys) { Get-Sample "$rawBase/$($raws[$name])" (Join-Path $raw $name) }
+
+    # Real-world long video: Sintel (Blender Foundation, CC-BY 3.0), 14:48 1080p H.264 + AC3 + 10 SRT subtitle tracks, 1.1 GB.
+    # Synthetic clips are fine for timing, but encoder quality/size calibration needs real content.
+    Write-Host 'Real video (Sintel, CC-BY, 1.1 GB)'
+    Get-Sample 'https://download.blender.org/demo/movies/Sintel.2010.1080p.mkv' (Join-Path $video 'sintel_1080p.mkv')
 }
 
 $total = (Get-ChildItem $OutDir -Recurse -File | Measure-Object Length -Sum).Sum

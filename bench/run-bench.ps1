@@ -66,6 +66,10 @@ $cases = @(
     @{ Name = 'video_hevc_mkv_to_mp4';       Preset = 'To Mp4';             Inputs = 'video\hevc_1080p.mkv' }
     @{ Name = 'video_mkv_flac_subs_to_mp4';  Preset = 'To Mp4';             Inputs = 'video\h264_flac_subs.mkv' }
     @{ Name = 'video_iphone_mov_to_mp4';     Preset = 'To Mp4';             Inputs = 'video\iphone_hevc10.mov' }
+    @{ Name = 'video_sintel_mkv_to_mp4';     Preset = 'To Mp4';             Inputs = 'video\sintel_1080p.mkv' }
+    @{ Name = 'video_sintel_mkv_to_mkv';     Preset = 'To Mkv';             Inputs = 'video\sintel_1080p.mkv' }
+    @{ Name = 'video_prores422_to_mp4';      Preset = 'To Mp4';             Inputs = 'video\prores422_1080p.mov' }
+    @{ Name = 'video_h264_422_10bit_to_mp4'; Preset = 'To Mp4';             Inputs = 'video\h264_422_10bit.mkv' }
     @{ Name = 'video_1080p_scale720_mp4';    Preset = 'Scale 720p/To Mp4';  Inputs = 'video\h264_1080p.mp4' }
     @{ Name = 'video_extract_mp3';           Preset = 'To Mp3';             Inputs = 'video\h264_1080p.mp4' }
     @{ Name = 'video_iphone_mov_to_aac';     Preset = 'To Aac';             Inputs = 'video\iphone_hevc10.mov' }
