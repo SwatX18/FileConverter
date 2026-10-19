@@ -19,6 +19,9 @@ using System.Windows;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
+// Unit tests (Tests/FileConverter.Tests) check internal mappings such as the hardware encoder arguments.
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("FileConverter.Tests")]
+
 // In order to begin building localizable applications, set 
 // <UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file
 // inside a <PropertyGroup>.  For example, if you are using US english

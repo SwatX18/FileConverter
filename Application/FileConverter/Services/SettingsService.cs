@@ -80,7 +80,7 @@ namespace FileConverter.Services
                 {
                     if (userSettings.SerializationVersion != Settings.Version)
                     {
-                        this.MigrateSettingsToCurrentVersion(userSettings);
+                        SettingsService.MigrateSettingsToCurrentVersion(userSettings);
 
                         Debug.Log($"File converter settings have been imported from version {userSettings.SerializationVersion} to version {Settings.Version}.");
                         userSettings.SerializationVersion = Settings.Version;
@@ -152,7 +152,7 @@ namespace FileConverter.Services
 
                 if (userSettings != null && userSettings.SerializationVersion != Settings.Version)
                 {
-                    this.MigrateSettingsToCurrentVersion(userSettings);
+                    SettingsService.MigrateSettingsToCurrentVersion(userSettings);
 
                     Debug.Log($"File converter settings has been imported from version {userSettings.SerializationVersion} to version {Settings.Version}.");
                     userSettings.SerializationVersion = Settings.Version;

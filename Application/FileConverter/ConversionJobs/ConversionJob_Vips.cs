@@ -82,7 +82,8 @@ namespace FileConverter.ConversionJobs
             base.Convert();
         }
 
-        private string GetBlocker()
+        /// <returns>Why ImageMagick converts this file instead of libvips, known before opening it, or null.</returns>
+        internal string GetBlocker()
         {
             Settings settings = this.settingsService?.Settings;
             if (settings != null && settings.ImageEngine == Helpers.ImageEngine.ImageMagick)
@@ -206,7 +207,7 @@ namespace FileConverter.ConversionJobs
         /// Same size computation as <see cref="ConversionJob_ImageMagick"/>: scale factor, then (after rotation, which
         /// doesn't change the result) the power-of-2 clamp and the maximum size, each keeping the aspect ratio.
         /// </summary>
-        private void ComputeOutputSize(int width, int height, out int outputWidth, out int outputHeight)
+        internal void ComputeOutputSize(int width, int height, out int outputWidth, out int outputHeight)
         {
             double w = width;
             double h = height;
@@ -265,7 +266,7 @@ namespace FileConverter.ConversionJobs
         }
 
         /// <returns>The number of clockwise quarter turns (0 to 3), or -1 if the angle is not a multiple of 90°.</returns>
-        private static int GetQuarterTurns(float rotationInDegrees)
+        internal static int GetQuarterTurns(float rotationInDegrees)
         {
             double turns = rotationInDegrees / 90.0;
             double rounded = Math.Round(turns);

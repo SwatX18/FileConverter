@@ -7,7 +7,7 @@ namespace FileConverter.Services
 
     public partial class SettingsService
     {
-        private void MigrateSettingsToCurrentVersion(Settings settings)
+        internal static void MigrateSettingsToCurrentVersion(Settings settings)
         {
             int settingsVersion = settings.SerializationVersion;
 
@@ -39,12 +39,12 @@ namespace FileConverter.Services
             {
                 foreach (ConversionPreset conversionPreset in settings.ConversionPresets)
                 {
-                    this.MigrateConversionPresetToCurrentVersion(conversionPreset, settingsVersion);
+                    MigrateConversionPresetToCurrentVersion(conversionPreset, settingsVersion);
                 }
             }
         }
 
-        private void MigrateConversionPresetToCurrentVersion(ConversionPreset preset, int settingsVersion)
+        private static void MigrateConversionPresetToCurrentVersion(ConversionPreset preset, int settingsVersion)
         {
             if (settingsVersion <= 2)
             {

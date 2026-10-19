@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileConverter", "Applicatio
 EndProject
 Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Installer", "Installer\Installer.wixproj", "{F14673DF-DF38-44B4-AB1D-99A59182C24C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileConverter.Tests", "Tests\FileConverter.Tests\FileConverter.Tests.csproj", "{7BBA132F-D256-4DDC-8071-957966594D06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +29,10 @@ Global
 		{F14673DF-DF38-44B4-AB1D-99A59182C24C}.Debug|x64.Build.0 = Debug|x64
 		{F14673DF-DF38-44B4-AB1D-99A59182C24C}.Release|x64.ActiveCfg = Release|x64
 		{F14673DF-DF38-44B4-AB1D-99A59182C24C}.Release|x64.Build.0 = Release|x64
+		{7BBA132F-D256-4DDC-8071-957966594D06}.Debug|x64.ActiveCfg = Debug|x64
+		{7BBA132F-D256-4DDC-8071-957966594D06}.Debug|x64.Build.0 = Debug|x64
+		{7BBA132F-D256-4DDC-8071-957966594D06}.Release|x64.ActiveCfg = Release|x64
+		{7BBA132F-D256-4DDC-8071-957966594D06}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

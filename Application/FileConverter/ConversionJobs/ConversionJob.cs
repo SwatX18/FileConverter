@@ -102,7 +102,8 @@ namespace FileConverter.ConversionJobs
             {
                 this.state = value;
                 this.NotifyPropertyChanged();
-                Application.Current.Dispatcher.Invoke(() => this.cancelCommand?.NotifyCanExecuteChanged());
+                // No application (unit tests) or application shutting down: no UI to refresh.
+                Application.Current?.Dispatcher.Invoke(() => this.cancelCommand?.NotifyCanExecuteChanged());
             }
         }
 

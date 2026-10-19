@@ -159,7 +159,7 @@ namespace FileConverter.ConversionJobs
             HardwareEncoder encoder = this.ResolveHardwareEncoder(codec);
             if (encoder != null)
             {
-                string encoderArgs = this.HardwareEncoderArgs(encoder, quality, speed);
+                string encoderArgs = HardwareEncoderArgs(encoder, quality, speed);
                 switch (encoder.Vendor)
                 {
                     case HardwareEncoderVendor.Nvenc:
@@ -189,7 +189,7 @@ namespace FileConverter.ConversionJobs
             }
 
             string cpuPath = attempts.Count > 0 ? EncodingPaths.CpuFallback : EncodingPaths.Cpu;
-            attempts.Add(new FFMpegAttempt(cpuPath, inputOutputArgs(string.Empty, this.CpuVideoEncoderArgs(codec, quality, speed), cpuFilteringArgs), usesGpu: false));
+            attempts.Add(new FFMpegAttempt(cpuPath, inputOutputArgs(string.Empty, CpuVideoEncoderArgs(codec, quality, speed), cpuFilteringArgs), usesGpu: false));
 
             return attempts;
         }
@@ -262,9 +262,9 @@ namespace FileConverter.ConversionJobs
             return Math.Max(minimum, Math.Min(maximum, value));
         }
 
-        private string HardwareEncoderArgs(HardwareEncoder encoder, int quality, VideoEncodingSpeed speed)
+        internal static string HardwareEncoderArgs(HardwareEncoder encoder, int quality, VideoEncodingSpeed speed)
         {
-            int crf = this.H264QualityToCRF(quality);
+            int crf = H264QualityToCRF(quality);
             switch (encoder.Vendor)
             {
                 case HardwareEncoderVendor.Nvenc:
@@ -283,12 +283,12 @@ namespace FileConverter.ConversionJobs
                                 break;
                         }
 
-                        return $"-c:v {encoder.FfmpegName} -preset {this.H264EncodingSpeedToNVENCPreset(speed)} -tune hq -rc vbr -cq {cq} -b:v 0";
+                        return $"-c:v {encoder.FfmpegName} -preset {H264EncodingSpeedToNVENCPreset(speed)} -tune hq -rc vbr -cq {cq} -b:v 0";
                     }
 
                 case HardwareEncoderVendor.Amf:
                     {
-                        string amfQuality = this.H264EncodingSpeedToAMFQuality(speed);
+                        string amfQuality = H264EncodingSpeedToAMFQuality(speed);
                         switch (encoder.Codec)
                         {
                             case VideoCodec.Hevc:
@@ -318,33 +318,33 @@ namespace FileConverter.ConversionJobs
                         // ICQ mode. Not calibrated (no Intel GPU on the test machine); av1_qsv is assumed to use the
                         // same global_quality scale as h264/hevc_qsv. A failing encode falls back to the CPU anyway.
                         int globalQuality = Clamp(crf + QsvQualityOffset, 1, 51);
-                        return $"-c:v {encoder.FfmpegName} -preset {this.EncodingSpeedToQSVPreset(speed)} -global_quality {globalQuality}";
+                        return $"-c:v {encoder.FfmpegName} -preset {EncodingSpeedToQSVPreset(speed)} -global_quality {globalQuality}";
                     }
             }
 
             throw new ArgumentOutOfRangeException(nameof(encoder), encoder, "Unknown hardware encoder.");
         }
 
-        private string CpuVideoEncoderArgs(VideoCodec codec, int quality, VideoEncodingSpeed speed)
+        internal static string CpuVideoEncoderArgs(VideoCodec codec, int quality, VideoEncodingSpeed speed)
         {
-            int crf = this.H264QualityToCRF(quality);
+            int crf = H264QualityToCRF(quality);
             switch (codec)
             {
                 case VideoCodec.Hevc:
-                    return $"-c:v libx265 -preset {this.H264EncodingSpeedToPreset(speed)} -crf {crf} -x265-params log-level=error";
+                    return $"-c:v libx265 -preset {H264EncodingSpeedToPreset(speed)} -crf {crf} -x265-params log-level=error";
 
                 case VideoCodec.Av1:
-                    return $"-c:v libaom-av1 -crf {Clamp(crf + LibaomCrfOffset, 0, 63)} -b:v 0 -cpu-used {this.EncodingSpeedToLibaomCpuUsed(speed)} -row-mt 1";
+                    return $"-c:v libaom-av1 -crf {Clamp(crf + LibaomCrfOffset, 0, 63)} -b:v 0 -cpu-used {EncodingSpeedToLibaomCpuUsed(speed)} -row-mt 1";
 
                 default:
-                    return $"-c:v libx264 -preset {this.H264EncodingSpeedToPreset(speed)} -crf {crf}";
+                    return $"-c:v libx264 -preset {H264EncodingSpeedToPreset(speed)} -crf {crf}";
             }
         }
 
         /// <summary>
         /// Convert video encoding speed to Intel Quick Sync preset.
         /// </summary>
-        private string EncodingSpeedToQSVPreset(VideoEncodingSpeed encodingSpeed)
+        private static string EncodingSpeedToQSVPreset(VideoEncodingSpeed encodingSpeed)
         {
             switch (encodingSpeed)
             {
@@ -379,7 +379,7 @@ namespace FileConverter.ConversionJobs
         /// Convert video encoding speed to libaom <c>-cpu-used</c> (0 = slowest, 8 = fastest).
         /// libaom is very slow: even the "medium" mapping (6) is slower than real time at 1080p.
         /// </summary>
-        private int EncodingSpeedToLibaomCpuUsed(VideoEncodingSpeed encodingSpeed)
+        private static int EncodingSpeedToLibaomCpuUsed(VideoEncodingSpeed encodingSpeed)
         {
             switch (encodingSpeed)
             {
@@ -563,7 +563,7 @@ namespace FileConverter.ConversionJobs
         /// The range of the quantizer scale is 0-51: where 0 is lossless, 23 is default, and 51 is worst possible. 
         /// A lower value is a higher quality and a subjectively sane range is 18-28. 
         /// https://trac.ffmpeg.org/wiki/Encode/H.264
-        private int H264QualityToCRF(int quality)
+        private static int H264QualityToCRF(int quality)
         {
             return 51 - quality;
         }
@@ -585,7 +585,7 @@ namespace FileConverter.ConversionJobs
         /// </summary>
         /// <param name="encodingSpeed">The encoding speed.</param>
         /// <returns>The H264 preset.</returns>
-        private string H264EncodingSpeedToPreset(VideoEncodingSpeed encodingSpeed)
+        private static string H264EncodingSpeedToPreset(VideoEncodingSpeed encodingSpeed)
         {
             switch (encodingSpeed)
             {
@@ -625,7 +625,7 @@ namespace FileConverter.ConversionJobs
         /// </summary>
         /// <param name="encodingSpeed">The encoding speed.</param>
         /// <returns>The NVENC preset.</returns>
-        private string H264EncodingSpeedToNVENCPreset(VideoEncodingSpeed encodingSpeed)
+        private static string H264EncodingSpeedToNVENCPreset(VideoEncodingSpeed encodingSpeed)
         {
             switch (encodingSpeed)
             {
@@ -661,7 +661,7 @@ namespace FileConverter.ConversionJobs
         /// </summary>
         /// <param name="encodingSpeed">The encoding speed.</param>
         /// <returns>The AMF quality mode.</returns>
-        private string H264EncodingSpeedToAMFQuality(VideoEncodingSpeed encodingSpeed)
+        private static string H264EncodingSpeedToAMFQuality(VideoEncodingSpeed encodingSpeed)
         {
             switch (encodingSpeed)
             {
