@@ -9,7 +9,7 @@
 "2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_sintel_mkv_to_mp4","To Mp4","1","1118.1","1","1","1118.6","2.33","ok","video:h264+audio:ac3+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+subtitle:mov_text+data:bin_data; runs: 2.3 / 2.4 / 2.3 s (median)"
 "2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_sintel_mkv_to_mkv","To Mkv","1","1118.1","1","1","466.2","36.43","ok","video:h264+audio:aac+subtitle:ass; runs: 36.0 / 36.4 / 37.5 s (median)"
 "2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_prores422_to_mp4","To Mp4","1","312.4","1","1","17.1","2.99","ok","video:h264+audio:aac; runs: 3.0 / 3.0 / 3.0 s (median)"
-"2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_h264_422_10bit_to_mp4","To Mp4","1","126","1","1","126","1.85","ok","video:h264+audio:aac; runs: 1.8 / 1.9 / 1.9 s (median)"
+"2026-10-19T18:09:55","final","4d413c8","0","default(v6)","video_h264_422_10bit_to_mp4","To Mp4","1","126","1","1","31.8","3.57","ok","video:h264+audio:aac; runs: 3.6 / 3.6 / 3.6 s (median)"
 "2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_1080p_scale720_mp4","Scale 720p/To Mp4","1","205.3","1","1","29.8","2.86","ok","video:h264+audio:aac; runs: 2.8 / 2.9 / 2.9 s (median)"
 "2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_extract_mp3","To Mp3","1","205.3","1","1","0.8","1.68","ok","audio:mp3; runs: 1.7 / 1.8 / 1.7 s (median)"
 "2026-10-19T15:56:43","final","778e25e","0","default(v6)","video_iphone_mov_to_aac","To Aac","1","58.2","1","1","0.3","1.16","ok","audio:aac; runs: 1.2 / 1.2 / 1.2 s (median)"

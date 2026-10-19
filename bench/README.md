@@ -48,6 +48,7 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
 - **`phase4.csv`**: Phase 4 (scheduler, Auto = one job per physical core), all cases, `-Repeat 3`. See `docs/SCHEDULING.md`.
 - **`results.csv`**: final run (Phase 6, all defaults, `-Repeat 3`). `make-report.ps1` turns it and `baseline.csv`
   into **`REPORT.md`** (tables per category, speedups, sizes), followed by the analysis in `REPORT-notes.md`.
+  `video_h264_422_10bit_to_mp4` was re-measured after commit 4d413c8 (4:2:2 sources re-encoded instead of copied).
 - **`image-engines.csv`**: `compare-engines.ps1` output: each image case converted with libvips and with ImageMagick
   only, with time, size, dimensions and SSIM against the source and between the two outputs.
 
