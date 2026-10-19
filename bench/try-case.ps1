@@ -44,7 +44,7 @@ function ConvertTo-Map([string]$Text) {
 $settingsMap = ConvertTo-Map $Settings
 $presetSettingsMap = ConvertTo-Map $PresetSettings
 $here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
-if (-not $Exe) { $Exe = Join-Path $here '..\Application\FileConverter\bin\x64\Release\FileConverter.exe' }
+if (-not $Exe) { $Exe = Join-Path $here '..\Application\FileConverter\bin\x64\Release\FileConverterPlusPlus.exe' }
 $Exe = (Resolve-Path $Exe).Path
 $inputFiles = @($InputFile -split ';' | Where-Object { $_ } | ForEach-Object { (Resolve-Path $_).Path })
 

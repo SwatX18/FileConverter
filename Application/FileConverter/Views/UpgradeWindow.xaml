@@ -7,7 +7,7 @@
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{x:Static project:Resources.UpgradeWindowTitle}"
-        WindowStartupLocation="CenterScreen" Icon="/FileConverter;component/Resources/ApplicationIcon.ico"
+        WindowStartupLocation="CenterScreen" Icon="/FileConverterPlusPlus;component/Resources/ApplicationIcon.ico"
         MinHeight="300" MinWidth="450"
         Height="450" Width="450" WindowStyle="ToolWindow"
         DataContext="{Binding Upgrade, Source={StaticResource Locator}}">
@@ -42,7 +42,7 @@
                         <ColumnDefinition Width="64"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="/FileConverter;component/Resources/DownloadIcon.png" Stretch="Fill"/>
+                    <Image Source="/FileConverterPlusPlus;component/Resources/DownloadIcon.png" Stretch="Fill"/>
                     <Grid Grid.Column="1" Margin="10,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -62,7 +62,7 @@
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="/FileConverter;component/Resources/DownloadIcon.png" Stretch="Fill"/>
+            <Image Source="/FileConverterPlusPlus;component/Resources/DownloadIcon.png" Stretch="Fill"/>
             <Grid Grid.Column="1" Margin="10,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -83,7 +83,7 @@
                         <ColumnDefinition Width="64"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="/FileConverter;component/Resources/ApplicationIcon.png" Stretch="Fill"/>
+                    <Image Source="/FileConverterPlusPlus;component/Resources/ApplicationIcon.png" Stretch="Fill"/>
                     <Grid Grid.Column="1" Margin="10,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

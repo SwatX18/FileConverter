@@ -8,7 +8,7 @@
         xmlns:controls="clr-namespace:FileConverter.Controls"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d" x:Class="FileConverter.Views.MainWindow"
-        Height="500" Width="950" MinHeight="480" MinWidth="640" WindowStartupLocation="CenterScreen" Icon="/FileConverter;component/Resources/ApplicationIcon.ico"
+        Height="500" Width="950" MinHeight="480" MinWidth="640" WindowStartupLocation="CenterScreen" Icon="/FileConverterPlusPlus;component/Resources/ApplicationIcon.ico"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closing">

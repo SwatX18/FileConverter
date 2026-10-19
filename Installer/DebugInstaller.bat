@@ -6,17 +6,17 @@ REM Analyse command arguments
 set quiet="false"
 for %%x in (%*) do (
     if %%x==--debug (
-        set msi="bin\x64\Debug\FileConverter-setup.msi"
+        set msi="bin\x64\Debug\FileConverterPlusPlus-setup.msi"
     )
     if %%x==-d (
-        set msi="bin\x64\Debug\FileConverter-setup.msi"
+        set msi="bin\x64\Debug\FileConverterPlusPlus-setup.msi"
     )
 
     if %%x==--release (
-        set msi="bin\x64\Release\FileConverter-setup.msi"
+        set msi="bin\x64\Release\FileConverterPlusPlus-setup.msi"
     )
     if %%x==-r (
-        set msi="bin\x64\Release\FileConverter-setup.msi"
+        set msi="bin\x64\Release\FileConverterPlusPlus-setup.msi"
     )
 
     if %%x==--install (

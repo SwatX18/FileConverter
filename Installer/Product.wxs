@@ -15,8 +15,8 @@
             <ComponentGroupRef Id="Libvips" />
         </Feature>
 
-        <CustomAction Id="InstallShell" ExeCommand="--register-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="check" Impersonate="no" FileRef="FileConverter.exe" />
-        <CustomAction Id="UninstallShell" ExeCommand="--unregister-shell-extension &quot;[INSTALLFOLDER]FileConverterExtension.dll&quot;" Execute="deferred" Return="check" Impersonate="no" FileRef="FileConverter.exe" />
+        <CustomAction Id="InstallShell" ExeCommand="--register-shell-extension &quot;[INSTALLFOLDER]FileConverterPlusPlusExtension.dll&quot;" Execute="deferred" Return="check" Impersonate="no" FileRef="FileConverter.exe" />
+        <CustomAction Id="UninstallShell" ExeCommand="--unregister-shell-extension &quot;[INSTALLFOLDER]FileConverterPlusPlusExtension.dll&quot;" Execute="deferred" Return="check" Impersonate="no" FileRef="FileConverter.exe" />
         <CustomAction Id="PostInstallInit" ExeCommand="--post-install-init" Execute="immediate" FileRef="FileConverter.exe" />
 
         <UI>
@@ -73,12 +73,12 @@
                 <RemoveFolder Id="RemoveStartMenuDir" Directory="ApplicationStartMenuShortcut" On="uninstall" />
             </Component>
             <Component Guid="{3E003FD3-46CA-4F4F-811E-663332828229}">
-                <File Id="FileConverter.exe.config" Source="$(var.FileConverter.TargetDir)FileConverter.exe.config" KeyPath="yes" Checksum="yes" />
+                <File Id="FileConverter.exe.config" Source="$(var.FileConverter.TargetDir)FileConverterPlusPlus.exe.config" KeyPath="yes" Checksum="yes" />
             </Component>
             
             <!-- Extension -->
             <Component Guid="{35B28709-C56C-4F18-9A41-4B238402EE48}">
-                <File Id="FileConverterExtension.dll" Source="$(var.FileConverterExtension.TargetDir)FileConverterExtension.dll" KeyPath="yes" Checksum="yes" />
+                <File Id="FileConverterExtension.dll" Source="$(var.FileConverterExtension.TargetPath)" KeyPath="yes" Checksum="yes" />
             </Component>
             <Component Guid="{566A73FB-427D-43C4-9ABC-92F2528F6D0A}">
                 <File Id="SharpShell.dll" Source="$(var.FileConverterExtension.TargetDir)SharpShell.dll" KeyPath="yes" Checksum="yes" />
@@ -199,7 +199,7 @@
             <!-- Registry entries -->
             <Component Id="RegistryEntries" Guid="{1862E9DC-1B37-4AFD-85BF-2E9CFFAFA9F8}">
                 <RegistryKey Root="HKCU" Key="Software\FileConverter" ForceDeleteOnUninstall="yes">
-                    <RegistryValue Name="Path" Type="string" Value="[INSTALLFOLDER]FileConverter.exe" />
+                    <RegistryValue Name="Path" Type="string" Value="[INSTALLFOLDER]FileConverterPlusPlus.exe" />
                 </RegistryKey>
             </Component>
         </ComponentGroup>

@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Runs representative conversions through FileConverter.exe's command line and records the results in a CSV.
+    Runs representative conversions through FileConverterPlusPlus.exe's command line and records the results in a CSV.
 
 .DESCRIPTION
-    Each case launches FileConverter.exe exactly the way the shell extension does
+    Each case launches FileConverterPlusPlus.exe exactly the way the shell extension does
     (--conversion-preset "<name>" --input-files <list>). It measures wall time from launch to exit, which
     includes about 1-2 s of WPF startup (see the 'startup_overhead' case), and validates every output with ffprobe.
 
@@ -47,7 +47,7 @@ param(
 $ErrorActionPreference = 'Stop'
 # $PSScriptRoot is not available in param defaults under Windows PowerShell 5.1 -File.
 $here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
-if (-not $Exe) { $Exe = Join-Path $here '..\Application\FileConverter\bin\x64\Release\FileConverter.exe' }
+if (-not $Exe) { $Exe = Join-Path $here '..\Application\FileConverter\bin\x64\Release\FileConverterPlusPlus.exe' }
 if (-not $Samples) { $Samples = Join-Path $here 'samples' }
 if (-not $Output) { $Output = Join-Path $here 'baseline.csv' }
 $Exe = (Resolve-Path $Exe).Path

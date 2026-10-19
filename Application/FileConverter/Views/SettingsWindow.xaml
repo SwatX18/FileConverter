@@ -12,7 +12,7 @@
         x:Class="FileConverter.Views.SettingsWindow"
         MinWidth="800" MinHeight="600" 
         Width="1050" Height="700"
-        WindowStartupLocation="CenterScreen" Icon="/FileConverter;component/Resources/ApplicationIcon.ico"
+        WindowStartupLocation="CenterScreen" Icon="/FileConverterPlusPlus;component/Resources/ApplicationIcon.ico"
         mc:Ignorable="d"
         DataContext="{Binding Settings, Source={StaticResource Locator}}">
     <behaviors:Interaction.Triggers>
@@ -224,7 +224,7 @@
             </Grid.ColumnDefinitions>
 
             <Image HorizontalAlignment="Left" Height="48" Width="48" VerticalAlignment="Top"
-                   Source="{Binding Source=/FileConverter;component/Resources/SettingsIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=96}">
+                   Source="{Binding Source=/FileConverterPlusPlus;component/Resources/SettingsIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=96}">
             </Image>
 
             <Label Grid.Column="1" Content="{x:Static project:Resources.Settings}" FontSize="20" Margin="4" VerticalAlignment="Center" />
@@ -257,7 +257,7 @@
                                 <HierarchicalDataTemplate DataType="{x:Type viewModels:PresetFolderNode}" ItemsSource="{Binding Children}">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Image HorizontalAlignment="Left" Height="24" Width="24" VerticalAlignment="Top" Margin="5"
-                                               Source="{Binding Source=/FileConverter;component/Resources/FolderIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}">
+                                               Source="{Binding Source=/FileConverterPlusPlus;component/Resources/FolderIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}">
                                         </Image>
                                         <TextBlock Text="{Binding Name}" FontWeight="DemiBold" FontSize="14" VerticalAlignment="Center" Margin="5,0"/>
                                     </StackPanel>
@@ -299,39 +299,39 @@
                                 <ContextMenu>
                                     <MenuItem Header="{x:Static project:Resources.CreateANewFolder}" Command="{Binding CreateFolderCommand}">
                                         <MenuItem.Icon>
-                                            <Image Source="{Binding Source=/FileConverter;component/Resources/FolderIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
+                                            <Image Source="{Binding Source=/FileConverterPlusPlus;component/Resources/FolderIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
                                                    Style="{StaticResource EnableDisableImageStyle}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Header="{x:Static project:Resources.AddNewPreset}" Command="{Binding AddNewPresetCommand}">
                                         <MenuItem.Icon>
-                                            <Image Source="{Binding Source=/FileConverter;component/Resources/PresetIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
+                                            <Image Source="{Binding Source=/FileConverterPlusPlus;component/Resources/PresetIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
                                                    Style="{StaticResource EnableDisableImageStyle}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Header="{x:Static project:Resources.DuplicatePreset}" Command="{Binding DuplicatePresetCommand}">
                                         <MenuItem.Icon>
-                                            <Image Source="{Binding Source=/FileConverter;component/Resources/DuplicatePresetIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
+                                            <Image Source="{Binding Source=/FileConverterPlusPlus;component/Resources/DuplicatePresetIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
                                                    Style="{StaticResource EnableDisableImageStyle}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <Separator />
                                     <MenuItem Header="{x:Static project:Resources.ImportPresets}" Command="{Binding ImportPresetCommand}">
                                         <MenuItem.Icon>
-                                            <Image Source="{Binding Source=/FileConverter;component/Resources/ImportIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
+                                            <Image Source="{Binding Source=/FileConverterPlusPlus;component/Resources/ImportIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
                                                    Style="{StaticResource EnableDisableImageStyle}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <MenuItem Header="{x:Static project:Resources.ExportSelectedPresets}" Command="{Binding ExportPresetCommand}">
                                         <MenuItem.Icon>
-                                            <Image Source="{Binding Source=/FileConverter;component/Resources/ExportIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
+                                            <Image Source="{Binding Source=/FileConverterPlusPlus;component/Resources/ExportIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
                                                    Style="{StaticResource EnableDisableImageStyle}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <Separator />
                                     <MenuItem Header="{x:Static project:Resources.RemoveSelectedPreset}" Command="{Binding RemoveSelectedPresetCommand}">
                                         <MenuItem.Icon>
-                                            <Image Source="{Binding Source=/FileConverter;component/Resources/DeleteIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
+                                            <Image Source="{Binding Source=/FileConverterPlusPlus;component/Resources/DeleteIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=48}" 
                                                    Style="{StaticResource EnableDisableImageStyle}"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
@@ -548,14 +548,14 @@
                     </DockPanel>
 
                     <Image Grid.Row="1" Grid.Column="1" Margin="20,20,20,20" VerticalAlignment="Top" 
-                           Source="{Binding Source=/FileConverter;component/Resources/ApplicationIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=256}">
+                           Source="{Binding Source=/FileConverterPlusPlus;component/Resources/ApplicationIcon.ico, Converter={StaticResource IcoFileSizeSelector}, ConverterParameter=256}">
                     </Image>
 
                     <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Label Content="{x:Static project:Resources.DonateDescription}" VerticalAlignment="Center" FontStyle="Italic"/>
                         <controls:IconButton Margin="5,0,5,0" Background="#0467B4" Foreground="White" MouseOverBrush="#007AD8" PressedBrush="#0F4199"
                                       Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=3BDWQTYTTA3D8&amp;item_name=File+Converter+Donations&amp;currency_code=EUR"
-                                      IconSource="/FileConverter;component/Resources/PaypalIcon.png" Content="{x:Static project:Resources.DonateButtonTitle}" FontWeight="Bold" FontSize="14" />
+                                      IconSource="/FileConverterPlusPlus;component/Resources/PaypalIcon.png" Content="{x:Static project:Resources.DonateButtonTitle}" FontWeight="Bold" FontSize="14" />
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
@@ -563,28 +563,28 @@
                                 Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/?from=about"
                                 Style="{DynamicResource TileButton}">
                             <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/GitHub-Icon.png"></Image>
+                                <Image Source="/FileConverterPlusPlus;component/Resources/GitHub-Icon.png"></Image>
                             </Button.Content>
                         </Button>
                         <Button ToolTip="{x:Static project:Resources.IssueButtonDescription}" Padding="1" Margin="5,0,5,0" 
                                 Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/issues?from=about"
                                 Style="{DynamicResource TileButton}">
                             <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/GitHub-Issue-Icon.png"></Image>
+                                <Image Source="/FileConverterPlusPlus;component/Resources/GitHub-Issue-Icon.png"></Image>
                             </Button.Content>
                         </Button>
                         <Button ToolTip="{x:Static project:Resources.DocumentationButtonDescription}" Padding="1" Margin="5,0,5,0" 
                                 Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/wiki?from=about"
                                 Style="{DynamicResource TileButton}">
                             <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/GitHub-Documentation-Icon.png"></Image>
+                                <Image Source="/FileConverterPlusPlus;component/Resources/GitHub-Documentation-Icon.png"></Image>
                             </Button.Content>
                         </Button>
                         <Button ToolTip="{x:Static project:Resources.WebsiteButtonDescription}" Padding="1" Margin="5,0,5,0" 
                                 Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://file-converter.io?from=about"
                                 Style="{DynamicResource TileButton}">
                             <Button.Content>
-                                <Image Source="/FileConverter;component/Resources/WebSite-Icon.png"></Image>
+                                <Image Source="/FileConverterPlusPlus;component/Resources/WebSite-Icon.png"></Image>
                             </Button.Content>
                         </Button>
                     </StackPanel>

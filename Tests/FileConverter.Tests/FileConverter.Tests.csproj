@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- No shadow copy: libvips is loaded from the libvips folder next to FileConverter.exe. -->
+    <!-- No shadow copy: libvips is loaded from the libvips folder next to FileConverterPlusPlus.exe. -->
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

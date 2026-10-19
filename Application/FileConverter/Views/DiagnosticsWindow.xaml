@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:FileConverter"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Height="600" Width="800" Icon="/FileConverter;component/Resources/ApplicationIcon.ico"
+        Height="600" Width="800" Icon="/FileConverterPlusPlus;component/Resources/ApplicationIcon.ico"
         DataContext="{Binding Diagnostics, Source={StaticResource Locator}}">
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="Closing">

@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FileConverterExtension")]
+[assembly: AssemblyTitle("FileConverter++ Explorer extension")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FileConverterExtension")]
-[assembly: AssemblyCopyright("Copyright © 2026")]
+[assembly: AssemblyCompany("SwatX18")]
+[assembly: AssemblyProduct("FileConverter++")]
+[assembly: AssemblyCopyright("Copyright © 2026 Adrien Allard, FileConverter++ changes SwatX18")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

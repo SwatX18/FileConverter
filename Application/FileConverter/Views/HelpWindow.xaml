@@ -7,7 +7,7 @@
         xmlns:project="clr-namespace:FileConverter.Properties"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-        mc:Ignorable="d" Icon="/FileConverter;component/Resources/ApplicationIcon.ico" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" 
+        mc:Ignorable="d" Icon="/FileConverterPlusPlus;component/Resources/ApplicationIcon.ico" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ResizeMode="NoResize" 
         Width="1000" Height="880"
         DataContext="{Binding Help, Source={StaticResource Locator}}">
     <behaviors:Interaction.Triggers>
@@ -25,7 +25,7 @@
         <TextBlock Text="{x:Static project:Resources.FileConverterStartHelp2}" TextWrapping="Wrap"/>
         <TextBlock Text="{x:Static project:Resources.FileConverterStartHelp3}" TextWrapping="Wrap" />
         <Image Margin="0,7,0,7" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" 
-               gif:ImageBehavior.AnimatedSource="/FileConverter;component/Resources/FileConverterUsage.gif"
+               gif:ImageBehavior.AnimatedSource="/FileConverterPlusPlus;component/Resources/FileConverterUsage.gif"
                Stretch="Fill"/>
         <Button Content="{x:Static project:Resources.Ok}" Height="28" Command="{Binding CloseCommand}"/>
     </StackPanel>

@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Integration tests: converts the benchmark corpus with the built FileConverter.exe and checks every output.
+    Integration tests: converts the benchmark corpus with the built FileConverterPlusPlus.exe and checks every output.
 
 .DESCRIPTION
-    Each case runs FileConverter.exe the way the shell extension does (--conversion-preset / --input-files), with
+    Each case runs FileConverterPlusPlus.exe the way the shell extension does (--conversion-preset / --input-files), with
     optional setting overrides, then checks:
       - the application exited by itself (it only does when every conversion succeeded);
       - each input has a "Job done" log line, with the expected conversion path (remux, nvenc..., vips...);
@@ -36,7 +36,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $here = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $root = (Resolve-Path (Join-Path $here '..')).Path
-if (-not $Exe) { $Exe = Join-Path $root 'Application\FileConverter\bin\x64\Release\FileConverter.exe' }
+if (-not $Exe) { $Exe = Join-Path $root 'Application\FileConverter\bin\x64\Release\FileConverterPlusPlus.exe' }
 if (-not $Output) { $Output = Join-Path $here 'integration.csv' }
 $Exe = (Resolve-Path $Exe).Path
 $samples = Join-Path $root 'bench\samples'
