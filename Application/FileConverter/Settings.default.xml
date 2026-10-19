@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SerializationVersion="5">
-    <MaximumNumberOfSimultaneousConversions>2</MaximumNumberOfSimultaneousConversions>
+<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SerializationVersion="6">
+    <MaximumNumberOfSimultaneousConversions>0</MaximumNumberOfSimultaneousConversions>
     <ConversionPreset Name="To Mkv" OutputType="Mkv" IsDefaultSettings="true">
         <InputTypes>3gp</InputTypes>
         <InputTypes>avi</InputTypes>

@@ -631,4 +631,10 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="ImageEngineTooltip" xml:space="preserve">
     <value>Auto convertit les images JPEG, PNG, WebP, TIFF et AVIF avec libvips (beaucoup plus rapide sur les grandes images et les lots), et utilise ImageMagick pour tous les autres formats (RAW, HEIC, GIF, PSD, SVG, PDF...) ou si libvips échoue.</value>
   </data>
+  <data name="SimultaneousConversionsAuto" xml:space="preserve">
+    <value>Auto ({0})</value>
+  </data>
+  <data name="SimultaneousConversionsTooltip" xml:space="preserve">
+    <value>Nombre maximum de fichiers convertis en même temps. Auto (0) : un par cœur physique du processeur. Dans cette limite, les encodages vidéo matériels (GPU), les encodages vidéo logiciels (2 à 4) et les documents Office (2) ont leurs propres limites, et au plus 2 conversions lisent ou écrivent sur un même disque dur.</value>
+  </data>
 </root>

@@ -13,7 +13,7 @@ namespace FileConverter
     [XmlType]
     public class Settings : ObservableObject, IXmlSerializable
     {
-        public const int Version = 5;
+        public const int Version = 6;
 
         private bool exitApplicationWhenConversionsFinished = false;
         private float durationBetweenEndOfConversionsAndApplicationExit = 3f;

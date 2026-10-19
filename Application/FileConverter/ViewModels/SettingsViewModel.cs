@@ -244,6 +244,11 @@ namespace FileConverter.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the maximum of the "simultaneous conversions" slider (0 on the slider means automatic).
+        /// </summary>
+        public int MaximumSimultaneousConversionsLimit => System.Math.Max(16, System.Environment.ProcessorCount);
+
         public Helpers.ImageEngine[] ImageEngines
         {
             get => this.imageEngines;

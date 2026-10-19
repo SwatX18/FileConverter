@@ -1668,5 +1668,23 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("ImageEngineTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto ({0}).
+        /// </summary>
+        public static string SimultaneousConversionsAuto {
+            get {
+                return ResourceManager.GetString("SimultaneousConversionsAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of files converted at the same time. Auto (0): one per physical CPU core. Within this limit, hardware (GPU) video encodes, software video encodes (2 to 4) and Office documents (2) have their own limits, and at most 2 jobs read or write the same hard disk drive..
+        /// </summary>
+        public static string SimultaneousConversionsTooltip {
+            get {
+                return ResourceManager.GetString("SimultaneousConversionsTooltip", resourceCulture);
+            }
+        }
     }
 }

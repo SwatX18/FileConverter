@@ -23,6 +23,17 @@ namespace FileConverter.Services
                 }
             }
 
+            if (settingsVersion <= 5)
+            {
+                // The number of simultaneous conversions is automatic (one per physical core, version 6) by default, with
+                // separate limits for GPU, CPU video and document jobs. 2 was the previous default, written to every
+                // settings file: switch it to automatic. Other values were chosen by the user and are kept.
+                if (settings.MaximumNumberOfSimultaneousConversions == 2)
+                {
+                    settings.MaximumNumberOfSimultaneousConversions = 0;
+                }
+            }
+
             // Migrate conversion settings.
             if (settings.ConversionPresets != null)
             {

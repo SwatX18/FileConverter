@@ -22,6 +22,7 @@
     <valueConverters:ConversionSettingsRelevant x:Key="ConversionSettingsRelevant"/>
     <valueConverters:HardwareAccelerationModeToString x:Key="HardwareAccelerationModeToString"/>
     <valueConverters:ImageEngineToString x:Key="ImageEngineToString"/>
+    <valueConverters:SimultaneousConversionsToString x:Key="SimultaneousConversionsToString"/>
     <valueConverters:VideoResolutionToString x:Key="VideoResolutionToString"/>
 
     <generic:ValueConverterGroup x:Key="ConversionSettingsToEnum">

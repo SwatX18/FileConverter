@@ -175,6 +175,7 @@
     <Compile Include="Services\UpgradeVersionDescription.cs" />
     <Compile Include="ValueConverters\HardwareAccelerationModeToString.cs" />
     <Compile Include="ValueConverters\ImageEngineToString.cs" />
+    <Compile Include="ValueConverters\SimultaneousConversionsToString.cs" />
     <Compile Include="ValueConverters\VideoResolutionToString.cs" />
     <Compile Include="ValueConverters\ConversionJobsToProgressState.cs" />
     <Compile Include="ValueConverters\ApplicationVersionToApplicationName.cs" />

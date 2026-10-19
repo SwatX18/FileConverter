@@ -664,4 +664,10 @@ use maj for uppercase version</value>
   <data name="ImageEngineTooltip" xml:space="preserve">
     <value>Auto converts JPEG, PNG, WebP, TIFF and AVIF images with libvips (much faster on large images and batches), and uses ImageMagick for every other format (RAW, HEIC, GIF, PSD, SVG, PDF...) or when libvips fails.</value>
   </data>
+  <data name="SimultaneousConversionsAuto" xml:space="preserve">
+    <value>Auto ({0})</value>
+  </data>
+  <data name="SimultaneousConversionsTooltip" xml:space="preserve">
+    <value>Maximum number of files converted at the same time. Auto (0): one per physical CPU core. Within this limit, hardware (GPU) video encodes, software video encodes (2 to 4) and Office documents (2) have their own limits, and at most 2 jobs read or write the same hard disk drive.</value>
+  </data>
 </root>
