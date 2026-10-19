@@ -60,6 +60,7 @@ namespace FileConverter.Services
         /// </summary>
         private void ConvertFiles()
         {
+            System.Diagnostics.Stopwatch batchTime = System.Diagnostics.Stopwatch.StartNew();
             int jobCount = this.conversionJobs.Count;
             Settings settings = this.settingsService.Settings;
             ConversionLimits limits = ConversionLimits.Compute(settings.MaximumNumberOfSimultaneousConversions, settings.MaximumNumberOfSimultaneousGpuConversions, SystemInfo.PhysicalCoreCount);
@@ -206,6 +207,10 @@ namespace FileConverter.Services
                 // Woken up by a job prepared or finished; the timeout is a safety net.
                 wakeUp.WaitOne(500);
             }
+
+            IEnumerable<string> pathCounts = this.conversionJobs.GroupBy(job => job.EncodingPath).Select(group => $"{group.Key} x{group.Count()}");
+            int doneCount = this.conversionJobs.Count(job => job.State == ConversionState.Done);
+            Debug.Log($"Conversions finished in {batchTime.Elapsed.TotalSeconds.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)} s: {doneCount} done, {jobCount - doneCount} failed, paths: {string.Join(", ", pathCounts)}.");
 
             // Copy the output files to the clipboard
             if (this.settingsService.Settings.CopyFilesInClipboardAfterConversion && files.Count > 0)

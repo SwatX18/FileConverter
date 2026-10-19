@@ -1,9 +1,9 @@
-// <copyright file="EncodingPaths.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
+﻿// <copyright file="EncodingPaths.cs" company="AAllard">License: http://www.gnu.org/licenses/gpl.html GPL version 3.</copyright>
 
 namespace FileConverter.ConversionJobs
 {
     /// <summary>
-    /// Diagnostics labels of the path used to encode a job (logged, and exposed by <see cref="ConversionJob_FFMPEG.EncodingPath"/>).
+    /// Diagnostics labels of the path used to encode a job (logged, and exposed by <see cref="ConversionJob.EncodingPath"/>).
     /// </summary>
     public static class EncodingPaths
     {

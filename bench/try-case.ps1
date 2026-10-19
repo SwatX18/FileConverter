@@ -106,7 +106,7 @@ try {
     if (-not $exited) { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null; [void]$proc.WaitForExit(5000); Start-Sleep 1 }
     Write-Host ('exit: {0} in {1:N1}s' -f $(if ($exited) { 'auto-exit (all conversions succeeded)' } else { 'did not exit (failure or timeout), killed' }), $sw.Elapsed.TotalSeconds)
 
-    $patterns = 'imported from version|Hardware encoders|unavailable|Conversion limits|Start job|Hard disk|Image engine|libvips|Remux|Output validation|Encoding path|Falling back|fallback encoding path|exited with code|^Fail: |hardware encoder cache'
+    $patterns = 'imported from version|Hardware encoders|unavailable|Conversion limits|Start job|Job done|Job failed|Conversions finished|Hard disk|Image engine|libvips|Remux|Output validation|Encoding path|Falling back|fallback encoding path|exited with code|^Fail: |hardware encoder cache'
     if ($AllLog) { $patterns = '.' }
     Get-ChildItem $userDir -Recurse -Filter *.log | Get-Content | Select-String -Pattern $patterns | ForEach-Object { '  log> ' + $_.Line }
     Get-ChildItem $userDir -Recurse -Filter *.log | Get-Content | Select-String -Pattern '^Execute command: ' | ForEach-Object { '  cmd> ' + ($_.Line -replace '^Execute command: \S+ ', '') }

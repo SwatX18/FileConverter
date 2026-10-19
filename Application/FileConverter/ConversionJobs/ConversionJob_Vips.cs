@@ -46,15 +46,6 @@ namespace FileConverter.ConversionJobs
         {
         }
 
-        /// <summary>
-        /// Gets the engine that wrote the output (see <see cref="EncodingPaths"/>), for diagnostics.
-        /// </summary>
-        public string EncodingPath
-        {
-            get;
-            private set;
-        }
-
         protected override void Convert()
         {
             string blocker = this.GetBlocker();

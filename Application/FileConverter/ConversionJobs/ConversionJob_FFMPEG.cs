@@ -81,15 +81,6 @@ namespace FileConverter.ConversionJobs
         }
 
         /// <summary>
-        /// Gets the encoding path of the last successful pass (see <see cref="EncodingPaths"/>), for diagnostics.
-        /// </summary>
-        public string EncodingPath
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// Gets the lane of the job from its first attempt: a stream copy is light work, a hardware encode uses the GPU,
         /// any other video encode the CPU.
         /// </summary>
@@ -712,6 +703,7 @@ namespace FileConverter.ConversionJobs
                 }
 
                 this.UserState = attempt.Label ?? pass.Name;
+                this.EncodingPath = attempt.Path;
 
                 string error = this.ExecuteAttempt(attempt);
                 if (error == null && attempt.Validate != null && !this.CancelIsRequested)
@@ -725,7 +717,6 @@ namespace FileConverter.ConversionJobs
 
                 if (error == null)
                 {
-                    this.EncodingPath = attempt.Path;
                     if (attemptIndex > 0)
                     {
                         Diagnostics.Debug.Log($"Conversion succeeded with fallback encoding path '{attempt.Path}'.");

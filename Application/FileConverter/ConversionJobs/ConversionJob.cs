@@ -22,6 +22,7 @@ namespace FileConverter.ConversionJobs
 
         private readonly string initialInputPath;
         private int currentOutputFilePathIndex;
+        private string encodingPath;
 
         public ConversionJob()
         {
@@ -168,6 +169,16 @@ namespace FileConverter.ConversionJobs
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the path used to convert the file (see <see cref="EncodingPaths"/>), for diagnostics. Jobs with a single
+        /// path don't set it: the job type names it (e.g. "word", "ico").
+        /// </summary>
+        public string EncodingPath
+        {
+            get => this.encodingPath ?? this.GetType().Name.Replace("ConversionJob_", string.Empty).ToLowerInvariant();
+            protected set => this.encodingPath = value;
         }
 
         public ICommand CancelCommand
@@ -380,6 +391,10 @@ namespace FileConverter.ConversionJobs
             {
                 Debug.Log(Properties.Resources.ErrorConversionFailedWithOutput);
             }
+
+            double seconds = (DateTime.Now - this.StartTime).TotalSeconds;
+            string threads = this.ThreadBudget > 0 ? $"{this.ThreadBudget} threads" : "all threads";
+            Debug.Log($"Job {(this.State == ConversionState.Done ? "done" : "failed")}: path {this.EncodingPath}, {seconds.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)} s ({this.Lane}, {threads}): {this.InputFilePath}");
         }
 
         public virtual void Cancel()
