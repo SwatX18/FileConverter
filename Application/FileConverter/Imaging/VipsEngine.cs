@@ -48,6 +48,7 @@ namespace FileConverter.Imaging
 
         private static bool initialized;
         private static string unavailableReason;
+        private static string version;
         private static HashSet<string> availableOperations = new HashSet<string>();
 
         /// <summary>
@@ -59,6 +60,30 @@ namespace FileConverter.Imaging
             {
                 Initialize();
                 return unavailableReason == null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the loaded libvips version (e.g. "8.18.7"), or null if libvips is unavailable (loads it on the first call).
+        /// </summary>
+        public static string Version
+        {
+            get
+            {
+                Initialize();
+                return version;
+            }
+        }
+
+        /// <summary>
+        /// Gets why libvips is unavailable, or null if it is loaded (loads it on the first call).
+        /// </summary>
+        public static string UnavailableReason
+        {
+            get
+            {
+                Initialize();
+                return unavailableReason;
             }
         }
 
@@ -114,6 +139,10 @@ namespace FileConverter.Imaging
                 try
                 {
                     unavailableReason = Load();
+                    if (unavailableReason == null)
+                    {
+                        version = GetVersion();
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -121,7 +150,7 @@ namespace FileConverter.Imaging
                 }
 
                 Debug.Log(unavailableReason == null ?
-                    $"libvips {GetVersion()} loaded, operations: {string.Join(", ", availableOperations.OrderBy(name => name))}." :
+                    $"libvips {version} loaded, operations: {string.Join(", ", availableOperations.OrderBy(name => name))}." :
                     $"Image engine: {unavailableReason}, ImageMagick converts every image.");
             }
         }

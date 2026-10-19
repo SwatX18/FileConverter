@@ -9,6 +9,8 @@ namespace FileConverter.ViewModels
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows.Data;
     using System.Windows.Input;
 
@@ -19,6 +21,8 @@ namespace FileConverter.ViewModels
     using CommunityToolkit.Mvvm.Input;
 
     using FileConverter.Annotations;
+    using FileConverter.Hardware;
+    using FileConverter.Imaging;
     using FileConverter.Services;
     using FileConverter.Views;
 
@@ -33,6 +37,9 @@ namespace FileConverter.ViewModels
         private PresetNode selectedPreset;
         private Settings settings;
         private bool displaySeeChangeLogLink = true;
+        private string hardwareEncodersDescription;
+        private bool isDetectingHardwareEncoders;
+        private string imageEngineStatus;
 
         private RelayCommand<string> openUrlCommand;
         private RelayCommand getChangeLogContentCommand;
@@ -44,6 +51,8 @@ namespace FileConverter.ViewModels
         private RelayCommand removePresetCommand;
         private RelayCommand saveCommand;
         private RelayCommand<CancelEventArgs> closeCommand;
+        private RelayCommand redetectHardwareEncodersCommand;
+        private RelayCommand openDiagnosticsFolderCommand;
 
         private ListCollectionView outputTypes;
         private CultureInfo[] supportedCultures;
@@ -68,6 +77,8 @@ namespace FileConverter.ViewModels
             this.removePresetCommand = new RelayCommand(this.RemoveSelectedPreset, this.CanRemoveSelectedPreset);
             this.saveCommand = new RelayCommand(this.SaveSettings, this.CanSaveSettings);
             this.closeCommand = new RelayCommand<CancelEventArgs>(this.CloseSettings);
+            this.redetectHardwareEncodersCommand = new RelayCommand(() => this.DetectHardwareEncoders(redetect: true), () => !this.IsDetectingHardwareEncoders);
+            this.openDiagnosticsFolderCommand = new RelayCommand(() => Process.Start(FileConverterExtension.PathHelpers.GetUserDataFolderPath));
 
             ISettingsService settingsService = Ioc.Default.GetRequiredService<ISettingsService>();
             this.Settings = settingsService.Settings;
@@ -96,6 +107,9 @@ namespace FileConverter.ViewModels
 
             this.InitializeCompatibleInputExtensions();
             this.InitializePresetFolders();
+
+            this.DetectHardwareEncoders(redetect: false);
+            this.LoadImageEngineStatus();
         }
 
         public IEnumerable<InputExtensionCategory> InputCategories
@@ -249,6 +263,50 @@ namespace FileConverter.ViewModels
         /// </summary>
         public int MaximumSimultaneousConversionsLimit => System.Math.Max(16, System.Environment.ProcessorCount);
 
+        public int MaximumSimultaneousGpuConversionsLimit => System.Math.Max(8, this.Settings.MaximumNumberOfSimultaneousGpuConversions);
+
+        /// <summary>
+        /// Gets the maximum of the "CPU video encodes" slider (0 on the slider means automatic).
+        /// </summary>
+        public int MaximumSimultaneousCpuVideoConversionsLimit => System.Math.Max(4, SystemInfo.PhysicalCoreCount);
+
+        /// <summary>
+        /// Gets the detected hardware encoders, one line per vendor (see <see cref="HardwareEncoderSummary"/>).
+        /// </summary>
+        public string HardwareEncodersDescription
+        {
+            get => this.hardwareEncodersDescription;
+            private set
+            {
+                this.hardwareEncodersDescription = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool IsDetectingHardwareEncoders
+        {
+            get => this.isDetectingHardwareEncoders;
+            private set
+            {
+                this.isDetectingHardwareEncoders = value;
+                this.OnPropertyChanged();
+                this.redetectHardwareEncodersCommand.NotifyCanExecuteChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets whether libvips is loaded (and its version), or why not.
+        /// </summary>
+        public string ImageEngineStatus
+        {
+            get => this.imageEngineStatus;
+            private set
+            {
+                this.imageEngineStatus = value;
+                this.OnPropertyChanged();
+            }
+        }
+
         public Helpers.ImageEngine[] ImageEngines
         {
             get => this.imageEngines;
@@ -287,6 +345,10 @@ namespace FileConverter.ViewModels
         public ICommand GetChangeLogContentCommand => this.getChangeLogContentCommand;
 
         public ICommand OpenUrlCommand => this.openUrlCommand;
+
+        public ICommand RedetectHardwareEncodersCommand => this.redetectHardwareEncodersCommand;
+
+        public ICommand OpenDiagnosticsFolderCommand => this.openDiagnosticsFolderCommand;
 
         public ICommand CreateFolderCommand => this.createFolderCommand;
 
@@ -394,6 +456,55 @@ namespace FileConverter.ViewModels
         private void NodePropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
         {
             this.saveCommand.NotifyCanExecuteChanged();
+        }
+
+        /// <summary>
+        /// Runs <paramref name="work"/> on a thread pool thread (hardware detection runs test encodes, loading libvips takes
+        /// a moment) and gives its result to <paramref name="done"/> on the calling (UI) thread.
+        /// </summary>
+        private static void RunInBackground(Func<string> work, Action<string> done)
+        {
+            TaskScheduler scheduler = SynchronizationContext.Current != null ? TaskScheduler.FromCurrentSynchronizationContext() : TaskScheduler.Default;
+            Task.Run(work).ContinueWith(task => done(task.Status == TaskStatus.RanToCompletion ? task.Result : task.Exception?.GetBaseException().Message), scheduler);
+        }
+
+        private void DetectHardwareEncoders(bool redetect)
+        {
+            IHardwareEncoderDetector detector = Ioc.Default.GetService<IHardwareEncoderDetector>();
+            if (detector == null)
+            {
+                return;
+            }
+
+            // Resources are read here: the culture is set on the UI thread.
+            string none = Properties.Resources.HardwareEncodersNone;
+            this.IsDetectingHardwareEncoders = true;
+            this.HardwareEncodersDescription = Properties.Resources.HardwareEncodersDetecting;
+            RunInBackground(
+                () =>
+                {
+                    if (redetect)
+                    {
+                        detector.Redetect();
+                    }
+
+                    IReadOnlyList<string> lines = HardwareEncoderSummary.Describe(detector.AvailableEncoders);
+                    return lines.Count > 0 ? string.Join(Environment.NewLine, lines) : none;
+                },
+                description =>
+                {
+                    this.HardwareEncodersDescription = description;
+                    this.IsDetectingHardwareEncoders = false;
+                });
+        }
+
+        private void LoadImageEngineStatus()
+        {
+            string available = Properties.Resources.ImageEngineLibvipsAvailable;
+            string unavailable = Properties.Resources.ImageEngineLibvipsUnavailable;
+            RunInBackground(
+                () => VipsEngine.Version != null ? string.Format(available, VipsEngine.Version) : string.Format(unavailable, VipsEngine.UnavailableReason),
+                status => this.ImageEngineStatus = status);
         }
 
         private void DownloadChangeLogAction()

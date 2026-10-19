@@ -635,6 +635,84 @@ utilisez MAJ pour une version en majuscules</value>
     <value>Auto ({0})</value>
   </data>
   <data name="SimultaneousConversionsTooltip" xml:space="preserve">
-    <value>Nombre maximum de fichiers convertis en même temps. Auto (0) : un par cœur physique du processeur. Dans cette limite, les encodages vidéo matériels (GPU), les encodages vidéo logiciels (2 à 4) et les documents Office (2) ont leurs propres limites, et au plus 2 conversions lisent ou écrivent sur un même disque dur.</value>
+    <value>Nombre maximum de fichiers convertis en même temps. Auto (0) : un par cœur physique du processeur. Dans cette limite, les encodages vidéo GPU et CPU (ci-dessous) et les documents Office (2) ont leurs propres limites, et au plus 2 fichiers de 100 Mo ou plus sont lus ou écrits en même temps sur un même disque dur.</value>
+  </data>
+  <data name="Performance" xml:space="preserve">
+    <value>Performances</value>
+  </data>
+  <data name="PerformanceVideoGroup" xml:space="preserve">
+    <value>Vidéo</value>
+  </data>
+  <data name="PerformanceImagesGroup" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="PerformanceJobsGroup" xml:space="preserve">
+    <value>Conversions simultanées</value>
+  </data>
+  <data name="DiagnosticsGroup" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="HardwareEncoders" xml:space="preserve">
+    <value>Encodeurs matériels détectés</value>
+  </data>
+  <data name="HardwareEncodersTooltip" xml:space="preserve">
+    <value>Trouvés par un court encodage de test avec chaque encodeur GPU ; le résultat est conservé jusqu'à un changement de pilote graphique ou de ffmpeg. En mode Auto, le premier encodeur de la liste qui gère le codec de sortie est utilisé, et le processeur prend le relais en cas d'échec.</value>
+  </data>
+  <data name="HardwareEncodersNone" xml:space="preserve">
+    <value>Aucun : les vidéos sont encodées par le processeur</value>
+  </data>
+  <data name="HardwareEncodersDetecting" xml:space="preserve">
+    <value>Détection...</value>
+  </data>
+  <data name="RedetectHardwareEncoders" xml:space="preserve">
+    <value>Redétecter</value>
+  </data>
+  <data name="ImageEngineLibvipsAvailable" xml:space="preserve">
+    <value>libvips {0} est disponible</value>
+  </data>
+  <data name="ImageEngineLibvipsUnavailable" xml:space="preserve">
+    <value>libvips n'est pas disponible ({0}) : ImageMagick convertit toutes les images</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousGpuConversions" xml:space="preserve">
+    <value>Encodages vidéo GPU</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousGpuConversionsTooltip" xml:space="preserve">
+    <value>Nombre maximum de vidéos encodées en même temps par la carte graphique. Les cartes graphiques grand public limitent le nombre de sessions d'encodage simultanées.</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousCpuVideoConversions" xml:space="preserve">
+    <value>Encodages vidéo CPU</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousCpuVideoConversionsTooltip" xml:space="preserve">
+    <value>Nombre maximum de vidéos encodées en même temps par le processeur (encodeurs logiciels). Chaque encodage utilise déjà plusieurs cœurs, quelques-uns suffisent. Auto (0) : un pour 4 cœurs physiques, de 2 à 4.</value>
+  </data>
+  <data name="OpenDiagnosticsFolder" xml:space="preserve">
+    <value>Ouvrir le dossier de diagnostics</value>
+  </data>
+  <data name="DiagnosticsDescription" xml:space="preserve">
+    <value>Chaque exécution de File Converter y écrit ses journaux (conservés un jour), avec le chemin de conversion (remux, nvenc, cpu-fallback, vips, imagemagick-fallback...) et la durée de chaque fichier.</value>
+  </data>
+  <data name="HardwareAccelerationMode" xml:space="preserve">
+    <value>Mode d'accélération matérielle</value>
+  </data>
+  <data name="HardwareAccelerationModeOffName" xml:space="preserve">
+    <value>Désactivée</value>
+  </data>
+  <data name="HardwareAccelerationModeCUDAName" xml:space="preserve">
+    <value>CUDA (Nvidia)</value>
+  </data>
+  <data name="HardwareAccelerationModeAMFName" xml:space="preserve">
+    <value>Advanced Media Framework (AMD)</value>
+  </data>
+  <data name="HardwareAccelerationModeD3D11Name" xml:space="preserve">
+    <value>Direct3D 11</value>
+  </data>
+  <data name="HardwareAccelerationModeDXVA2Name" xml:space="preserve">
+    <value>Direct3D 9/DXVA2</value>
+  </data>
+  <data name="HardwareAccelerationModeOpenCLName" xml:space="preserve">
+    <value>OpenCL</value>
+  </data>
+  <data name="HardwareAccelerationModeVulkanName" xml:space="preserve">
+    <value>Vulkan</value>
   </data>
 </root>

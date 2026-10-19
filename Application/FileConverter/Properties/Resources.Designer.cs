@@ -1686,5 +1686,167 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("SimultaneousConversionsTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performance.
+        /// </summary>
+        public static string Performance {
+            get {
+                return ResourceManager.GetString("Performance", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Video.
+        /// </summary>
+        public static string PerformanceVideoGroup {
+            get {
+                return ResourceManager.GetString("PerformanceVideoGroup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Images.
+        /// </summary>
+        public static string PerformanceImagesGroup {
+            get {
+                return ResourceManager.GetString("PerformanceImagesGroup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Simultaneous conversions.
+        /// </summary>
+        public static string PerformanceJobsGroup {
+            get {
+                return ResourceManager.GetString("PerformanceJobsGroup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Diagnostics.
+        /// </summary>
+        public static string DiagnosticsGroup {
+            get {
+                return ResourceManager.GetString("DiagnosticsGroup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Detected hardware encoders.
+        /// </summary>
+        public static string HardwareEncoders {
+            get {
+                return ResourceManager.GetString("HardwareEncoders", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Found with a short test encode on each GPU encoder; the result is kept until ....
+        /// </summary>
+        public static string HardwareEncodersTooltip {
+            get {
+                return ResourceManager.GetString("HardwareEncodersTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to None: videos are encoded by the CPU.
+        /// </summary>
+        public static string HardwareEncodersNone {
+            get {
+                return ResourceManager.GetString("HardwareEncodersNone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Detecting....
+        /// </summary>
+        public static string HardwareEncodersDetecting {
+            get {
+                return ResourceManager.GetString("HardwareEncodersDetecting", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Re-detect.
+        /// </summary>
+        public static string RedetectHardwareEncoders {
+            get {
+                return ResourceManager.GetString("RedetectHardwareEncoders", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to libvips {0} is available.
+        /// </summary>
+        public static string ImageEngineLibvipsAvailable {
+            get {
+                return ResourceManager.GetString("ImageEngineLibvipsAvailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to libvips is unavailable ({0}): ImageMagick converts every image.
+        /// </summary>
+        public static string ImageEngineLibvipsUnavailable {
+            get {
+                return ResourceManager.GetString("ImageEngineLibvipsUnavailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to GPU video encodes.
+        /// </summary>
+        public static string MaximumNumberOfSimultaneousGpuConversions {
+            get {
+                return ResourceManager.GetString("MaximumNumberOfSimultaneousGpuConversions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of videos encoded by the graphics card at the same time. Consu....
+        /// </summary>
+        public static string MaximumNumberOfSimultaneousGpuConversionsTooltip {
+            get {
+                return ResourceManager.GetString("MaximumNumberOfSimultaneousGpuConversionsTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to CPU video encodes.
+        /// </summary>
+        public static string MaximumNumberOfSimultaneousCpuVideoConversions {
+            get {
+                return ResourceManager.GetString("MaximumNumberOfSimultaneousCpuVideoConversions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of videos encoded by the processor (software encoders) at the ....
+        /// </summary>
+        public static string MaximumNumberOfSimultaneousCpuVideoConversionsTooltip {
+            get {
+                return ResourceManager.GetString("MaximumNumberOfSimultaneousCpuVideoConversionsTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open the diagnostics folder.
+        /// </summary>
+        public static string OpenDiagnosticsFolder {
+            get {
+                return ResourceManager.GetString("OpenDiagnosticsFolder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Each run of File Converter writes its logs there (kept for one day), with the....
+        /// </summary>
+        public static string DiagnosticsDescription {
+            get {
+                return ResourceManager.GetString("DiagnosticsDescription", resourceCulture);
+            }
+        }
     }
 }

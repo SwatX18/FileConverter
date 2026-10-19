@@ -668,6 +668,60 @@ use maj for uppercase version</value>
     <value>Auto ({0})</value>
   </data>
   <data name="SimultaneousConversionsTooltip" xml:space="preserve">
-    <value>Maximum number of files converted at the same time. Auto (0): one per physical CPU core. Within this limit, hardware (GPU) video encodes, software video encodes (2 to 4) and Office documents (2) have their own limits, and at most 2 jobs read or write the same hard disk drive.</value>
+    <value>Maximum number of files converted at the same time. Auto (0): one per physical CPU core. Within this limit, GPU and CPU video encodes (below) and Office documents (2) have their own limits, and at most 2 files of 100 MB or more are read or written on the same hard disk drive at a time.</value>
+  </data>
+  <data name="Performance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="PerformanceVideoGroup" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="PerformanceImagesGroup" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="PerformanceJobsGroup" xml:space="preserve">
+    <value>Simultaneous conversions</value>
+  </data>
+  <data name="DiagnosticsGroup" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="HardwareEncoders" xml:space="preserve">
+    <value>Detected hardware encoders</value>
+  </data>
+  <data name="HardwareEncodersTooltip" xml:space="preserve">
+    <value>Found with a short test encode on each GPU encoder; the result is kept until the graphics driver or ffmpeg changes. In Auto mode, the first encoder of the list that supports the output codec is used, and the CPU takes over if it fails.</value>
+  </data>
+  <data name="HardwareEncodersNone" xml:space="preserve">
+    <value>None: videos are encoded by the CPU</value>
+  </data>
+  <data name="HardwareEncodersDetecting" xml:space="preserve">
+    <value>Detecting...</value>
+  </data>
+  <data name="RedetectHardwareEncoders" xml:space="preserve">
+    <value>Re-detect</value>
+  </data>
+  <data name="ImageEngineLibvipsAvailable" xml:space="preserve">
+    <value>libvips {0} is available</value>
+  </data>
+  <data name="ImageEngineLibvipsUnavailable" xml:space="preserve">
+    <value>libvips is unavailable ({0}): ImageMagick converts every image</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousGpuConversions" xml:space="preserve">
+    <value>GPU video encodes</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousGpuConversionsTooltip" xml:space="preserve">
+    <value>Maximum number of videos encoded by the graphics card at the same time. Consumer graphics cards limit the number of simultaneous encode sessions.</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousCpuVideoConversions" xml:space="preserve">
+    <value>CPU video encodes</value>
+  </data>
+  <data name="MaximumNumberOfSimultaneousCpuVideoConversionsTooltip" xml:space="preserve">
+    <value>Maximum number of videos encoded by the processor (software encoders) at the same time. Each encode already uses several cores, so a few are enough. Auto (0): one per 4 physical cores, from 2 to 4.</value>
+  </data>
+  <data name="OpenDiagnosticsFolder" xml:space="preserve">
+    <value>Open the diagnostics folder</value>
+  </data>
+  <data name="DiagnosticsDescription" xml:space="preserve">
+    <value>Each run of File Converter writes its logs there (kept for one day), with the conversion path (remux, nvenc, cpu-fallback, vips, imagemagick-fallback...) and the duration of each file.</value>
   </data>
 </root>
