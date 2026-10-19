@@ -454,6 +454,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </None>
+    <!-- LGPL: the license, the source (README) and the exact versions are installed next to the DLLs. -->
+    <None Include="..\..\Middleware\libvips\LICENSE;..\..\Middleware\libvips\README.md;..\..\Middleware\libvips\versions.json">
+      <Link>libvips\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
