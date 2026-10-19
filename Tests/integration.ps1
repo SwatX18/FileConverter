@@ -51,6 +51,7 @@ if (-not (Test-Path (Join-Path $samples 'video'))) { throw "Corpus not found ($s
 # Path: expected conversion path of every job ('hw' = any hardware encoder path, '*' = not checked).
 # Streams: expected output streams 'type:codec' in order, joined by '+' ('*' = not checked).
 # Size: 'WxH' of the first video stream, or '' (not checked). Duration: 'source', seconds, or '' (not checked).
+# Outputs: number of output files (default: one per input).
 # Known: a known issue; its problems are reported but the case counts as 'known', not as a failure.
 $cases = @(
     # Video: stream copy
@@ -95,6 +96,7 @@ $cases = @(
     @{ Name = 'img_heic_to_jpg'; Preset = 'To Jpg'; Inputs = 'heic\*.heic'; Path = 'imagemagick'; Streams = 'video:mjpeg'; Size = ''; Duration = '' }
     @{ Name = 'img_raw_to_jpg'; Preset = 'To Jpg'; Inputs = 'raw\*.*'; Path = 'imagemagick'; Streams = 'video:mjpeg'; Size = ''; Duration = '' }
     @{ Name = 'img_png_to_ico'; Preset = 'To Ico'; Inputs = 'png\image_01.png'; Path = 'ico'; Streams = '*'; Size = ''; Duration = '' }
+    @{ Name = 'doc_pdf_to_png_paged'; Preset = 'To Png (paged)'; Inputs = 'pdf\vector_3pages.pdf'; Outputs = 3; Path = 'imagemagick'; Streams = 'video:png'; Size = '1653x2339'; Duration = '' }
     @{ Name = 'img_jpg_to_pdf'; Preset = 'To Pdf'; Inputs = 'jpg_24mp\img_001.jpg'; Path = 'imagemagick'; Streams = 'pdf'; Size = ''; Duration = '' }
 )
 $Case = @($Case | ForEach-Object { $_ -split ',' } | Where-Object { $_ })
@@ -210,7 +212,8 @@ try {
         }
 
         $outputs = @(Get-ChildItem $work -File | Where-Object { $linked -notcontains $_.FullName -and $_.Name -ne 'inputs.txt' })
-        if ($outputs.Count -ne $linked.Count) { $problems += "$($outputs.Count) outputs for $($linked.Count) inputs" }
+        $expectedOutputs = if ($c.Outputs) { [int]$c.Outputs } else { $linked.Count }
+        if ($outputs.Count -ne $expectedOutputs) { $problems += "$($outputs.Count) outputs for $($linked.Count) inputs, expected $expectedOutputs" }
         foreach ($o in $outputs) {
             $name = $o.Name
             if ($c.Streams -eq 'pdf') {

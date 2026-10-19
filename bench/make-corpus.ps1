@@ -162,6 +162,39 @@ for ($i = 1; $i -le 10; $i++) {
     }
 }
 
+# PDF (rendered by Ghostscript through ImageMagick): 3 A4 pages of vector text and shapes, written by hand.
+$pdfDir = Join-Path $OutDir 'pdf'
+New-Item -ItemType Directory -Force $pdfDir | Out-Null
+$pdfPath = Join-Path $pdfDir 'vector_3pages.pdf'
+if (-not (Test-Path $pdfPath) -or $Force) {
+    $pageCount = 3
+    $objects = New-Object System.Collections.Generic.List[string]
+    $objects.Add('<< /Type /Catalog /Pages 2 0 R >>')
+    $kids = (0..($pageCount - 1) | ForEach-Object { '{0} 0 R' -f (4 + 2 * $_) }) -join ' '
+    $objects.Add("<< /Type /Pages /Kids [$kids] /Count $pageCount >>")
+    $objects.Add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>')
+    for ($p = 1; $p -le $pageCount; $p++) {
+        $content = "BT /F1 36 Tf 72 760 Td (File Converter test page $p of $pageCount) Tj ET`n" +
+            "0.9 0.2 0.2 rg 72 400 200 200 re f`n0.2 0.4 0.9 rg 320 400 200 200 re f`n" +
+            "0 0 0 RG 4 w 72 300 m 523 350 l S`nBT /F1 14 Tf 72 250 Td (The quick brown fox jumps over the lazy dog.) Tj ET"
+        $objects.Add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents {0} 0 R >>' -f (5 + 2 * ($p - 1)))
+        $objects.Add("<< /Length $($content.Length) >>`nstream`n$content`nendstream")
+    }
+    $sb = New-Object System.Text.StringBuilder
+    [void]$sb.Append("%PDF-1.4`n")
+    $offsets = @()
+    for ($i = 0; $i -lt $objects.Count; $i++) {
+        $offsets += $sb.Length
+        [void]$sb.Append("$($i + 1) 0 obj`n$($objects[$i])`nendobj`n")
+    }
+    $xref = $sb.Length
+    [void]$sb.Append("xref`n0 $($objects.Count + 1)`n0000000000 65535 f `n")
+    foreach ($o in $offsets) { [void]$sb.Append(('{0:D10} 00000 n ' -f $o) + "`n") }
+    [void]$sb.Append("trailer`n<< /Size $($objects.Count + 1) /Root 1 0 R >>`nstartxref`n$xref`n%%EOF`n")
+    [IO.File]::WriteAllText($pdfPath, $sb.ToString(), [Text.Encoding]::ASCII)
+    Write-Host "  write  $pdfPath"
+}
+
 if (-not $SkipDownloads) {
     $ProgressPreference = 'SilentlyContinue'
     $heic = Join-Path $OutDir 'heic'; $raw = Join-Path $OutDir 'raw'
