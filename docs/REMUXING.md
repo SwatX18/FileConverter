@@ -8,7 +8,7 @@ streams (`-c copy`) instead of re-encoding them. The conversion is then limited 
 
 | Setting | Default | Notes |
 |---|---|---|
-| `CopyStreamsWhenPossible` | `true` | Settings → Application → "Copy streams without re-encoding when possible". A missing element (settings from older versions) means `true`; no migration needed. |
+| `CopyStreamsWhenPossible` | `true` | Settings → Performance → "Copy streams without re-encoding when possible". A missing element (settings from older versions) means `true`; no migration needed. |
 
 While a remux runs, the conversion list shows **"Remux (no re-encoding)"** instead of "Conversion". The diagnostics log
 has a `Remux plan: …` line listing each stream's decision, or `Remux: no, <reason>.`

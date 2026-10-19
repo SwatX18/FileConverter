@@ -9,7 +9,7 @@ libvips failure, uses the existing ImageMagick conversion unchanged.
 
 | Setting | Default | Notes |
 |---|---|---|
-| `ImageEngine` | `Auto` | Settings → Application → "Image engine": **Auto (libvips, then ImageMagick)** or **ImageMagick only**. A missing element (older settings files) means Auto. |
+| `ImageEngine` | `Auto` | Settings → Performance → "Image engine": **Auto (libvips, then ImageMagick)** or **ImageMagick only**. A missing element (older settings files) means Auto. |
 
 The diagnostics log shows the engine of each image: `Image engine: vips.`, `Image engine: imagemagick (<reason>).` or
 `Image engine: imagemagick-fallback (libvips failed (<error>)).`, and once per run

@@ -15,7 +15,7 @@ paths, ffmpeg arguments and, since Phase 2, an ffprobe launch per video), then s
 | Lane | Jobs | Limit |
 |---|---|---|
 | Light | images, audio, stream copies (remux), GIF/ICO, CD extraction | total |
-| CpuVideo | software video encodes (x264, x265, VP9, Theora, MPEG-4) | physical cores / 4, within 2..4 (4 here) |
+| CpuVideo | software video encodes (x264, x265, VP9, Theora, MPEG-4) | `MaximumNumberOfSimultaneousCpuVideoConversions`, Auto = physical cores / 4, within 2..4 (4 here) |
 | Gpu | video jobs whose first attempt is a hardware encode | `MaximumNumberOfSimultaneousGpuConversions` (4) |
 | Documents | Word / Excel / PowerPoint automation | 2 (the previous global default) |
 
@@ -39,7 +39,8 @@ paths, ffmpeg arguments and, since Phase 2, an ffprobe launch per video), then s
 | Setting | Before | Now |
 |---|---|---|
 | `MaximumNumberOfSimultaneousConversions` | 2 | **0 = Auto** (one per physical core). Settings v6 migration: the old default 2, written to every settings file, becomes Auto; other values are kept. The slider goes from 0 ("Auto (16)") to the number of logical processors. |
-| `MaximumNumberOfSimultaneousGpuConversions` | — (Phase 1, default 4) | GPU lane limit (no UI yet: Phase 5) |
+| `MaximumNumberOfSimultaneousGpuConversions` | — (Phase 1, default 4) | GPU lane limit (Settings → Performance since Phase 5) |
+| `MaximumNumberOfSimultaneousCpuVideoConversions` | — | Phase 5: CpuVideo lane limit, **0 = Auto** (physical cores / 4, within 2..4). A missing element means Auto. |
 
 Verified: settings v5 with 2 → total 16; v5 with 6 → 6; v6 with 2 → 2.
 

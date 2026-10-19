@@ -6,9 +6,9 @@ How MP4/MKV conversions pick an encoder, how they fall back, and how the quality
 
 | Setting | Where | Default |
 |---|---|---|
-| Hardware acceleration mode: `Auto`, `Off`, `CUDA`, `AMF` | Settings → Application (`Settings.HardwareAccelerationMode`) | **Auto**. Settings v5 migrates the old default `Off` to `Auto`; explicit CUDA/AMF are kept. |
+| Hardware acceleration mode: `Auto`, `Off`, `CUDA`, `AMF` | Settings → Performance (`Settings.HardwareAccelerationMode`) | **Auto**. Settings v5 migrates the old default `Off` to `Auto`; explicit CUDA/AMF are kept. |
 | Video codec: H.264, HEVC, AV1 | Mp4/Mkv preset editor, next to "Video" (preset setting `VideoCodec`) | H.264. AV1 is only listed when a hardware AV1 encoder is detected. |
-| Concurrent GPU encodes | `Settings.MaximumNumberOfSimultaneousGpuConversions` (no UI until Phase 5) | 4 |
+| Concurrent GPU encodes | Settings → Performance → "GPU video encodes" (`Settings.MaximumNumberOfSimultaneousGpuConversions`, 1 to 8) | 4 |
 
 `Auto` uses `IHardwareEncoderDetector.GetPreferredEncoder(codec)` (NVENC > AMF > QSV). `CUDA` and `AMF` force that vendor even
 when detection didn't confirm it; a failure then falls back to the CPU like any other.
@@ -16,7 +16,7 @@ when detection didn't confirm it; a failure then falls back to the CPU like any 
 ## Detection (`Hardware/HardwareEncoderDetector.cs`)
 
 - For each of `{h264,hevc,av1}_{nvenc,amf,qsv}`, it runs `ffmpeg -f lavfi -i color=black:s=256x256:d=0.1 -frames:v 1 -c:v <enc> -f null -` in parallel, with a 5 s timeout each. Exit code 0 means available. It takes about 0.9 s on the test machine.
-- The result is cached in `%LOCALAPPDATA%\FileConverter\hw-cache.json`, keyed by a fingerprint: `Win32_VideoController` name, driver version and PNP id for every adapter, plus the size and timestamp of `ffmpeg.exe`. A driver update, a new GPU or a new ffmpeg triggers re-detection. `Redetect()` ignores the cache (the "Re-detect" button comes in Phase 5).
+- The result is cached in `%LOCALAPPDATA%\FileConverter\hw-cache.json`, keyed by a fingerprint: `Win32_VideoController` name, driver version and PNP id for every adapter, plus the size and timestamp of `ffmpeg.exe`. A driver update, a new GPU or a new ffmpeg triggers re-detection. `Redetect()` ignores the cache: Settings → Performance → "Re-detect", which also lists the detected encoders per vendor with the GPU name (see `docs/SETTINGS.md`).
 - `RunConversions` starts detection in the background as soon as an Mp4/Mkv conversion is requested in Auto mode, so it overlaps with UI startup.
 
 Test machine (RTX 5070 Ti, Radeon iGPU): `h264_nvenc, hevc_nvenc, av1_nvenc, h264_amf, hevc_amf`. `av1_amf` and all QSV fail, as expected.
