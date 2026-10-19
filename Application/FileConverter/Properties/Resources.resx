@@ -136,7 +136,7 @@
     <value>Audio</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Automatically check for updates when File Converter starts</value>
+    <value>Automatically check for updates when FileConverter++ starts</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Automatically exit when all conversions finished</value>
@@ -172,10 +172,10 @@
     <value>Don't forget to reward my work if you like it :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>The update will be downloaded in background, and installed once you exit File Converter.</value>
+    <value>The update will be downloaded in background, and installed once you exit FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Install when I exit File Converter</value>
+    <value>Install when I exit FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Encoding :</value>
@@ -184,13 +184,13 @@
     <value>Encoding speed :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter is a shell extension.</value>
+    <value>FileConverter++ is a shell extension.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>That means it is integrated into the Windows explorer.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>To use File Converter please open the explorer and right-click on any file you like to bring up the context menu where you will find File Converter commands (see the readme file to see the list of compatible file formats).</value>
+    <value>To use FileConverter++ please open the explorer and right-click on any file you like to bring up the context menu where you will find FileConverter++ commands (see the readme file to see the list of compatible file formats).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>File name template</value>
@@ -220,10 +220,10 @@
     <value>None</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>The update has been downloaded. Exit File Converter and install the update now.</value>
+    <value>The update has been downloaded. Exit FileConverter++ and install the update now.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Install when I exit File Converter</value>
+    <value>Install when I exit FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Report an issue</value>
@@ -323,13 +323,13 @@ use maj for uppercase version</value>
     <value>90° clockwise rotation</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>An update for File Converter is available. It is strongly recommended that you install it as soon as possible!</value>
+    <value>An update for FileConverter++ is available. It is strongly recommended that you install it as soon as possible!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Upgrade download in progress...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter Updates</value>
+    <value>FileConverter++ Updates</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Define the ratio 'file size' versus 'video quality'. A lower value will give you a smaller file, a greater value give you a better video quality.</value>
@@ -587,7 +587,7 @@ use maj for uppercase version</value>
     <value>Error</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>Can't load file converter user settings. Do you want to fall back to default settings ?</value>
+    <value>Can't load FileConverter++ user settings. Do you want to fall back to default settings ?</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>Copy files in clipboard after conversion</value>
@@ -722,6 +722,6 @@ use maj for uppercase version</value>
     <value>Open the diagnostics folder</value>
   </data>
   <data name="DiagnosticsDescription" xml:space="preserve">
-    <value>Each run of File Converter writes its logs there (kept for one day), with the conversion path (remux, nvenc, cpu-fallback, vips, imagemagick-fallback...) and the duration of each file.</value>
+    <value>Each run of FileConverter++ writes its logs there (kept for one day), with the conversion path (remux, nvenc, cpu-fallback, vips, imagemagick-fallback...) and the duration of each file.</value>
   </data>
 </root>

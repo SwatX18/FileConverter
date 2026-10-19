@@ -240,7 +240,7 @@ namespace FileConverter.Services
             }
             catch (Exception exception)
             {
-                Debug.LogError("Failed to download the new File Converter upgrade. You should try again or download it manually.");
+                Debug.LogError("Failed to download the new FileConverter++ upgrade. You should try again or download it manually.");
                 Debug.Log(exception.ToString());
                 this.UpgradeVersionDescription.NeedToUpgrade = false;
             }

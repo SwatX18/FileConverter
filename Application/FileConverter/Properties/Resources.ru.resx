@@ -77,7 +77,7 @@
     <value>Аудио</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Автоматически проверять обновления при запуске File Converter</value>
+    <value>Автоматически проверять обновления при запуске FileConverter++</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Автоматически закрывать программу после завершения всех конвертаций</value>
@@ -113,10 +113,10 @@
     <value>Если вам нравится программа, не забудьте отблагодарить автора :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Обновление будет загружено в фоновом режиме и установлено при закрытии File Converter.</value>
+    <value>Обновление будет загружено в фоновом режиме и установлено при закрытии FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>установить при выходе из File Converter</value>
+    <value>установить при выходе из FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Кодирование:</value>
@@ -125,13 +125,13 @@
     <value>Скорость кодирования:</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter - это расширение оболочки Windows.</value>
+    <value>FileConverter++ - это расширение оболочки Windows.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Это означает, что он интегрирован в проводник Windows.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Для использования File Converter откройте проводник Windows и щелкните правой кнопкой мыши по любому файлу, чтобы открыть контекстное меню, где вы найдете команды File Converter (список поддерживаемых форматов файлов смотрите в readme).</value>
+    <value>Для использования FileConverter++ откройте проводник Windows и щелкните правой кнопкой мыши по любому файлу, чтобы открыть контекстное меню, где вы найдете команды FileConverter++ (список поддерживаемых форматов файлов смотрите в readme).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Шаблон имени файла</value>

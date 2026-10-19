@@ -136,7 +136,7 @@
     <value>Dźwięk</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Automatycznie sprawdzaj aktualizacje przy uruchomieniu File Converter</value>
+    <value>Automatycznie sprawdzaj aktualizacje przy uruchomieniu FileConverter++</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Automatycznie zamknij po zakończeniu wszystkich konwersji</value>
@@ -172,10 +172,10 @@
     <value>Nie zapomnij wynagrodzić mojej pracy, jeśli Ci się podoba :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Aktualizacja zostanie pobrana w tle i zainstalowana po zamknięciu File Converter.</value>
+    <value>Aktualizacja zostanie pobrana w tle i zainstalowana po zamknięciu FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Zainstaluj, gdy zamknę File Converter</value>
+    <value>Zainstaluj, gdy zamknę FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Kodowanie :</value>
@@ -184,13 +184,13 @@
     <value>Prędkość kodowania :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter to rozszerzenie powłoki systemowej.</value>
+    <value>FileConverter++ to rozszerzenie powłoki systemowej.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Oznacza to, że jest zintegrowany z eksploratorem Windows.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Aby użyć File Converter, otwórz eksplorator i kliknij prawym przyciskiem myszy dowolny plik, aby otworzyć menu kontekstowe, w którym znajdziesz polecenia File Converter (zobacz plik readme, aby zobaczyć listę zgodnych formatów plików).</value>
+    <value>Aby użyć FileConverter++, otwórz eksplorator i kliknij prawym przyciskiem myszy dowolny plik, aby otworzyć menu kontekstowe, w którym znajdziesz polecenia FileConverter++ (zobacz plik readme, aby zobaczyć listę zgodnych formatów plików).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Szablon nazwy pliku</value>
@@ -220,10 +220,10 @@
     <value>Brak</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Aktualizacja została pobrana. Zamknij File Converter i zainstaluj teraz aktualizację.</value>
+    <value>Aktualizacja została pobrana. Zamknij FileConverter++ i zainstaluj teraz aktualizację.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Zainstaluj, gdy zamknę File Converter</value>
+    <value>Zainstaluj, gdy zamknę FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Zgłoś problem</value>
@@ -323,13 +323,13 @@ użyj wielkich liter dla wersji z wielkiej litery</value>
     <value>Obrót o 90° w prawo</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>Dostępna jest aktualizacja dla File Converter. Zaleca się jej jak najszybszą instalację!</value>
+    <value>Dostępna jest aktualizacja dla FileConverter++. Zaleca się jej jak najszybszą instalację!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Pobieranie aktualizacji w toku...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>Aktualizacje File Converter</value>
+    <value>Aktualizacje FileConverter++</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Określ stosunek 'rozmiar pliku' do 'jakości wideo'. Niższa wartość da mniejszy plik, wyższa wartość da lepszą jakość wideo.</value>
@@ -587,7 +587,7 @@ użyj wielkich liter dla wersji z wielkiej litery</value>
     <value>Błąd</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>Nie można wczytać ustawień użytkownika File Converter. Czy chcesz przywrócić ustawienia domyślne?</value>
+    <value>Nie można wczytać ustawień użytkownika FileConverter++. Czy chcesz przywrócić ustawienia domyślne?</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>Kopiuj pliki do schowka po konwersji</value>

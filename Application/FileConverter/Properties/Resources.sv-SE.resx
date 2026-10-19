@@ -77,7 +77,7 @@
     <value>Ljud</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Sök automatiskt efter uppdateringar när File Converter startar</value>
+    <value>Sök automatiskt efter uppdateringar när FileConverter++ startar</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Stäng automatiskt när alla konverteringar är klara</value>
@@ -113,10 +113,10 @@
     <value>Glöm inte att belöna mitt arbete om du gillar det :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Uppdateringen laddas ner i bakgrunden och installeras när du stänger File Converter.</value>
+    <value>Uppdateringen laddas ner i bakgrunden och installeras när du stänger FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Installera när jag stänger File Converter</value>
+    <value>Installera när jag stänger FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Kodning :</value>
@@ -125,13 +125,13 @@
     <value>Kodningshastighet :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter är ett skal-tillägg.</value>
+    <value>FileConverter++ är ett skal-tillägg.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Det betyder att det är integrerat i Windows Utforskaren.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>För att använda File Converter, öppna Utforskaren och högerklicka på valfri fil för att öppna kontextmenyn där du hittar File Converter-kommandon (se readme-filen för en lista över kompatibla filformat).</value>
+    <value>För att använda FileConverter++, öppna Utforskaren och högerklicka på valfri fil för att öppna kontextmenyn där du hittar FileConverter++-kommandon (se readme-filen för en lista över kompatibla filformat).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Mall filnamn</value>
@@ -162,10 +162,10 @@
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
     <value>Uppdateringen har laddats ner.
-Stäng File Converter och installera uppdateringen nu.</value>
+Stäng FileConverter++ och installera uppdateringen nu.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Installera när jag stänger File Converter</value>
+    <value>Installera när jag stänger FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Rapportera ett problem</value>
@@ -265,14 +265,14 @@ använd versaler för stor bokstavs-version</value>
     <value>90° medurs rotation</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>En uppdatering för File Converter är tillgänglig.
+    <value>En uppdatering för FileConverter++ är tillgänglig.
 Det rekommenderas starkt att du installerar den så snart som möjligt!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Nedladdning av uppdatering pågår...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter Uppdateringar</value>
+    <value>FileConverter++ Uppdateringar</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Definierar förhållandet mellan 'filstorlek' och 'videokvalitet'.
@@ -537,7 +537,7 @@ det finns en utdatafil.</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
     <value>Kan inte 
-ladda användarinställningar för File Converter. Vill du återgå till standardinställningar?</value>
+ladda användarinställningar för FileConverter++. Vill du återgå till standardinställningar?</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>Kopiera filer till urklipp efter konvertering</value>

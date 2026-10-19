@@ -136,7 +136,7 @@
     <value>Audio</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>verificar por atualizações automaticamente quando o File converter iniciar</value>
+    <value>verificar por atualizações automaticamente quando o FileConverter++ iniciar</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Sair do programa automaticamente quando todas as conversões estiverem concluídas</value>
@@ -172,10 +172,10 @@
     <value>Não se esqueça de recompensar o meu trabalho se gostou :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>A atualização será baixada em segundo plano e instalada assim que fechar o File Converter.</value>
+    <value>A atualização será baixada em segundo plano e instalada assim que fechar o FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>instalar quando eu sair do File Converter</value>
+    <value>instalar quando eu sair do FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Codificação :</value>
@@ -184,13 +184,13 @@
     <value>Velocidade de codificação :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>O File Converter é uma extensão shell.</value>
+    <value>O FileConverter++ é uma extensão shell.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Isso quer dizer que ele está integrado no Explorador de arquivos do Windows.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Para usar o File Converter abra o Explorador de arquivos do Windows e clique com o botão direito do mouse em qualquer arquivo para mostrar o menu de contexto, onde encontrará os comandos do File Converter (veja no arquivo readme do File-Converter a lista de formatos de arquivos compatíveis).</value>
+    <value>Para usar o FileConverter++ abra o Explorador de arquivos do Windows e clique com o botão direito do mouse em qualquer arquivo para mostrar o menu de contexto, onde encontrará os comandos do FileConverter++ (veja no arquivo readme do FileConverter++ a lista de formatos de arquivos compatíveis).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Nome do arquivo de modelo</value>
@@ -220,10 +220,10 @@
     <value>Nenhum</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>A atualização foi transferida. Saia do File Converter e instale a atualização agora.</value>
+    <value>A atualização foi transferida. Saia do FileConverter++ e instale a atualização agora.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Instalar quando eu sair do File Converter</value>
+    <value>Instalar quando eu sair do FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Reportar um problema</value>
@@ -323,13 +323,13 @@ Use maj para a versão em maiúsculas</value>
     <value>Rotacionar 90° na direção do relógio</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>Uma atualização para o File Converter está disponível. É altamente recomendado instala-la assim que puder!</value>
+    <value>Uma atualização para o FileConverter++ está disponível. É altamente recomendado instala-la assim que puder!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Download da atualização em progresso...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>Atualizações do File Converter</value>
+    <value>Atualizações do FileConverter++</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Define a relação "tamanho x qualidade". Um valor mais baixo produz um arquivo menor, um valor mais alto produz um arquivo com mais qualidade.</value>

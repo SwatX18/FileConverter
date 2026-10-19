@@ -187,11 +187,11 @@
         <comment/>
     </data>
     <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-        <value>Das Update wird im Hintergrund heruntergeladen und installiert sobald sie File Converter schließen</value>
+        <value>Das Update wird im Hintergrund heruntergeladen und installiert sobald sie FileConverter++ schließen</value>
         <comment/>
     </data>
     <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-        <value>Installieren sobald ich File Converter schließe</value>
+        <value>Installieren sobald ich FileConverter++ schließe</value>
         <comment/>
     </data>
     <data name="Encoding" xml:space="preserve">
@@ -201,7 +201,7 @@
         <value>Codierungsgeschwindigkeit :</value>
     </data>
     <data name="FileConverterStartHelp1" xml:space="preserve">
-        <value>File Converter ist eine Shell-Erweiterung.</value>
+        <value>FileConverter++ ist eine Shell-Erweiterung.</value>
     </data>
     <data name="FileConverterStartHelp2" xml:space="preserve">
         <value>Das heißt, dass sie in den Windows Explorer integriert ist.</value>
@@ -242,11 +242,11 @@
         <comment/>
     </data>
     <data name="InstallButtonDescription" xml:space="preserve">
-        <value>Das Update wurde heruntergeladen. Schließe File Converter um es zu installieren</value>
+        <value>Das Update wurde heruntergeladen. Schließe FileConverter++ um es zu installieren</value>
         <comment/>
     </data>
     <data name="InstallButtonTitle" xml:space="preserve">
-        <value>Installieren sobald ich File Converter schließe</value>
+        <value>Installieren sobald ich FileConverter++ schließe</value>
         <comment/>
     </data>
     <data name="IssueButtonDescription" xml:space="preserve">
@@ -324,7 +324,7 @@
         <value>Change log anschauen</value>
     </data>
     <data name="Settings" xml:space="preserve">
-        <value>File Converter Einstellungen</value>
+        <value>FileConverter++ Einstellungen</value>
     </data>
     <data name="SettingsButtonTitle" xml:space="preserve">
         <value>Einstellungen</value>
@@ -337,13 +337,13 @@
         <value>90° im Uhrzeigersinn rotieren</value>
     </data>
     <data name="UpgradeAvailable" xml:space="preserve">
-        <value>Eine Aktualisierung für File Converter ist verfügbar. Es wird stark empfohlen, dass Sie dies so früh wie möglich installieren!</value>
+        <value>Eine Aktualisierung für FileConverter++ ist verfügbar. Es wird stark empfohlen, dass Sie dies so früh wie möglich installieren!</value>
     </data>
     <data name="UpgradeDownloadInProgress" xml:space="preserve">
         <value>Aktualisierung wird heruntergeladen</value>
     </data>
     <data name="UpgradeWindowTitle" xml:space="preserve">
-        <value>File Converter Aktualisierungen</value>
+        <value>FileConverter++ Aktualisierungen</value>
     </data>
     <data name="VideoEncodingQualityTooltip" xml:space="preserve">
         <value>Definieren Sie das Verhältnis zwischen Dateigröße und Videoqualität. Ein niedrigerer Wert wird Ihnen eine kleinere Datei geben, ein größerer Wert wird Ihnen bessere Videoqualität geben.</value>
@@ -514,7 +514,7 @@
         <value>Stereo</value>
     </data>
     <data name="FileConverterStartHelp3" xml:space="preserve">
-        <value>Um File Converter zu benutzen, öffnen sie den Dateiexplorer und klicken Sie mit der rechten Maustaste auf die Datei, die Sie umwandeln möchten, um das Kontext-Menü zu öffnen, wo Sie File Converter Befehle finden( Sehen Sie sich die Online-Dokumentation für eine Liste der integrierten Dateitypen an)</value>
+        <value>Um FileConverter++ zu benutzen, öffnen sie den Dateiexplorer und klicken Sie mit der rechten Maustaste auf die Datei, die Sie umwandeln möchten, um das Kontext-Menü zu öffnen, wo Sie FileConverter++ Befehle finden( Sehen Sie sich die Online-Dokumentation für eine Liste der integrierten Dateitypen an)</value>
     </data>
     <data name="LicenceHeader1" xml:space="preserve">
         <value>**This program is free software**.</value>

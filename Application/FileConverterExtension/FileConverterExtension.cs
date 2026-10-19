@@ -15,7 +15,7 @@ namespace FileConverterExtension
     using SharpShell.SharpContextMenu;
 
     /// <summary>
-    /// File converter context menu extension class.
+    /// FileConverter++ context menu extension class.
     /// </summary>
     [ComVisible(true), Guid("AF9B72B5-F4E4-44B0-A3D9-B55B748EFE90")]
     [COMServerAssociation(AssociationType.AllFiles)]
@@ -100,7 +100,7 @@ namespace FileConverterExtension
 
             ToolStripMenuItem fileConverterItem = new ToolStripMenuItem
             {
-                Text = "File Converter",
+                Text = "FileConverter++",
                 Image = new Icon(Properties.Resources.ApplicationIcon, SystemInformation.SmallIconSize).ToBitmap(),
             };
 
@@ -272,13 +272,13 @@ namespace FileConverterExtension
         {
             if (string.IsNullOrEmpty(PathHelpers.FileConverterPath))
             {
-                MessageBox.Show("Can't retrieve the file converter executable path. You should try to reinstall the application.");
+                MessageBox.Show("Can't retrieve the FileConverter++ executable path. You should try to reinstall the application.");
                 return;
             }
 
             if (!File.Exists(PathHelpers.FileConverterPath))
             {
-                MessageBox.Show($"Can't find the file converter executable ({PathHelpers.FileConverterPath}). You should try to reinstall the application.");
+                MessageBox.Show($"Can't find the FileConverter++ executable ({PathHelpers.FileConverterPath}). You should try to reinstall the application.");
                 return;
             }
 
@@ -301,13 +301,13 @@ namespace FileConverterExtension
         {
             if (string.IsNullOrEmpty(PathHelpers.FileConverterPath))
             {
-                MessageBox.Show("Can't retrieve the file converter executable path. You should try to reinstall the application.");
+                MessageBox.Show("Can't retrieve the FileConverter++ executable path. You should try to reinstall the application.");
                 return;
             }
 
             if (!File.Exists(PathHelpers.FileConverterPath))
             {
-                MessageBox.Show($"Can't find the file converter executable ({PathHelpers.FileConverterPath}). You should try to reinstall the application.");
+                MessageBox.Show($"Can't find the FileConverter++ executable ({PathHelpers.FileConverterPath}). You should try to reinstall the application.");
                 return;
             }
 

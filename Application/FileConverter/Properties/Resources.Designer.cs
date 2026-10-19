@@ -151,7 +151,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatically check for updates when File Converter starts.
+        ///   Looks up a localized string similar to Automatically check for updates when FileConverter++ starts.
         /// </summary>
         public static string AutomaticallyCheckForUpdates {
             get {
@@ -403,7 +403,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The update will be downloaded in background, and installed once you exit File Converter..
+        ///   Looks up a localized string similar to The update will be downloaded in background, and installed once you exit FileConverter++..
         /// </summary>
         public static string DownloadAndInstallButtonDescription {
             get {
@@ -412,7 +412,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Install when I exit File Converter.
+        ///   Looks up a localized string similar to Install when I exit FileConverter++.
         /// </summary>
         public static string DownloadAndInstallButtonTitle {
             get {
@@ -493,7 +493,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t load file converter user settings. Do you want to fall back to default settings ?.
+        ///   Looks up a localized string similar to Can&apos;t load FileConverter++ user settings. Do you want to fall back to default settings ?.
         /// </summary>
         public static string ErrorCantLoadSettings {
             get {
@@ -709,7 +709,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Converter is a shell extension..
+        ///   Looks up a localized string similar to FileConverter++ is a shell extension..
         /// </summary>
         public static string FileConverterStartHelp1 {
             get {
@@ -727,7 +727,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To use File Converter please open the explorer and right-click on any file you like to bring up the context menu where you will find File Converter commands (see the readme file to see the list of compatible file formats)..
+        ///   Looks up a localized string similar to To use FileConverter++ please open the explorer and right-click on any file you like to bring up the context menu where you will find FileConverter++ commands (see the readme file to see the list of compatible file formats)..
         /// </summary>
         public static string FileConverterStartHelp3 {
             get {
@@ -898,7 +898,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The update has been downloaded. Exit File Converter and install the update now..
+        ///   Looks up a localized string similar to The update has been downloaded. Exit FileConverter++ and install the update now..
         /// </summary>
         public static string InstallButtonDescription {
             get {
@@ -907,7 +907,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Install when I exit File Converter.
+        ///   Looks up a localized string similar to Install when I exit FileConverter++.
         /// </summary>
         public static string InstallButtonTitle {
             get {
@@ -1328,7 +1328,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An update for File Converter is available. It is strongly recommended that you install it as soon as possible!.
+        ///   Looks up a localized string similar to An update for FileConverter++ is available. It is strongly recommended that you install it as soon as possible!.
         /// </summary>
         public static string UpgradeAvailable {
             get {
@@ -1346,7 +1346,7 @@ namespace FileConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File Converter Updates.
+        ///   Looks up a localized string similar to FileConverter++ Updates.
         /// </summary>
         public static string UpgradeWindowTitle {
             get {
@@ -1841,7 +1841,7 @@ namespace FileConverter.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Each run of File Converter writes its logs there (kept for one day), with the....
+        ///   Looks up a localized string similar to Each run of FileConverter++ writes its logs there (kept for one day), with the....
         /// </summary>
         public static string DiagnosticsDescription {
             get {

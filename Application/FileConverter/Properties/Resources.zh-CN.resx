@@ -136,7 +136,7 @@
     <value>音频</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>File Converter 启动时自动检查更新</value>
+    <value>FileConverter++ 启动时自动检查更新</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>所有转换完成后自动退出</value>
@@ -172,10 +172,10 @@
     <value>如果你喜欢，别忘了鼓励我的工作^_^</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>此更新将在后台下载，并在 File Converter 退出后立即开始安装。</value>
+    <value>此更新将在后台下载，并在 FileConverter++ 退出后立即开始安装。</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>当我退出 File Converter 时安装</value>
+    <value>当我退出 FileConverter++ 时安装</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>正在编码：</value>
@@ -184,13 +184,13 @@
     <value>编码速度：</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter 是一个 Shell 扩展。</value>
+    <value>FileConverter++ 是一个 Shell 扩展。</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>这意味着它被集成在 Windows 资源管理器中。</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>要使用 File Converter，请打开资源管理器并右击任意文件显示上下文菜单，您可以找到 File Converter 的一些命令（请查阅 readme 文件中列出的可兼容的文件格式）。</value>
+    <value>要使用 FileConverter++，请打开资源管理器并右击任意文件显示上下文菜单，您可以找到 FileConverter++ 的一些命令（请查阅 readme 文件中列出的可兼容的文件格式）。</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>文件名模板</value>
@@ -220,10 +220,10 @@
     <value>无</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>更新下载完成。现在可退出 File Converter 并安装更新。</value>
+    <value>更新下载完成。现在可退出 FileConverter++ 并安装更新。</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>当我退出 File Converter 时安装</value>
+    <value>当我退出 FileConverter++ 时安装</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>报告问题</value>
@@ -323,13 +323,13 @@
     <value>顺时针旋转 90°</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>File Converter 有可用更新。墙裂建议您尽快安装最新版本！</value>
+    <value>FileConverter++ 有可用更新。墙裂建议您尽快安装最新版本！</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>正在下载升级包……</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter 更新</value>
+    <value>FileConverter++ 更新</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>定义“文件大小”与“视频质量”的比重。较小的比重可以让您的文件占用更小，较大的比重可以让您的视频质量更高。</value>
@@ -587,7 +587,7 @@
     <value>错误</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>无法加载 File Converter 用户设置。您想恢复默认设置吗？</value>
+    <value>无法加载 FileConverter++ 用户设置。您想恢复默认设置吗？</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>转换后将文件复制到剪贴板</value>

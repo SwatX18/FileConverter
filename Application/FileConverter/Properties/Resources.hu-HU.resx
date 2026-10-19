@@ -136,7 +136,7 @@
     <value>Hang</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Automatikusan keres frissítéseket mikor a File Converter elindul</value>
+    <value>Automatikusan keres frissítéseket mikor a FileConverter++ elindul</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Automatikusan kilép mikor az összes átalakítás befejeződött</value>
@@ -172,10 +172,10 @@
     <value>Ne felejtsd el jutalmazni a munkámat ha szereted :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>A frissítés a háttérben lesz letöltve, és települ amint kiléptél a File Converterből.</value>
+    <value>A frissítés a háttérben lesz letöltve, és települ amint kiléptél a FileConverter++ből.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Települjön mikor kilépek a File Converterből</value>
+    <value>Települjön mikor kilépek a FileConverter++ből</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Kódolás :</value>
@@ -184,7 +184,7 @@
     <value>Kódolási sebesség :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>A File Converter egy shell kiterjesztés.</value>
+    <value>A FileConverter++ egy shell kiterjesztés.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Ez azt jelenti hogy a Fájlkezelőbe van beépítve.</value>
@@ -217,10 +217,10 @@
     <value>Semmi</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>A frissítés letöltött. Lépj ki a File Converterből és telepítsd most.</value>
+    <value>A frissítés letöltött. Lépj ki a FileConverter++ből és telepítsd most.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Települjön mikor kilépek a File Converterből</value>
+    <value>Települjön mikor kilépek a FileConverter++ből</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Jelents be egy hibát</value>
@@ -308,7 +308,7 @@ használj nagybetűt a végig nagybetűs nevekhez</value>
     <value>Lásd a változtatások naplóját ...</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>File Converter Beállítások</value>
+    <value>FileConverter++ Beállítások</value>
   </data>
   <data name="SettingsButtonTooltip" xml:space="preserve">
     <value>Beállítások</value>
@@ -320,13 +320,13 @@ használj nagybetűt a végig nagybetűs nevekhez</value>
     <value>90° óramutató járásával megegyező forgatás</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>Egy frissítés elérhető a File Converterhez. Erősen javasolt hogy telepítsd amint lehetséges!</value>
+    <value>Egy frissítés elérhető a FileConverter++hez. Erősen javasolt hogy telepítsd amint lehetséges!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Frissítés letöltése folyamatban...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter Frissítések</value>
+    <value>FileConverter++ Frissítések</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Határozd meg az arányát a 'fájlméretnek' és a 'videóminőségnek'. Egy kisebb érték kisebb fájlméreteet eredményez, egy nagyobb érték pedig magasabb videóminőséget.</value>
@@ -494,7 +494,7 @@ használj nagybetűt a végig nagybetűs nevekhez</value>
     <value>Sztereó</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Hogy használhasd a File Convertert, kérlek nyisd meg a fájlkezelőt és jobb-kattints akármilyen fájlra, hogy megnyisd a helyi menüt, ahol megtalálhatod a File Converter parancsait (nézd meg az online dokumentációt hogy láthass egy listát a kompatibilis fájlkiterjesztésekről).</value>
+    <value>Hogy használhasd a FileConverter++t, kérlek nyisd meg a fájlkezelőt és jobb-kattints akármilyen fájlra, hogy megnyisd a helyi menüt, ahol megtalálhatod a FileConverter++ parancsait (nézd meg az online dokumentációt hogy láthass egy listát a kompatibilis fájlkiterjesztésekről).</value>
   </data>
   <data name="LicenceHeader1" xml:space="preserve">
     <value>**Ez a program ingyenes szoftver**.</value>
@@ -572,6 +572,6 @@ használj nagybetűt a végig nagybetűs nevekhez</value>
     <value>Hiba</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>Nem tölthetőek be a File Converter felhasználói beállításai. Szeretnéd az alapértelmezetteket használni?</value>
+    <value>Nem tölthetőek be a FileConverter++ felhasználói beállításai. Szeretnéd az alapértelmezetteket használni?</value>
   </data>
 </root>

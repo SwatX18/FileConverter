@@ -143,7 +143,7 @@
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
     <value>البحث عن التحديثات تلقائياً عند فتح البرنامج</value>
-    <comment>Automatically check for updates when File Converter starts</comment>
+    <comment>Automatically check for updates when FileConverter++ starts</comment>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>الخروج من البرنامج عند انتهاء كل التحويلات</value>
@@ -191,11 +191,11 @@
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
     <value>التحديث سوف يقوم بالتنزيل في الخلفية و سوف يتم تثبيت التحديث عند غلق البرنامج</value>
-    <comment>The update will be downloaded in background, and installed once you exit File Converter.</comment>
+    <comment>The update will be downloaded in background, and installed once you exit FileConverter++.</comment>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
     <value>تثبيت عندما اقوم بإغلاق البرنامج</value>
-    <comment>Install when I exit File Converter</comment>
+    <comment>Install when I exit FileConverter++</comment>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>الترميز:</value>
@@ -206,16 +206,16 @@
     <comment>Encoding speed :</comment>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>shell يكون صيغة  File Converter</value>
-    <comment>File Converter is a shell extension.</comment>
+    <value>shell يكون صيغة  FileConverter++</value>
+    <comment>FileConverter++ is a shell extension.</comment>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Windows explorer. ذلك معناه انه مدمج مع</value>
     <comment>That means it is integrated into the Windows explorer.</comment>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>لاستخدام File Converter قم بفتح explorer وقم بالضغط مرتين يمين علي الملف الذي تريد جلبة الي القائمة حيث سوف تجد اوامر البرنامج (انظر ملف readme لتري مجموعه الصيغ المتوافقة </value>
-    <comment>To use File Converter please open the explorer and right-click on any file you like to bring up the context menu where you will find File Converter commands (see the readme file to see the list of compatible file formats).</comment>
+    <value>لاستخدام FileConverter++ قم بفتح explorer وقم بالضغط مرتين يمين علي الملف الذي تريد جلبة الي القائمة حيث سوف تجد اوامر البرنامج (انظر ملف readme لتري مجموعه الصيغ المتوافقة </value>
+    <comment>To use FileConverter++ please open the explorer and right-click on any file you like to bring up the context menu where you will find FileConverter++ commands (see the readme file to see the list of compatible file formats).</comment>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>نموذج اسم الملف</value>
@@ -255,11 +255,11 @@
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
     <value>التحديث تم تنزيله.اغلق البرنامج و قم بتثبيت التحديث الان</value>
-    <comment>The update has been downloaded. Exit File Converter and install the update now.</comment>
+    <comment>The update has been downloaded. Exit FileConverter++ and install the update now.</comment>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
     <value>تثبيت عندما اقوم بغلق البرنامج</value>
-    <comment>Install when I exit File Converter</comment>
+    <comment>Install when I exit FileConverter++</comment>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>تقرير عن مشكلة</value>
@@ -399,15 +399,15 @@ use maj for uppercase version</comment>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
     <value>يتوفر تحديث للبرنامج. يوصى بشدة بتثبيته في أسرع وقت ممكن!</value>
-    <comment>An update for File Converter is available. It is strongly recommended that you install it as soon as possible!</comment>
+    <comment>An update for FileConverter++ is available. It is strongly recommended that you install it as soon as possible!</comment>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>ترقية التنزيل قيد التقدم ...</value>
     <comment>Upgrade download in progress...</comment>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>تحديثات File Converter</value>
-    <comment>File Converter Updates</comment>
+    <value>تحديثات FileConverter++</value>
+    <comment>FileConverter++ Updates</comment>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>حدد نسبة "حجم الملف" مقابل "جودة الفيديو". ستمنحك القيمة الأقل ملفًا أصغر ، بينما تمنحك القيمة الأكبر جودة فيديو أفضل.</value>
@@ -686,7 +686,7 @@ use maj for uppercase version</comment>
   </data>
   <data name="WebsiteButtonDescription" xml:space="preserve">
     <value>فتح موقع البرناج</value>
-    <comment>Open File Converter website</comment>
+    <comment>Open FileConverter++ website</comment>
   </data>
   <data name="ErrorDuringJobInitialization" xml:space="preserve">
     <value>خطأ اثناء عملية تثبيت التحويل</value>
@@ -746,6 +746,6 @@ use maj for uppercase version</comment>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
     <value>لا يمكن تحميل ملف الضبط  ,هل تريد ان تعود الي الضبط الرئيسي</value>
-    <comment>Can't load file converter user settings. Do you want to fall back to default settings ?</comment>
+    <comment>Can't load FileConverter++ user settings. Do you want to fall back to default settings ?</comment>
   </data>
 </root>

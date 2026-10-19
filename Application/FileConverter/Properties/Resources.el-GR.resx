@@ -136,7 +136,7 @@
     <value>Ήχος</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Αυτόματος έλεγχος για ενημερώσεις κατά την εκκίνηση του μετατροπέα αρχείων</value>
+    <value>Αυτόματος έλεγχος για ενημερώσεις κατά την εκκίνηση του FileConverter++</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Αυτόματη έξοδος όταν ολοκληρωθούν όλες οι μετατροπές</value>
@@ -172,10 +172,10 @@
     <value>Μην ξεχάσεις να ανταμείψεις τη δουλειά μου αν σου αρέσει η εφαρμογή :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Η ενημέρωση θα ληφθεί στο παρασκήνιο και θα εγκατασταθεί μόλις πραγματοποιήσετε έξοδο από τον Μετατροπέα αρχείων.</value>
+    <value>Η ενημέρωση θα ληφθεί στο παρασκήνιο και θα εγκατασταθεί μόλις πραγματοποιήσετε έξοδο από τον FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Εγκατάσταση κατά την έξοδο από τον Μετατροπέα Αρχείων</value>
+    <value>Εγκατάσταση κατά την έξοδο από τον FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Κωδικοποίηση :</value>
@@ -184,13 +184,13 @@
     <value>Τχύτητα Κωδικοποίησης :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>Ο μετατροπέας αρχείων είναι επέκταση shell-κελύφους.</value>
+    <value>Ο FileConverter++ είναι επέκταση shell-κελύφους.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Αυτό σημαίνει ότι είναι ενσωματωμένη στην εξερεύνηση των Windows.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Για να χρησιμοποιήσετε το μετατροπέα αρχείων ανοίξτε την εξερεύνηση και κάντε δεξί κλικ σε οποιοδήποτε αρχείο θέλετε να εμφανιστεί το μενού περιβάλλοντος όπου θα βρείτε τις εντολές του μετατροπέα αρχείων (δείτε το αρχείο readme για να δείτε τη λίστα με τις συμβατές μορφές αρχείων).</value>
+    <value>Για να χρησιμοποιήσετε το FileConverter++ ανοίξτε την εξερεύνηση και κάντε δεξί κλικ σε οποιοδήποτε αρχείο θέλετε να εμφανιστεί το μενού περιβάλλοντος όπου θα βρείτε τις εντολές του FileConverter++ (δείτε το αρχείο readme για να δείτε τη λίστα με τις συμβατές μορφές αρχείων).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Πρότυπο ονόματος αρχείου</value>
@@ -220,10 +220,10 @@
     <value>Καμία</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Έγινε λήψη της ενημέρωσης. Κλείστε τον Μετατροπέα Αρχείων και εγκαταστήστε την ενημέρωση τώρα.</value>
+    <value>Έγινε λήψη της ενημέρωσης. Κλείστε τον FileConverter++ και εγκαταστήστε την ενημέρωση τώρα.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Εγκατάσταση κατά την έξοδο από τον Μετατροπέα Αρχείων</value>
+    <value>Εγκατάσταση κατά την έξοδο από τον FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Αναφορά προβλήματος</value>
@@ -311,7 +311,7 @@
     <value>Έμφάνιση αλλαγών ...</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Ρυθμίσεις μετατροπέα αρχείων</value>
+    <value>Ρυθμίσεις FileConverter++</value>
   </data>
   <data name="SettingsButtonTooltip" xml:space="preserve">
     <value>Ρυθμίσεις</value>
@@ -329,7 +329,7 @@
     <value>Λήψη αναβάθμισης σε εξέλιξη...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>Ενημερώσεις Μετατροπέα Αρχείων</value>
+    <value>Ενημερώσεις FileConverter++</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Ορίστε την αναλογία "μέγεθος αρχείου" έναντι "ποιότητα βίντεο". Με χαμηλότερη τιμή έχετε μικρότερο μέγεθος αρχείου, με μεγαλύτερη τιμή έχετε καλύτερη ποιότητα βίντεο.</value>
@@ -590,7 +590,7 @@
     <value>Σφάλμα</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>Δεν είναι δυνατή η φόρτωση των ρυθμίσεων χρήστη του μετατροπέα αρχείων. Θέλετε να επιστρέψετε στις προεπιλεγμένες ρυθμίσεις?</value>
+    <value>Δεν είναι δυνατή η φόρτωση των ρυθμίσεων χρήστη του FileConverter++. Θέλετε να επιστρέψετε στις προεπιλεγμένες ρυθμίσεις?</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>Αντιγραφή αρχείων στο πρόχειρο μετά τη μετατροπή</value>

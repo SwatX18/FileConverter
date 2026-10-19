@@ -136,7 +136,7 @@
     <value>Âm thanh</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Tự động kiểm tra cập nhật khi File Converter được khởi động</value>
+    <value>Tự động kiểm tra cập nhật khi FileConverter++ được khởi động</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Tự động thoát khi tất cả quá trình chuyển đổi hoàn tất.</value>
@@ -172,10 +172,10 @@
     <value>Đừng quên ủng hộ công sức của tôi nếu bạn thích nó nhé! :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Bản cập nhật sẽ được tải xuống ở chế độ nền và cài đặt sau khi bạn thoát File Converter.</value>
+    <value>Bản cập nhật sẽ được tải xuống ở chế độ nền và cài đặt sau khi bạn thoát FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Cài đặt khi tôi thoát File Converter.</value>
+    <value>Cài đặt khi tôi thoát FileConverter++.</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Encoding :</value>
@@ -184,7 +184,7 @@
     <value>Tốc độ Encoding :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter là một tiện ích mở rộng của shell.</value>
+    <value>FileConverter++ là một tiện ích mở rộng của shell.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Điều đó có nghĩa là nó được tích hợp vào Windows Explorer.</value>
@@ -217,10 +217,10 @@
     <value>Không</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Bản cập nhật đã được tải xuống. Hãy thoát File Converter và cài đặt bản cập nhật ngay bây giờ.</value>
+    <value>Bản cập nhật đã được tải xuống. Hãy thoát FileConverter++ và cài đặt bản cập nhật ngay bây giờ.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Cài đặt khi tôi thoát File Converter</value>
+    <value>Cài đặt khi tôi thoát FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Báo cáo sự cố</value>
@@ -308,7 +308,7 @@ Sử dụng MAJ để viết hoa phiên bản</value>
     <value>Xem thay đổi trong nhật ký log ...</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>File Converter cài đặt</value>
+    <value>FileConverter++ cài đặt</value>
   </data>
   <data name="SettingsButtonTooltip" xml:space="preserve">
     <value>Cài đặt</value>
@@ -320,13 +320,13 @@ Sử dụng MAJ để viết hoa phiên bản</value>
     <value>90° Xoay theo chiều kim đồng hồ</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>Có một bản cập nhật cho File Converter. Chúng tôi thực sự khuyên bạn nên cài đặt nó càng sớm càng tốt!</value>
+    <value>Có một bản cập nhật cho FileConverter++. Chúng tôi thực sự khuyên bạn nên cài đặt nó càng sớm càng tốt!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Đang tải xuống bản nâng cấp...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter cập nhật</value>
+    <value>FileConverter++ cập nhật</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Xác định tỷ lệ giữa 'kích thước tệp' và 'chất lượng video'. Giá trị thấp hơn sẽ cho bạn một tệp nhỏ hơn, giá trị lớn hơn sẽ cho bạn chất lượng video tốt hơn.</value>
@@ -494,7 +494,7 @@ Sử dụng MAJ để viết hoa phiên bản</value>
     <value>Stereo</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Để sử dụng File Converter, vui lòng mở (explorer) và nhấp chuột phải vào bất kỳ tệp nào bạn muốn để mở menu ngữ cảnh, nơi bạn sẽ tìm thấy các lệnh File Converter (xem tài liệu trực tuyến để xem danh sách các định dạng tệp tương thích).</value>
+    <value>Để sử dụng FileConverter++, vui lòng mở (explorer) và nhấp chuột phải vào bất kỳ tệp nào bạn muốn để mở menu ngữ cảnh, nơi bạn sẽ tìm thấy các lệnh FileConverter++ (xem tài liệu trực tuyến để xem danh sách các định dạng tệp tương thích).</value>
   </data>
   <data name="LicenceHeader1" xml:space="preserve">
     <value>**Chương trình này là phần mềm miễn phí.**.</value>
@@ -572,6 +572,6 @@ Sử dụng MAJ để viết hoa phiên bản</value>
     <value>Lỗi</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>Không thể tải cài đặt người dùng của file converter. Bạn có muốn quay trở lại cài đặt mặc định không?</value>
+    <value>Không thể tải cài đặt người dùng của FileConverter++. Bạn có muốn quay trở lại cài đặt mặc định không?</value>
   </data>
 </root>

@@ -184,13 +184,13 @@
     <value>Скорость кодирования :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter — это расширение оболочки.</value>
+    <value>FileConverter++ — это расширение оболочки.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Это означает, что он интегрирован в проводник Windows.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Чтобы использовать File Converter, откройте проводник и щелкните правой кнопкой мыши любой файл, который вам нравится, чтобы открыть контекстное меню, в котором вы найдете доступные команды (см. файл readme, чтобы увидеть список совместимых форматов).</value>
+    <value>Чтобы использовать FileConverter++, откройте проводник и щелкните правой кнопкой мыши любой файл, который вам нравится, чтобы открыть контекстное меню, в котором вы найдете доступные команды (см. файл readme, чтобы увидеть список совместимых форматов).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Шаблон имени файла</value>

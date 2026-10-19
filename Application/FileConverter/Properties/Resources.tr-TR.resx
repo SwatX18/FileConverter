@@ -136,7 +136,7 @@
     <value>Ses</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>File Converter başladığında otomatik olarak güncellemeleri denetle</value>
+    <value>FileConverter++ başladığında otomatik olarak güncellemeleri denetle</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Tüm dönüşümler bittiğinde otomatik olarak çıkış yap</value>
@@ -172,10 +172,10 @@
     <value>Eğer beğendiysen işimde bana yardımcı olmayı unutma :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Güncelleme arkaplanda iniyor olacak, ve File Converter'dan çıktığınızda kurulacak.</value>
+    <value>Güncelleme arkaplanda iniyor olacak, ve FileConverter++'dan çıktığınızda kurulacak.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>File Converter'dan çıktığımda kur</value>
+    <value>FileConverter++'dan çıktığımda kur</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Şifreleniyor :</value>
@@ -184,13 +184,13 @@
     <value>Şifreleme hızı :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter bir kabuk uzantısıdır.</value>
+    <value>FileConverter++ bir kabuk uzantısıdır.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Bu, Windows gezgini ile birleşik çalıştığı anlamına geliyor.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>File converter'ı kullanmak için lütfen dosya gezginini açın ve File Converter komutlarını bulacağınız bağlam menüsüne ulaşmak için istediğiniz herhangi bir dosyaya sağ tıklayın (tüm uyumlu dosya türleri için readme dosyasına bakın).</value>
+    <value>FileConverter++'ı kullanmak için lütfen dosya gezginini açın ve FileConverter++ komutlarını bulacağınız bağlam menüsüne ulaşmak için istediğiniz herhangi bir dosyaya sağ tıklayın (tüm uyumlu dosya türleri için readme dosyasına bakın).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Dosya ismi şablonu</value>
@@ -220,10 +220,10 @@
     <value>Hiçbiri</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Güncelleme indirildi. File Converter'dan çıkın ve şimdi kurun.</value>
+    <value>Güncelleme indirildi. FileConverter++'dan çıkın ve şimdi kurun.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Ben File Converter'dan çıktığımda kur</value>
+    <value>Ben FileConverter++'dan çıktığımda kur</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Bir problem raporla</value>
@@ -323,13 +323,13 @@
     <value>90° saat yönünün tersine dönme</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>File Converter için bir güncelleme mevcut. Mümkün olan en yakın zamanda kurmanız şiddetle tavsiye edilir!</value>
+    <value>FileConverter++ için bir güncelleme mevcut. Mümkün olan en yakın zamanda kurmanız şiddetle tavsiye edilir!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Yükseltme indiriliyor...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter Güncellemeleri</value>
+    <value>FileConverter++ Güncellemeleri</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>'dosya boyutu' ve 'video kalitesi' arasındaki oranı tanımla. Düşük bir değer daha küçük dosya boyutu demek, Yüksek bir değer daha kaliteli video demek.</value>

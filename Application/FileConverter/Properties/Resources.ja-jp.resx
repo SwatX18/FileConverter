@@ -136,7 +136,7 @@
     <value>オーディオ</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>ファイルコンバータ起動時に自動的にアップデートをチェック</value>
+    <value>FileConverter++起動時に自動的にアップデートをチェック</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>すべての変換が終了すると自動的に終了する</value>
@@ -172,10 +172,10 @@
     <value>もし気に入ってもらえたら、僕の作品にご褒美をあげるのを忘れないでね :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>アップデートはバックグラウンドでダウンロードされ、ファイルコンバータを終了するとインストールされます。</value>
+    <value>アップデートはバックグラウンドでダウンロードされ、FileConverter++を終了するとインストールされます。</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>ファイルコンバータを終了するとインストールされる</value>
+    <value>FileConverter++を終了するとインストールされる</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>エンコーディング :</value>
@@ -184,13 +184,13 @@
     <value>エンコード速度 :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converterはシェル拡張です。</value>
+    <value>FileConverter++はシェル拡張です。</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>つまり、ウィンドウズのエクスプローラーに統合されているのだ。</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>ファイルコンバータを使用するには、エクスプローラーを開き、好きなファイルを右クリックしてコンテキストメニューを表示し、そこにファイルコンバータのコマンドがあります（互換性のあるファイル形式のリストは、Readmeファイルを参照してください）。</value>
+    <value>FileConverter++を使用するには、エクスプローラーを開き、好きなファイルを右クリックしてコンテキストメニューを表示し、そこにFileConverter++のコマンドがあります（互換性のあるファイル形式のリストは、Readmeファイルを参照してください）。</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>ファイル名テンプレート</value>
@@ -220,10 +220,10 @@
     <value>なし</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>アップデートがダウンロードされました。ファイルコンバータを終了し、アップデートをインストールします。</value>
+    <value>アップデートがダウンロードされました。FileConverter++を終了し、アップデートをインストールします。</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>ファイルコンバータを終了するとインストールされる</value>
+    <value>FileConverter++を終了するとインストールされる</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>問題を報告する</value>
@@ -323,13 +323,13 @@
     <value>90° 時計回り</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>ファイルコンバータのアップデートが利用可能です。できるだけ早くインストールすることを強くお勧めします！</value>
+    <value>FileConverter++のアップデートが利用可能です。できるだけ早くインストールすることを強くお勧めします！</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>アップグレードダウンロード中...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>ファイルコンバーターのアップデート</value>
+    <value>FileConverter++のアップデート</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>ファイルサイズ」と「ビデオ品質」の比率を定義します。値を小さくするとファイルサイズが小さくなり、大きくするとビデオ品質が良くなります。</value>
@@ -587,7 +587,7 @@
     <value>エラー</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>ファイルコンバータのユーザー設定を読み込めません。デフォルト設定に戻しますか？</value>
+    <value>FileConverter++のユーザー設定を読み込めません。デフォルト設定に戻しますか？</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>変換後にクリップボードにファイルをコピーする</value>

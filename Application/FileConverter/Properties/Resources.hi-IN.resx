@@ -136,7 +136,7 @@
     <value>ऑडियो</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>फ़ाइल कनवर्टर शुरू होने पर स्वचालित रूप से अपडेट की जांच करें</value>
+    <value>FileConverter++ शुरू होने पर स्वचालित रूप से अपडेट की जांच करें</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>सभी रूपांतरण समाप्त होने पर स्वचालित रूप से बाहर निकलें</value>
@@ -172,10 +172,10 @@
     <value>अगर आपको मेरा काम पसंद आया तो इनाम देना न भूलें :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>अपडेट को बैकग्राउंड में डाउनलोड किया जाएगा, और फाइल कन्वर्टर से बाहर निकलने के बाद इंस्टॉल किया जाएगा।</value>
+    <value>अपडेट को बैकग्राउंड में डाउनलोड किया जाएगा, और FileConverter++ से बाहर निकलने के बाद इंस्टॉल किया जाएगा।</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>जब मैं फ़ाइल कनवर्टर से बाहर निकलूं तो इंस्टॉल करें</value>
+    <value>जब मैं FileConverter++ से बाहर निकलूं तो इंस्टॉल करें</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Encoding :</value>
@@ -184,7 +184,7 @@
     <value>Encoding speed :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>फाइल कन्वर्टर एक शेल एक्सटेंशन है।</value>
+    <value>FileConverter++ एक शेल एक्सटेंशन है।</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>इसका मतलब है कि यह विंडोज एक्सप्लोरर में एकीकृत है।</value>
@@ -217,10 +217,10 @@
     <value>कुछ भी नहीं</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>अपडेट डाउनलोड कर लिया गया है। फ़ाइल कनवर्टर से बाहर निकलें और अभी अपडेट इंस्टॉल करें।</value>
+    <value>अपडेट डाउनलोड कर लिया गया है। FileConverter++ से बाहर निकलें और अभी अपडेट इंस्टॉल करें।</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>जब मैं फ़ाइल कनवर्टर से बाहर निकलूं तो इंस्टॉल करें</value>
+    <value>जब मैं FileConverter++ से बाहर निकलूं तो इंस्टॉल करें</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>मामले की रिपोर्ट करें</value>
@@ -308,7 +308,7 @@
     <value>परिवर्तन लॉग देखें ...</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>फ़ाइल कनवर्टर सेटिंग्स</value>
+    <value>FileConverter++ सेटिंग्स</value>
   </data>
   <data name="SettingsButtonTooltip" xml:space="preserve">
     <value>समायोजन</value>
@@ -320,13 +320,13 @@
     <value>90° दक्षिणावर्त घुमाव</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>फ़ाइल कनवर्टर के लिए एक अद्यतन उपलब्ध है। यह दृढ़ता से अनुशंसा की जाती है कि आप इसे जल्द से जल्द स्थापित करें!</value>
+    <value>FileConverter++ के लिए एक अद्यतन उपलब्ध है। यह दृढ़ता से अनुशंसा की जाती है कि आप इसे जल्द से जल्द स्थापित करें!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>अपग्रेड डाउनलोड जारी है...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>फ़ाइल कनवर्टर अपडेट</value>
+    <value>FileConverter++ अपडेट</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>'फ़ाइल आकार' बनाम 'वीडियो गुणवत्ता' के अनुपात को परिभाषित करें। कम मान आपको एक छोटी फ़ाइल देगा, अधिक मूल्य आपको बेहतर वीडियो गुणवत्ता देगा।</value>
@@ -494,7 +494,7 @@
     <value>स्टीरियो</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>फ़ाइल कन्वर्टर का उपयोग करने के लिए कृपया एक्सप्लोरर खोलें और संदर्भ मेनू लाने के लिए किसी भी फ़ाइल पर राइट-क्लिक करें जहां आपको फ़ाइल कन्वर्टर कमांड मिलेंगे (संगत फ़ाइल स्वरूपों की सूची देखने के लिए ऑनलाइन दस्तावेज़ देखें)।</value>
+    <value>FileConverter++ का उपयोग करने के लिए कृपया एक्सप्लोरर खोलें और संदर्भ मेनू लाने के लिए किसी भी फ़ाइल पर राइट-क्लिक करें जहां आपको FileConverter++ कमांड मिलेंगे (संगत फ़ाइल स्वरूपों की सूची देखने के लिए ऑनलाइन दस्तावेज़ देखें)।</value>
   </data>
   <data name="LicenceHeader1" xml:space="preserve">
     <value>**यह प्रोग्राम फ्री सॉफ्टवेयर है**.</value>
@@ -572,6 +572,6 @@
     <value>गलती</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>फ़ाइल कनवर्टर उपयोगकर्ता सेटिंग्स लोड नहीं कर सकता। क्या आप डिफ़ॉल्ट सेटिंग्स पर वापस आना चाहते हैं?</value>
+    <value>FileConverter++ उपयोगकर्ता सेटिंग्स लोड नहीं कर सकता। क्या आप डिफ़ॉल्ट सेटिंग्स पर वापस आना चाहते हैं?</value>
   </data>
 </root>

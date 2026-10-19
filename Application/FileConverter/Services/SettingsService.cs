@@ -53,7 +53,7 @@ namespace FileConverter.Services
                 }
                 catch (Exception exception)
                 {
-                    Debug.LogError($"Fail to load file converter default settings. {exception.Message}");
+                    Debug.LogError($"Fail to load FileConverter++ default settings. {exception.Message}");
                     return false;
                 }
             }
@@ -82,7 +82,7 @@ namespace FileConverter.Services
                     {
                         SettingsService.MigrateSettingsToCurrentVersion(userSettings);
 
-                        Debug.Log($"File converter settings have been imported from version {userSettings.SerializationVersion} to version {Settings.Version}.");
+                        Debug.Log($"FileConverter++ settings have been imported from version {userSettings.SerializationVersion} to version {Settings.Version}.");
                         userSettings.SerializationVersion = Settings.Version;
                     }
 
@@ -154,7 +154,7 @@ namespace FileConverter.Services
                 {
                     SettingsService.MigrateSettingsToCurrentVersion(userSettings);
 
-                    Debug.Log($"File converter settings has been imported from version {userSettings.SerializationVersion} to version {Settings.Version}.");
+                    Debug.Log($"FileConverter++ settings has been imported from version {userSettings.SerializationVersion} to version {Settings.Version}.");
                     userSettings.SerializationVersion = Settings.Version;
                     this.Save(userSettings);
                 }
@@ -171,7 +171,7 @@ namespace FileConverter.Services
                     }
                     catch (Exception exception)
                     {
-                        Debug.LogError($"Fail to load file converter default settings. {exception.Message}");
+                        Debug.LogError($"Fail to load FileConverter++ default settings. {exception.Message}");
                     }
                 }
                 else

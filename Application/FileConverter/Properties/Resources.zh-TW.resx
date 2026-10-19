@@ -172,10 +172,10 @@
     <value>如果您喜歡這個軟體，別忘了給予一些支持 :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>更新將會在背景下載，並在您關閉 File Converter 後安裝。</value>
+    <value>更新將會在背景下載，並在您關閉 FileConverter++ 後安裝。</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>關閉 File Converter 後安裝</value>
+    <value>關閉 FileConverter++ 後安裝</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>編碼：</value>
@@ -184,13 +184,13 @@
     <value>編碼速度：</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter 是一個檔案總管擴充功能。</value>
+    <value>FileConverter++ 是一個檔案總管擴充功能。</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>這表示它已整合至 Windows 檔案總管中。</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>要使用 File Converter，請開啟檔案總管，並在您想要轉換的任何檔案上按滑鼠右鍵以顯示選單，您會在其中找到 File Converter 的各項指令（請參閱說明文件以了解支援的檔案格式）。</value>
+    <value>要使用 FileConverter++，請開啟檔案總管，並在您想要轉換的任何檔案上按滑鼠右鍵以顯示選單，您會在其中找到 FileConverter++ 的各項指令（請參閱說明文件以了解支援的檔案格式）。</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>檔案名稱格式</value>
@@ -220,10 +220,10 @@
     <value>無</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>更新下載完成。現在可以關閉 File Converter 並立即安裝更新。</value>
+    <value>更新下載完成。現在可以關閉 FileConverter++ 並立即安裝更新。</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>關閉 File Converter 時安裝</value>
+    <value>關閉 FileConverter++ 時安裝</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>問題回報</value>
@@ -323,13 +323,13 @@
     <value>順時針旋轉 90°</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>File Converter 有可用的更新。建議您盡速安裝！</value>
+    <value>FileConverter++ 有可用的更新。建議您盡速安裝！</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>正在下載更新...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>File Converter 更新</value>
+    <value>FileConverter++ 更新</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>定義「檔案大小」與「影片品質」之間的比值。數值越低檔案越小，數值越高影片品質越好。</value>
@@ -587,7 +587,7 @@
     <value>錯誤</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>無法載入 File Converter 的使用者設定。您想要回復為預設設定嗎？</value>
+    <value>無法載入 FileConverter++ 的使用者設定。您想要回復為預設設定嗎？</value>
   </data>
   <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
     <value>轉換後將檔案複製到剪貼簿</value>

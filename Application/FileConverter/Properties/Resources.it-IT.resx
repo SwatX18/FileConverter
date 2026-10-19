@@ -142,8 +142,8 @@
     <comment>Audio</comment>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Controlla automaticamente gli aggiornamenti all'avvio di File Converter</value>
-    <comment>Automatically check for updates when File Converter starts</comment>
+    <value>Controlla automaticamente gli aggiornamenti all'avvio di FileConverter++</value>
+    <comment>Automatically check for updates when FileConverter++ starts</comment>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Esci automaticamente quando tutte le conversioni sono terminate</value>
@@ -190,12 +190,12 @@
     <comment>Don't forget to reward my work if you like it :)</comment>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>L'aggiornamento verrà scaricato in background e installato una volta uscito da File Converter.</value>
-    <comment>The update will be downloaded in background, and installed once you exit File Converter.</comment>
+    <value>L'aggiornamento verrà scaricato in background e installato una volta uscito da FileConverter++.</value>
+    <comment>The update will be downloaded in background, and installed once you exit FileConverter++.</comment>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Installa quando esco da File Converter</value>
-    <comment>Install when I exit File Converter</comment>
+    <value>Installa quando esco da FileConverter++</value>
+    <comment>Install when I exit FileConverter++</comment>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Codifica :</value>
@@ -206,16 +206,16 @@
     <comment>Encoding speed :</comment>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter è un'estensione della shell.</value>
-    <comment>File Converter is a shell extension.</comment>
+    <value>FileConverter++ è un'estensione della shell.</value>
+    <comment>FileConverter++ is a shell extension.</comment>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Ciò significa che è integrato in Windows Explorer.</value>
     <comment>That means it is integrated into the Windows explorer.</comment>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Per utilizzare File Converter, apri l'explorer e fai clic con il pulsante destro del mouse su qualsiasi file per visualizzare il menu di scelta rapida in cui troverai i comandi di File Converter (consulta il file readme per visualizzare l'elenco dei formati di file compatibili).</value>
-    <comment>To use File Converter please open the explorer and right-click on any file you like to bring up the context menu where you will find File Converter commands (see the readme file to see the list of compatible file formats).</comment>
+    <value>Per utilizzare FileConverter++, apri l'explorer e fai clic con il pulsante destro del mouse su qualsiasi file per visualizzare il menu di scelta rapida in cui troverai i comandi di FileConverter++ (consulta il file readme per visualizzare l'elenco dei formati di file compatibili).</value>
+    <comment>To use FileConverter++ please open the explorer and right-click on any file you like to bring up the context menu where you will find FileConverter++ commands (see the readme file to see the list of compatible file formats).</comment>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Template nome file</value>
@@ -254,12 +254,12 @@
     <comment>None</comment>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>L'aggiornamento è stato scaricato. Uscire da File Converter e installare l'aggiornamento ora.</value>
-    <comment>The update has been downloaded. Exit File Converter and install the update now.</comment>
+    <value>L'aggiornamento è stato scaricato. Uscire da FileConverter++ e installare l'aggiornamento ora.</value>
+    <comment>The update has been downloaded. Exit FileConverter++ and install the update now.</comment>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Installa quando esco da File Converter</value>
-    <comment>Install when I exit File Converter</comment>
+    <value>Installa quando esco da FileConverter++</value>
+    <comment>Install when I exit FileConverter++</comment>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Segnala un problema</value>
@@ -402,16 +402,16 @@ use maj for uppercase version</comment>
     <comment>90° clockwise rotation</comment>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>È disponibile un aggiornamento per File Converter. Si consiglia di installarlo il prima possibile!</value>
-    <comment>An update for File Converter is available. It is strongly recommended that you install it as soon as possible!</comment>
+    <value>È disponibile un aggiornamento per FileConverter++. Si consiglia di installarlo il prima possibile!</value>
+    <comment>An update for FileConverter++ is available. It is strongly recommended that you install it as soon as possible!</comment>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Download aggiornamento in corso...</value>
     <comment>Upgrade download in progress...</comment>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>Aggiornamenti File Converter</value>
-    <comment>File Converter Updates</comment>
+    <value>Aggiornamenti FileConverter++</value>
+    <comment>FileConverter++ Updates</comment>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Definisci il rapporto "dimensione del file" rispetto a "qualità video". Un valore inferiore ti darà un file più piccolo, un valore maggiore ti darà una qualità video migliore.</value>
@@ -695,7 +695,7 @@ use maj for uppercase version</comment>
   </data>
   <data name="WebsiteButtonDescription" xml:space="preserve">
     <value>Apri il sito di File Converter</value>
-    <comment>Open File Converter website</comment>
+    <comment>Open FileConverter++ website</comment>
   </data>
   <data name="ErrorDuringJobInitialization" xml:space="preserve">
     <value>Errore durante l'inizializzazione del processo di conversione.</value>

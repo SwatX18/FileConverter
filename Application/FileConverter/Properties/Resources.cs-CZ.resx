@@ -136,7 +136,7 @@
     <value>Audio</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Automatická kontrola aktualizací při spuštění aplikace File Converter</value>
+    <value>Automatická kontrola aktualizací při spuštění aplikace FileConverter++</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Automatické ukončení po dokončení všech konverzí</value>
@@ -171,10 +171,10 @@
     <value>Nezapomeňte mou práci odměnit, pokud se vám líbí :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Aktualizace se stáhne na pozadí a nainstaluje se po ukončení aplikace File Converter.</value>
+    <value>Aktualizace se stáhne na pozadí a nainstaluje se po ukončení aplikace FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Instalovat po ukončení aplikace File Converter</value>
+    <value>Instalovat po ukončení aplikace FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Konvertování :</value>
@@ -183,13 +183,13 @@
     <value>Rychlost konvertování :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter je rozšíření pro shell.</value>
+    <value>FileConverter++ je rozšíření pro shell.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>To znamená, že je integrován do průzkumníka systému Windows.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Pro použití aplikace File Converter otevřete průzkumník souborů a klikněte pravým tlačítkem myši na libovolný soubor, čímž zobrazíte kontextovou nabídku, ve které najdete možnosti aplikace File Converter (seznam kompatibilních formátů souborů naleznete v souboru readme).</value>
+    <value>Pro použití aplikace FileConverter++ otevřete průzkumník souborů a klikněte pravým tlačítkem myši na libovolný soubor, čímž zobrazíte kontextovou nabídku, ve které najdete možnosti aplikace FileConverter++ (seznam kompatibilních formátů souborů naleznete v souboru readme).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Šablona názvu souboru</value>
@@ -219,10 +219,10 @@
     <value>Žádné</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Aktualizace byla stažena. Ukončete aplikaci File Converter a nainstalujte aktualizaci.</value>
+    <value>Aktualizace byla stažena. Ukončete aplikaci FileConverter++ a nainstalujte aktualizaci.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Instalovat když ukončím File Converter</value>
+    <value>Instalovat když ukončím FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Nahlásit problém</value>
@@ -322,13 +322,13 @@ použijte maj pro verzi s velkými písmeny</value>
     <value>90° otočení po směru</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>K dispozici je aktualizace aplikace File Converter. Doporučujeme ji nainstalovat co nejdříve!</value>
+    <value>K dispozici je aktualizace aplikace FileConverter++. Doporučujeme ji nainstalovat co nejdříve!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Probíhá stahování aktualizace...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>Aktualizace File Converteru</value>
+    <value>Aktualizace FileConverter++u</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Definujte poměr "velikosti souboru" a "kvality videa". Nižší hodnota poskytne menší soubor, vyšší hodnota poskytne lepší kvalitu videa.</value>

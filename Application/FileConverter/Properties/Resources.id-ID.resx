@@ -136,7 +136,7 @@
     <value>Audio</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Secara otomatis memeriksa pembaruan saat File Converter dimulai</value>
+    <value>Secara otomatis memeriksa pembaruan saat FileConverter++ dimulai</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Keluar otomatis ketika semua konversi selesai</value>
@@ -172,10 +172,10 @@
     <value>Jangan lupa untuk menghargai karya saya jika Anda menyukainya :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Pembaruan akan diunduh di latar belakang, dan dipasang setelah Anda keluar dari File Converter</value>
+    <value>Pembaruan akan diunduh di latar belakang, dan dipasang setelah Anda keluar dari FileConverter++</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Pasang ketika saya keluar dari File Converter</value>
+    <value>Pasang ketika saya keluar dari FileConverter++</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Pengkodean :</value>
@@ -184,7 +184,7 @@
     <value>Kecepatan pengkodean :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter adalah ekstensi shell</value>
+    <value>FileConverter++ adalah ekstensi shell</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>Itu berarti terintegrasi ke dalam Windows explorer</value>
@@ -217,10 +217,10 @@
     <value>Tidak ada</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Pembaruan telah diunduh. Keluar dari File Converter dan pasang pembaruan sekarang</value>
+    <value>Pembaruan telah diunduh. Keluar dari FileConverter++ dan pasang pembaruan sekarang</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Pasang ketika saya keluar dari File Converter</value>
+    <value>Pasang ketika saya keluar dari FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Laporkan masalah</value>
@@ -308,7 +308,7 @@ gunakan huruf besar untuk versi kapital</value>
     <value>Lihat log perubahan ...</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Pengaturan File Converter</value>
+    <value>Pengaturan FileConverter++</value>
   </data>
   <data name="SettingsButtonTooltip" xml:space="preserve">
     <value>Pengaturan</value>
@@ -320,13 +320,13 @@ gunakan huruf besar untuk versi kapital</value>
     <value>Rotasi 90° searah jarum jam</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>Pembaruan untuk File Converter tersedia. Sangat disarankan untuk memasangnya segera!</value>
+    <value>Pembaruan untuk FileConverter++ tersedia. Sangat disarankan untuk memasangnya segera!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Unduhan pembaruan sedang berlangsung...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>Pembaruan File Converter</value>
+    <value>Pembaruan FileConverter++</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>Tentukan rasio 'ukuran file' berbanding 'kualitas video'. Nilai lebih rendah akan memberikan file lebih kecil, nilai lebih besar memberikan kualitas video lebih baik.</value>
@@ -494,7 +494,7 @@ gunakan huruf besar untuk versi kapital</value>
     <value>Stereo</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Untuk menggunakan File Converter silakan buka explorer dan klik kanan pada file yang Anda inginkan untuk memunculkan menu konteks di mana Anda akan menemukan perintah File Converter (lihat dokumentasi online untuk melihat daftar format file yang kompatibel).</value>
+    <value>Untuk menggunakan FileConverter++ silakan buka explorer dan klik kanan pada file yang Anda inginkan untuk memunculkan menu konteks di mana Anda akan menemukan perintah FileConverter++ (lihat dokumentasi online untuk melihat daftar format file yang kompatibel).</value>
   </data>
   <data name="LicenceHeader1" xml:space="preserve">
     <value>**Program ini adalah perangkat lunak bebas**.</value>
@@ -572,6 +572,6 @@ gunakan huruf besar untuk versi kapital</value>
     <value>Kesalahan</value>
   </data>
   <data name="ErrorCantLoadSettings" xml:space="preserve">
-    <value>Tidak dapat memuat pengaturan pengguna file converter. Apakah Anda ingin kembali ke pengaturan default?</value>
+    <value>Tidak dapat memuat pengaturan pengguna FileConverter++. Apakah Anda ingin kembali ke pengaturan default?</value>
   </data>
 </root>

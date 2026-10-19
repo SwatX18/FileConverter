@@ -184,7 +184,7 @@
     <value>מהירות קידוד :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File covnerter הוא הרחבת מעטפת.</value>
+    <value>FileConverter++ הוא הרחבת מעטפת.</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>שמשולבת בתוך סייר הקבצים של Windows.</value>
@@ -217,10 +217,10 @@
     <value>ללא</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>הורדת העדכון הושלמה. סגור את File Converter כדי שהעדכון יותקן.</value>
+    <value>הורדת העדכון הושלמה. סגור את FileConverter++ כדי שהעדכון יותקן.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>התקן כשאני יוצא מFiler Conveter</value>
+    <value>התקן כשאני יוצא מFileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>דווח על בעיה</value>
@@ -308,7 +308,7 @@ use maj for uppercase version</value>
     <value>הצג יומן שינויים... </value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>הגדרות File Converter</value>
+    <value>הגדרות FileConverter++</value>
   </data>
   <data name="SettingsButtonTooltip" xml:space="preserve">
     <value>הגדרות</value>
@@ -320,13 +320,13 @@ use maj for uppercase version</value>
     <value>סיבוב של 90° בכיוון השעון</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>עדכון עבור File Converter זמין. מומלץ מאוד להתקין אותו בהקדם האפשרי!</value>
+    <value>עדכון עבור FileConverter++ זמין. מומלץ מאוד להתקין אותו בהקדם האפשרי!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>הורדת העדכון מתבצעת ...</value>
   </data>
   <data name="UpgradeWindowTitle" xml:space="preserve">
-    <value>עדכוני File Converter</value>
+    <value>עדכוני FileConverter++</value>
   </data>
   <data name="VideoEncodingQualityTooltip" xml:space="preserve">
     <value>הגדר את היחס 'גודל קובץ' לעומת 'איכות וידאו'. ערך נמוך יותר ייתן לך קובץ קטן יותר, ערך גדול יותר ייתן לך איכות וידאו טובה יותר.</value>
@@ -494,7 +494,7 @@ use maj for uppercase version</value>
     <value>סטריאו</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>כדי להשתמש בFile Converter, פתח את תפריט ההקשר על הקובץ שאותו אתה רוצה להמיר (עיין בתיעוד המקוון כדי לראות את רשימת תבניות הקובץ התואמות).</value>
+    <value>כדי להשתמש בFileConverter++, פתח את תפריט ההקשר על הקובץ שאותו אתה רוצה להמיר (עיין בתיעוד המקוון כדי לראות את רשימת תבניות הקובץ התואמות).</value>
   </data>
   <data name="LicenceHeader1" xml:space="preserve">
     <value>**התוכנה הזו היא תוכנה חינמית בקוד פתוח**.</value>

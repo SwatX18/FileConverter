@@ -136,7 +136,7 @@
     <value>Звук</value>
   </data>
   <data name="AutomaticallyCheckForUpdates" xml:space="preserve">
-    <value>Аутоматски провери ажурирања када се File Converter покрене</value>
+    <value>Аутоматски провери ажурирања када се FileConverter++ покрене</value>
   </data>
   <data name="AutomaticallyExitWhenAllConversionsFinished" xml:space="preserve">
     <value>Аутоматцки изађи када се све конверзије заврше</value>
@@ -172,10 +172,10 @@
     <value>Не заборави да наградиш мој рад ако ти се свиђа :)</value>
   </data>
   <data name="DownloadAndInstallButtonDescription" xml:space="preserve">
-    <value>Ажурирање ће бити преузето у позадини и инсталирано када напустите File Converter.</value>
+    <value>Ажурирање ће бити преузето у позадини и инсталирано када напустите FileConverter++.</value>
   </data>
   <data name="DownloadAndInstallButtonTitle" xml:space="preserve">
-    <value>Инсталирај када изађем из File Converter-а</value>
+    <value>Инсталирај када изађем из FileConverter++-а</value>
   </data>
   <data name="Encoding" xml:space="preserve">
     <value>Кодирање :</value>
@@ -184,13 +184,13 @@
     <value>Брзина кодирања :</value>
   </data>
   <data name="FileConverterStartHelp1" xml:space="preserve">
-    <value>File Converter је додатак за шкољку</value>
+    <value>FileConverter++ је додатак за шкољку</value>
   </data>
   <data name="FileConverterStartHelp2" xml:space="preserve">
     <value>То значи да је интегрисан у Windows Explorer.</value>
   </data>
   <data name="FileConverterStartHelp3" xml:space="preserve">
-    <value>Да бисте користили File Converter, отворите Explorer и десним кликом на било коју датотеку отворите контекст мени где ћете пронаћи команде File Converter-а (погледајте README датотеку да бисте видели списак компатибилних формата датотека).</value>
+    <value>Да бисте користили FileConverter++, отворите Explorer и десним кликом на било коју датотеку отворите контекст мени где ћете пронаћи команде FileConverter++-а (погледајте README датотеку да бисте видели списак компатибилних формата датотека).</value>
   </data>
   <data name="FileNameTemplate" xml:space="preserve">
     <value>Шаблон имена датоеке</value>
@@ -220,10 +220,10 @@
     <value>Ништа</value>
   </data>
   <data name="InstallButtonDescription" xml:space="preserve">
-    <value>Ажурирање је преузето. Напустите File Converter и инсталирајте ажурирање сада.</value>
+    <value>Ажурирање је преузето. Напустите FileConverter++ и инсталирајте ажурирање сада.</value>
   </data>
   <data name="InstallButtonTitle" xml:space="preserve">
-    <value>Инсталирај када напустим File Converter</value>
+    <value>Инсталирај када напустим FileConverter++</value>
   </data>
   <data name="IssueButtonDescription" xml:space="preserve">
     <value>Пријави проблем</value>
@@ -323,7 +323,7 @@
     <value>Ротација за 90° у смеру казаљке на сату</value>
   </data>
   <data name="UpgradeAvailable" xml:space="preserve">
-    <value>Доступно је ажурирање за File Converter. Топло се препоручује да га инсталирате што је пре могуће!</value>
+    <value>Доступно је ажурирање за FileConverter++. Топло се препоручује да га инсталирате што је пре могуће!</value>
   </data>
   <data name="UpgradeDownloadInProgress" xml:space="preserve">
     <value>Преузимање надоградње је у току...</value>

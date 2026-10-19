@@ -111,7 +111,7 @@ namespace FileConverter
         {
             if (!Application.IsInAdmininstratorPrivileges)
             {
-                Diagnostics.Debug.LogError("File Converter needs administrator privileges to register the shell extension.");
+                Diagnostics.Debug.LogError("FileConverter++ needs administrator privileges to register the shell extension.");
                 return false;
             }
 
@@ -143,7 +143,7 @@ namespace FileConverter
         {
             if (!Application.IsInAdmininstratorPrivileges)
             {
-                Diagnostics.Debug.LogError("File Converter needs administrator privileges to unregister the shell extension.");
+                Diagnostics.Debug.LogError("FileConverter++ needs administrator privileges to unregister the shell extension.");
                 return false;
             }
 
