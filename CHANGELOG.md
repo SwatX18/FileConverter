@@ -14,7 +14,8 @@ Performance work, every optimization with an automatic fallback to the previous 
 - Fixes: Conversions of long videos hung forever (ffmpeg blocked writing its progress to an unread pipe).
 - Fixes: Opus / WebM conversions reported as failed because of a harmless ffmpeg 8 message.
 - Fixes: French translation of the hardware acceleration settings.
-- Tech: ffprobe bundled with ffmpeg (8.0.1); libvips 8.18.7 and NetVips 3.2.0 added.
+- Tech: ffprobe bundled with ffmpeg (8.0.1); libvips 8.18.7 and NetVips 3.2.0 added. The ffmpeg license and source information, and the libvips license, are installed.
+- Tech: Building `FileConverter.csproj` alone (without the solution) copies ffmpeg, ffprobe and Ghostscript next to the executable.
 - Tech: Unit tests (xUnit, 166 tests) and integration tests on a test corpus (`Tests/`), benchmark scripts (`bench/`).
 
 ## Version 2.2

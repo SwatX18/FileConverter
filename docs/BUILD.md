@@ -45,7 +45,7 @@ $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere
 
 Outputs:
 
-- `Application\FileConverter\bin\x64\Release\FileConverter.exe`, with `ffmpeg.exe`, `gswin64c.exe`, `gsdll64.dll` and `Settings.default.xml` copied next to it by the post-build event, and satellite assemblies moved to `Languages\`
+- `Application\FileConverter\bin\x64\Release\FileConverter.exe`, with `ffmpeg.exe`, `ffprobe.exe`, `gswin64c.exe`, `gsdll64.dll` and `Settings.default.xml` copied next to it by the post-build event (paths relative to the project, so building `FileConverter.csproj` alone works too), and satellite assemblies moved to `Languages\`
 - `Application\FileConverterExtension\bin\x64\Release\FileConverterExtension.dll` (the shell extension, strong-named with `FileConverterExtensionKey.snk`)
 - `Installer\bin\x64\Release\FileConverter-setup.msi` (unsigned)
 
