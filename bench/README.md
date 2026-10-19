@@ -44,6 +44,9 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
 - **`phase2.csv`**: Phase 2 (remux), video and audio cases, `-Repeat 3`. See `docs/REMUXING.md` for the comparison.
   Cases that convert a file to its own format (`video_h264_1080p_to_mp4`, `video_sintel_mkv_to_mkv`) are re-encoded by
   design, so they measure the same path as Phase 1.
+- **`phase3.csv`**: Phase 3 (libvips), image cases, `-Repeat 3`. See `docs/IMAGES.md`.
+- **`image-engines.csv`**: `compare-engines.ps1` output: each image case converted with libvips and with ImageMagick
+  only, with time, size, dimensions and SSIM against the source and between the two outputs.
 
 `try-case.ps1` runs a single preset on one or more files with setting overrides and prints the encoding path taken
 (useful for checking fallbacks), e.g.

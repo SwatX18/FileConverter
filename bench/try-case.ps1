@@ -24,7 +24,9 @@ param(
     # Sample the number of concurrent ffmpeg child processes (checks the GPU session limiter).
     [switch]$WatchProcesses,
     # Write Settings.user.xml with this SerializationVersion (e.g. 4 to exercise the settings migration).
-    [int]$SettingsVersion = 0
+    [int]$SettingsVersion = 0,
+    # Print the whole diagnostics log instead of the encoding-path lines.
+    [switch]$AllLog
 )
 
 $ErrorActionPreference = 'Stop'
@@ -102,13 +104,17 @@ try {
     if (-not $exited) { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null; [void]$proc.WaitForExit(5000); Start-Sleep 1 }
     Write-Host ('exit: {0} in {1:N1}s' -f $(if ($exited) { 'auto-exit (all conversions succeeded)' } else { 'did not exit (failure or timeout), killed' }), $sw.Elapsed.TotalSeconds)
 
-    $patterns = 'imported from version|Hardware encoders|unavailable|Remux|Output validation|Encoding path|Falling back|fallback encoding path|exited with code|^Fail: |hardware encoder cache'
+    $patterns = 'imported from version|Hardware encoders|unavailable|Image engine|libvips|Remux|Output validation|Encoding path|Falling back|fallback encoding path|exited with code|^Fail: |hardware encoder cache'
+    if ($AllLog) { $patterns = '.' }
     Get-ChildItem $userDir -Recurse -Filter *.log | Get-Content | Select-String -Pattern $patterns | ForEach-Object { '  log> ' + $_.Line }
     Get-ChildItem $userDir -Recurse -Filter *.log | Get-Content | Select-String -Pattern '^Execute command: ' | ForEach-Object { '  cmd> ' + ($_.Line -replace '^Execute command: \S+ ', '') }
 
     $outputs = @(Get-ChildItem $work -File | Where-Object { $linkedFiles -notcontains $_.FullName })
     foreach ($o in $outputs) {
+        # ffprobe warnings on stderr must not stop the script (ErrorActionPreference is Stop).
+        $ErrorActionPreference = 'Continue'
         $info = & ffprobe -v error -show_entries 'stream=codec_type,codec_name,pix_fmt,width,height:format=duration' -of compact=p=0:nk=1 -- $o.FullName 2>&1
+        $ErrorActionPreference = 'Stop'
         Write-Host ("  out> {0} ({1:N1} MB): {2}" -f $o.Name, ($o.Length / 1MB), (($info | ForEach-Object { "$_" }) -join ' / '))
     }
     if ($outputs.Count -eq 0) { Write-Host '  out> (no output file)' }
