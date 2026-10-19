@@ -26,6 +26,8 @@ namespace FileConverter.ConversionJobs
             get;
         }
 
+        public override ConversionLane Lane => ConversionLane.Documents;
+
         protected override bool IsCancelable() => false;
 
         protected override void Initialize()

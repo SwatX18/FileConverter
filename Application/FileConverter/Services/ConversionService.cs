@@ -5,6 +5,7 @@ namespace FileConverter.Services
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Threading;
 
     using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,12 +13,11 @@ namespace FileConverter.Services
 
     using FileConverter.ConversionJobs;
     using FileConverter.Diagnostics;
+    using FileConverter.Hardware;
 
     public class ConversionService : ObservableObject, IConversionService
     {
         private readonly List<ConversionJob> conversionJobs = new List<ConversionJob>();
-
-        private readonly int numberOfConversionThread = 1;
 
         private ISettingsService settingsService;
 
@@ -31,15 +31,6 @@ namespace FileConverter.Services
             this.settingsService = settingsService;
 
             this.ConversionJobs = this.conversionJobs.AsReadOnly();
-
-            this.numberOfConversionThread = this.settingsService.Settings.MaximumNumberOfSimultaneousConversions;
-            Debug.Log($"Maximum number of conversion threads: {this.numberOfConversionThread}");
-
-            if (this.numberOfConversionThread <= 0)
-            {
-                this.numberOfConversionThread = System.Math.Max(1, Environment.ProcessorCount / 2);
-                Debug.Log($"The number of processors on this computer is {settingsService.Settings.MaximumNumberOfSimultaneousConversions}. Set the default number of conversion threads to {settingsService.Settings.MaximumNumberOfSimultaneousConversions}");
-            }
         }
 
         public event System.EventHandler<ConversionJobsTerminatedEventArgs> ConversionJobsTerminated;
@@ -62,78 +53,158 @@ namespace FileConverter.Services
             fileConvertionThread.Start();
         }
 
+        /// <summary>
+        /// Runs the jobs: a preparation thread prepares them in order (output paths, ffmpeg arguments, probing) while this
+        /// thread starts every prepared job that the limits allow (in total, per <see cref="ConversionLane"/> and per hard
+        /// disk), as soon as it can. It wakes up when a job is prepared or finishes.
+        /// </summary>
         private void ConvertFiles()
         {
-            // Prepare conversions.
-            for (int index = 0; index < this.ConversionJobs.Count; index++)
+            int jobCount = this.conversionJobs.Count;
+            Settings settings = this.settingsService.Settings;
+            ConversionLimits limits = ConversionLimits.Compute(settings.MaximumNumberOfSimultaneousConversions, settings.MaximumNumberOfSimultaneousGpuConversions, SystemInfo.PhysicalCoreCount);
+            Debug.Log($"Conversion limits: {limits} ({SystemInfo.PhysicalCoreCount} cores, {SystemInfo.LogicalProcessorCount} threads).");
+
+            object sync = new object();
+            AutoResetEvent wakeUp = new AutoResetEvent(false);
+            bool[] prepared = new bool[jobCount];
+            bool[] started = new bool[jobCount];
+            int preparedCount = 0;
+            List<ConversionJob> runningJobs = new List<ConversionJob>();
+            Dictionary<ConversionJob, uint[]> hardDisksByJob = new Dictionary<ConversionJob, uint[]>();
+
+            Thread preparationThread = Helpers.InstantiateThread("ConversionPreparationThread", () =>
             {
-                this.ConversionJobs[index].PrepareConversion();
-            }
+                for (int index = 0; index < jobCount; index++)
+                {
+                    this.conversionJobs[index].PrepareConversion();
+                    lock (sync)
+                    {
+                        prepared[index] = true;
+                        preparedCount++;
+                    }
+
+                    wakeUp.Set();
+                }
+            });
+            preparationThread.Start();
 
             System.Collections.Specialized.StringCollection files = new System.Collections.Specialized.StringCollection();
-            // Convert!
-            Thread[] jobThreads = new Thread[this.numberOfConversionThread];
             while (true)
             {
-                // Compute conversion flags.
-                ConversionFlags conversionFlags = ConversionFlags.None;
-                bool allJobAreFinished = true;
-                for (int jobIndex = 0; jobIndex < this.conversionJobs.Count; jobIndex++)
+                lock (sync)
                 {
-                    ConversionJob conversionJob = this.conversionJobs[jobIndex];
-                    allJobAreFinished &= !(conversionJob.State == ConversionState.Ready || conversionJob.State == ConversionState.InProgress);
-
-                    if (conversionJob.State == ConversionState.InProgress)
+                    // Running jobs: flags (CD drive) and slots used per lane and per hard disk.
+                    ConversionFlags conversionFlags = ConversionFlags.None;
+                    Dictionary<ConversionLane, int> jobsPerLane = new Dictionary<ConversionLane, int>();
+                    Dictionary<uint, int> jobsPerHardDisk = new Dictionary<uint, int>();
+                    foreach (ConversionJob runningJob in runningJobs)
                     {
-                        conversionFlags |= conversionJob.StateFlags;
+                        conversionFlags |= runningJob.StateFlags;
+                        jobsPerLane[runningJob.Lane] = jobsPerLane.TryGetValue(runningJob.Lane, out int laneCount) ? laneCount + 1 : 1;
+                        foreach (uint disk in hardDisksByJob[runningJob])
+                        {
+                            jobsPerHardDisk[disk] = jobsPerHardDisk.TryGetValue(disk, out int diskCount) ? diskCount + 1 : 1;
+                        }
                     }
-                }
 
-                if (allJobAreFinished)
-                {
-                    break;
-                }
-
-                // Start job if possible.
-                for (int jobIndex = 0; jobIndex < this.conversionJobs.Count; jobIndex++)
-                {
-                    ConversionJob conversionJob = this.conversionJobs[jobIndex];
-                    if (conversionJob.State == ConversionState.Ready && conversionJob.CanStartConversion(conversionFlags))
+                    bool jobsWaiting = false;
+                    for (int index = 0; index < jobCount; index++)
                     {
-                        // Find a thread to execute the job.
-                        Thread jobThread = null;
-                        for (int threadIndex = 0; threadIndex < jobThreads.Length; threadIndex++)
+                        ConversionJob job = this.conversionJobs[index];
+                        if (!prepared[index] || started[index] || job.State != ConversionState.Ready)
                         {
-                            Thread thread = jobThreads[threadIndex];
-                            if (thread == null || !thread.IsAlive)
+                            continue;
+                        }
+
+                        jobsWaiting = true;
+                        if (runningJobs.Count >= limits.Total)
+                        {
+                            break;
+                        }
+
+                        ConversionLane lane = job.Lane;
+                        jobsPerLane.TryGetValue(lane, out int jobsInLane);
+                        if (!job.CanStartConversion(conversionFlags) || jobsInLane >= limits.GetLaneLimit(lane))
+                        {
+                            continue;
+                        }
+
+                        if (!hardDisksByJob.TryGetValue(job, out uint[] hardDisks))
+                        {
+                            hardDisks = GetHardDisks(job);
+                            hardDisksByJob[job] = hardDisks;
+                        }
+
+                        if (hardDisks.Any(disk => jobsPerHardDisk.TryGetValue(disk, out int diskCount) && diskCount >= ConversionLimits.JobsPerHardDisk))
+                        {
+                            continue;
+                        }
+
+                        // Share the CPU threads between the jobs expected to run alongside this one in its lane: the running
+                        // ones, the prepared ones waiting, and the ones not prepared yet (they may be of this lane).
+                        int laneJobs = jobsInLane + 1 + (preparedCount < jobCount ? jobCount - preparedCount : 0);
+                        for (int other = index + 1; other < jobCount; other++)
+                        {
+                            ConversionJob otherJob = this.conversionJobs[other];
+                            if (prepared[other] && !started[other] && otherJob.State == ConversionState.Ready && otherJob.Lane == lane)
                             {
-                                jobThread = Helpers.InstantiateThread(conversionJob.GetType().Name, this.ExecuteConversionJob);
-                                jobThreads[threadIndex] = jobThread;
-                                break;
+                                laneJobs++;
                             }
                         }
 
-                        if (jobThread != null)
+                        int simultaneousJobs = Math.Min(laneJobs, Math.Min(limits.Total, limits.GetLaneLimit(lane)));
+                        if (hardDisks.Length > 0)
                         {
-                            jobThread.Start(conversionJob);
+                            simultaneousJobs = Math.Min(simultaneousJobs, ConversionLimits.JobsPerHardDisk);
+                        }
 
-                            while (conversionJob.State == ConversionState.Ready)
+                        job.ThreadBudget = ConversionLimits.ComputeThreadBudget(SystemInfo.LogicalProcessorCount, simultaneousJobs);
+
+                        started[index] = true;
+                        runningJobs.Add(job);
+                        jobsPerLane[lane] = jobsInLane + 1;
+                        foreach (uint disk in hardDisks)
+                        {
+                            jobsPerHardDisk[disk] = jobsPerHardDisk.TryGetValue(disk, out int diskCount) ? diskCount + 1 : 1;
+                        }
+
+                        conversionFlags |= job.StateFlags;
+                        string diskUse = hardDisks.Length > 0 ? $", hard disk {string.Join("+", hardDisks)}: {hardDisks.Max(disk => jobsPerHardDisk[disk])}" : string.Empty;
+                        Debug.Log($"Start job {index + 1}/{jobCount} ({lane}, {(job.ThreadBudget > 0 ? $"{job.ThreadBudget} threads" : "all threads")}), running: {runningJobs.Count} ({lane}: {jobsInLane + 1}{diskUse}): {job.InputFilePath}");
+
+                        Thread jobThread = Helpers.InstantiateThread(job.GetType().Name, () =>
+                        {
+                            try
                             {
-                                Debug.Log("Wait the launch of the conversion thread before launching any other thread.");
-                                Thread.Sleep(20);
+                                this.ExecuteConversionJob(job);
                             }
-                        }
+                            finally
+                            {
+                                lock (sync)
+                                {
+                                    runningJobs.Remove(job);
+                                }
 
-                        if (!files.Contains(conversionJob.OutputFilePath))
+                                wakeUp.Set();
+                            }
+                        });
+                        jobThread.Start();
+
+                        if (!files.Contains(job.OutputFilePath))
                         {
-                            files.Add(conversionJob.OutputFilePath);
+                            files.Add(job.OutputFilePath);
                         }
+                    }
 
+                    if (preparedCount == jobCount && runningJobs.Count == 0 && !jobsWaiting)
+                    {
                         break;
                     }
                 }
 
-                Thread.Sleep(50);
+                // Woken up by a job prepared or finished; the timeout is a safety net.
+                wakeUp.WaitOne(500);
             }
 
             // Copy the output files to the clipboard
@@ -154,6 +225,33 @@ namespace FileConverter.Services
             {
                 this.ConversionJobsTerminated.Invoke(this, new ConversionJobsTerminatedEventArgs(allConversionsSucceed));
             }
+        }
+
+        /// <summary>
+        /// Gets the hard disk drives (not SSDs) the job reads or writes, if its input is large enough for the hard disk
+        /// limit to matter (see <see cref="ConversionLimits.HardDiskLimitMinimumFileSize"/>).
+        /// </summary>
+        private static uint[] GetHardDisks(ConversionJob job)
+        {
+            try
+            {
+                if (new System.IO.FileInfo(job.InputFilePath).Length < ConversionLimits.HardDiskLimitMinimumFileSize)
+                {
+                    return new uint[0];
+                }
+            }
+            catch (Exception)
+            {
+                // Unknown size: apply the limit.
+            }
+
+            IEnumerable<string> paths = new[] { job.InputFilePath }.Concat(job.OutputFilePaths ?? new string[0]);
+            return paths.Where(path => !string.IsNullOrEmpty(path))
+                .Select(SystemInfo.GetHardDiskNumber)
+                .Where(disk => disk.HasValue)
+                .Select(disk => disk.Value)
+                .Distinct()
+                .ToArray();
         }
 
         private void ExecuteConversionJob(object parameter)

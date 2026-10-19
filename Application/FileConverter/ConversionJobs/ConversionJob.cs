@@ -155,6 +155,21 @@ namespace FileConverter.ConversionJobs
             protected set;
         }
 
+        /// <summary>
+        /// Gets the scheduling lane of the job (valid once the conversion is prepared).
+        /// </summary>
+        public virtual ConversionLane Lane => ConversionLane.Light;
+
+        /// <summary>
+        /// Gets or sets the number of CPU threads the job should use, so that simultaneous jobs don't oversubscribe the
+        /// CPU (set by the conversion service before the job starts). 0 means no limit.
+        /// </summary>
+        public int ThreadBudget
+        {
+            get;
+            set;
+        }
+
         public ICommand CancelCommand
         {
             get
@@ -200,7 +215,7 @@ namespace FileConverter.ConversionJobs
 
         protected virtual bool IsCancelable() => this.State == ConversionState.InProgress;
 
-        protected string[] OutputFilePaths
+        public string[] OutputFilePaths
         {
             get;
             private set;

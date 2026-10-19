@@ -64,6 +64,9 @@ namespace FileConverter.ConversionJobs
 
             this.CurrentOutputFilePathIndex = 0;
 
+            // ImageMagick's OpenMP threads (process-wide: the jobs of a batch share the same budget).
+            ResourceLimits.Thread = (ulong)(this.ThreadBudget > 0 ? this.ThreadBudget : Environment.ProcessorCount);
+
             if (this.isInputFilePdf)
             {
                 this.ConvertPdf();

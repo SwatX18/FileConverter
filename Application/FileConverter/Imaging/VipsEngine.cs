@@ -92,11 +92,13 @@ namespace FileConverter.Imaging
         }
 
         /// <summary>
-        /// Sets the number of threads libvips uses per image, so that parallel jobs don't oversubscribe the CPU.
+        /// Sets the number of threads libvips uses per image (a process-wide setting: the jobs of a batch share the same
+        /// budget), so that parallel jobs don't oversubscribe the CPU.
         /// </summary>
-        public static void SetConcurrency(int simultaneousJobs)
+        /// <param name="threadBudget">The job's <see cref="ConversionJobs.ConversionJob.ThreadBudget"/>; 0 means all threads.</param>
+        public static void SetConcurrency(int threadBudget)
         {
-            NetVips.NetVips.Concurrency = Math.Max(1, Environment.ProcessorCount / Math.Max(1, simultaneousJobs));
+            NetVips.NetVips.Concurrency = threadBudget > 0 ? threadBudget : Environment.ProcessorCount;
         }
 
         private static void Initialize()

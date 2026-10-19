@@ -89,6 +89,36 @@ namespace FileConverter.ConversionJobs
             private set;
         }
 
+        /// <summary>
+        /// Gets the lane of the job from its first attempt: a stream copy is light work, a hardware encode uses the GPU,
+        /// any other video encode the CPU.
+        /// </summary>
+        public override ConversionLane Lane
+        {
+            get
+            {
+                if (this.ffmpegArgumentStringByPass.Count == 0 || this.ffmpegArgumentStringByPass[0].Attempts.Count == 0)
+                {
+                    return ConversionLane.Light;
+                }
+
+                FFMpegAttempt firstAttempt = this.ffmpegArgumentStringByPass[0].Attempts[0];
+                if (firstAttempt.Path == EncodingPaths.Remux)
+                {
+                    return ConversionLane.Light;
+                }
+
+                if (firstAttempt.UsesGpu)
+                {
+                    return ConversionLane.Gpu;
+                }
+
+                return this.IsVideoOutput ? ConversionLane.CpuVideo : ConversionLane.Light;
+            }
+        }
+
+        private bool IsVideoOutput => this.ConversionPreset != null && (RemuxPlanner.IsVideoOutput(this.ConversionPreset.OutputType) || this.ConversionPreset.OutputType == OutputType.Avi);
+
         protected virtual string FfmpegPath
         {
             get
@@ -758,7 +788,7 @@ namespace FileConverter.ConversionJobs
 
             using (gpuSession)
             {
-                this.ffmpegProcessStartInfo.Arguments = attempt.Arguments;
+                this.ffmpegProcessStartInfo.Arguments = this.AddEncoderThreads(attempt);
                 this.attemptError = null;
                 this.attemptOutputDuration = null;
 
@@ -816,6 +846,23 @@ namespace FileConverter.ConversionJobs
         /// <summary>
         /// Parses ffmpeg's -progress key=value lines (stdout).
         /// </summary>
+        /// <summary>
+        /// Limits the threads of software video encoders to the job's <see cref="ConversionJob.ThreadBudget"/> when
+        /// several run at the same time (x264 / x265 / VP9 each start a thread per core otherwise).
+        /// </summary>
+        private string AddEncoderThreads(FFMpegAttempt attempt)
+        {
+            string quotedOutput = $"\"{this.OutputFilePath}\"";
+            int outputIndex = attempt.Arguments.LastIndexOf(quotedOutput, StringComparison.Ordinal);
+            if (this.ThreadBudget <= 0 || attempt.UsesGpu || attempt.Path == EncodingPaths.Remux || !this.IsVideoOutput || outputIndex < 0)
+            {
+                return attempt.Arguments;
+            }
+
+            // -threads before the output file is an output (encoder) option.
+            return attempt.Arguments.Substring(0, outputIndex) + $"-threads {this.ThreadBudget} " + attempt.Arguments.Substring(outputIndex);
+        }
+
         private void ParseFFMPEGProgress(string line)
         {
             const string OutTimeKey = "out_time_us=";

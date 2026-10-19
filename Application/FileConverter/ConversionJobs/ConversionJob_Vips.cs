@@ -62,7 +62,7 @@ namespace FileConverter.ConversionJobs
             {
                 try
                 {
-                    VipsEngine.SetConcurrency(this.settingsService?.Settings?.MaximumNumberOfSimultaneousConversions ?? 1);
+                    VipsEngine.SetConcurrency(this.ThreadBudget);
                     this.ConvertWithVips();
                     this.EncodingPath = EncodingPaths.Vips;
                     Debug.Log("Image engine: vips.");
