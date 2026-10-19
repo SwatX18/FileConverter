@@ -16,6 +16,8 @@ Performance work, every optimization with an automatic fallback to the previous 
 - Fixes: Two files of a batch that give the same output name (a.mp4 and a.mkv to Mp3) were given the same output path, so one conversion failed. The second one is now named "a (2).mp3".
 - Fixes: French translation of the hardware acceleration settings.
 - Tech: ffprobe bundled with ffmpeg (8.0.1); libvips 8.18.7 and NetVips 3.2.0 added. The ffmpeg license and source information, and the libvips license, are installed.
+- Security: Magick.NET (ImageMagick) updated from 14.10.2 to 14.17.2 (144 known advisories, most of them high severity) and Ghostscript from 10.02.1 to 10.08.0 (CVE-2024-29510, sandbox escape from a crafted PDF / EPS file, and the later fixes).
+- Fixes: PDF conversions needed the Visual C++ Redistributable installed separately (Ghostscript depends on it): its runtime DLLs are now installed with File Converter. The Ghostscript license and source information are installed too.
 - Tech: Building `FileConverter.csproj` alone (without the solution) copies ffmpeg, ffprobe and Ghostscript next to the executable.
 - Tech: Unit tests (xUnit, 168 tests) and integration tests on a test corpus (`Tests/`), benchmark scripts (`bench/`).
 

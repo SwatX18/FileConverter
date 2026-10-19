@@ -95,11 +95,12 @@ To add **Auto**: append `Auto` to the enum (serialized by name, so this stays ba
 | File | Notes |
 |---|---|
 | `ffmpeg/ffmpeg.exe` | **ffmpeg 8.0.1 essentials_build, www.gyan.dev** (99 MB, static). Copied next to the exe by the post-build event. |
-| `gs/gswin64c.exe`, `gs/gsdll64.dll` | Ghostscript, used by Magick.NET for PDF |
+| `gs/gswin64c.exe`, `gs/gsdll64.dll` | Ghostscript 10.08.0 (AGPL), used by Magick.NET for PDF. Source, hashes and license: `gs/README.md`, `gs/LICENSE` (installed as `ghostscript-*`). |
+| `vcruntime/*.dll` | Visual C++ 14.44 runtime (`msvcp140`, `vcruntime140`, `vcruntime140_1`), needed by Ghostscript and installed next to the exe so that no Visual C++ Redistributable is required (`vcruntime/README.md`). |
 | `Markdown.Xaml.dll`, `Ripper.dll`, `yeti.mmedia.dll` | Help/changelog rendering, CD ripping |
 | **`ffprobe.exe`** | **Not present upstream.** Added in the fork: `Middleware/ffmpeg/ffprobe.exe` from the same gyan.dev 8.0.1 essentials build (its `ffmpeg.exe` has the same SHA-256 as the bundled one), plus a post-build copy line in `FileConverter.csproj` and a `<File>` in `Installer/Product.wxs`. |
 
-Magick.NET (Q16-AnyCPU 14.10.2) comes from NuGet (`Magick.Native-Q16-x64.dll`).
+Magick.NET (Q16-AnyCPU 14.17.2) comes from NuGet (`Magick.Native-Q16-x64.dll`).
 
 **Installer:** `Installer/Product.wxs` lists **every file by hand** (one `<Component>`/`<File>` each, sourced from `$(var.FileConverter.TargetDir)`). Only `Languages\` is harvested. Any new binary (ffprobe.exe, NetVips.dll, libvips-42.dll) needs an explicit entry there.
 

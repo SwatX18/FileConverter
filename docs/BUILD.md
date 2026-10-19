@@ -45,14 +45,14 @@ $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere
 
 Outputs:
 
-- `Application\FileConverter\bin\x64\Release\FileConverter.exe`, with `ffmpeg.exe`, `ffprobe.exe`, `gswin64c.exe`, `gsdll64.dll` and `Settings.default.xml` copied next to it by the post-build event (paths relative to the project, so building `FileConverter.csproj` alone works too), and satellite assemblies moved to `Languages\`
+- `Application\FileConverter\bin\x64\Release\FileConverter.exe`, with `ffmpeg.exe`, `ffprobe.exe`, `gswin64c.exe`, `gsdll64.dll`, the Visual C++ runtime DLLs (`Middleware\vcruntime`) and `Settings.default.xml` copied next to it by the post-build event (paths relative to the project, so building `FileConverter.csproj` alone works too), and satellite assemblies moved to `Languages\`
 - `Application\FileConverterExtension\bin\x64\Release\FileConverterExtension.dll` (the shell extension, strong-named with `FileConverterExtensionKey.snk`)
 - `Installer\bin\x64\Release\FileConverter-setup.msi` (unsigned)
 
 Notes:
 
 - The solution only defines `Debug|x64` and `Release|x64`. The x86 configurations still present in `FileConverter.csproj` are not wired into the solution.
-- NuGet restore prints many `NU1901–NU1903` warnings: Magick.NET-Q16-AnyCPU 14.10.2 has known advisories. They are not build errors. Bumping Magick.NET is worth doing separately.
+- Magick.NET-Q16-AnyCPU is 14.17.2: 14.10.2 had 144 known advisories (`NU1901–NU1903` warnings at restore); 14.17.2 has none at the time of writing (2026-10-19).
 
 ## Running a dev build without installing
 

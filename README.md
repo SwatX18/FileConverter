@@ -99,7 +99,7 @@ File converter uses the following middlewares:
 **ffmpeg** and **ffprobe** (v8.0.1) as file conversion and media analysis software.
 Thanks to ffmpeg devs for this awesome open source file conversion tool. [Web site link](https://ffmpeg.org)
 
-**ImageMagick** (v14.10) as image edition and conversion software.
+**ImageMagick** (Magick.NET v14.17.2) as image edition and conversion software.
 Thanks to image magick devs for this awesome open source image edition software suite.  [Web site link](http://imagemagick.net)
 And thanks to dlemstra for the C# wrapper of this software. [Github link](https://github.com/ImageMagick/ImageMagick)
 
@@ -107,7 +107,7 @@ And thanks to dlemstra for the C# wrapper of this software. [Github link](https:
 Thanks to John Cupitt, Kleis Auke Wolthuizen and the libvips contributors. [Web site link](https://www.libvips.org)
 And thanks to Kleis Auke Wolthuizen for **NetVips** (v3.2.0, MIT), the C# binding of libvips. [GitHub link](https://github.com/kleisauke/net-vips)
 
-**Ghostscript** (10.02.1) as pdf edition software.
+**Ghostscript** (10.08.0, AGPL-3.0) as pdf edition software.
 Thanks to ghostscript devs. [Download link](https://www.ghostscript.com/download/gsdnld.html)
 
 **SharpShell** to easily create windows context menu extensions.
@@ -128,5 +128,7 @@ File Converter is licensed under the GPL version 3 License.
 For more information check the LICENSE.md file in your installation folder or the [gnu website](https://www.gnu.org/licenses/gpl.html).
 
 ffmpeg and ffprobe are the GPLv3 "essentials" build of [gyan.dev](https://www.gyan.dev/ffmpeg/builds/); their license and the location of their source are installed as `ffmpeg-LICENSE.txt` and `ffmpeg-README.md` (`Middleware/ffmpeg`).
+
+Ghostscript is distributed under the AGPL-3.0 as the unmodified Artifex binaries; its license and the location of its source are installed as `ghostscript-LICENSE.txt` and `ghostscript-README.md` (`Middleware/gs`). It needs the Microsoft Visual C++ runtime, which is installed next to it (`msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll`, redistributable under the Visual Studio license, `Middleware/vcruntime`), so File Converter doesn't depend on a separately installed Visual C++ Redistributable.
 
 libvips is distributed under the LGPL-2.1-or-later as unmodified DLLs in the `libvips` folder of the installation, with its license, its source and the versions of every library (`Middleware/libvips`); it is loaded dynamically and can be replaced by another build of the same version. NetVips is under the MIT license.
