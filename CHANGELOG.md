@@ -1,5 +1,22 @@
 # Change Log
 
+## fast-convert (fork of 2.2, unreleased)
+
+Performance work, every optimization with an automatic fallback to the previous behavior. Details in `docs/`, measurements in `bench/REPORT.md`.
+
+- New: Hardware video encoding by default (Auto mode): NVIDIA NVENC, AMD AMF or Intel Quick Sync for H.264, HEVC and AV1, chosen from a test encode per encoder (cached, re-detected when the driver or ffmpeg changes). Falls back to the CPU encoder when a hardware encode fails. Quality settings mapped to give the same size and quality as the CPU encoders.
+- New: Video codec setting for Mp4 and Mkv presets (H.264, HEVC, AV1).
+- New: Stream copy (remux) when the output container accepts the source streams and the preset asks for no change: a mkv to mp4 conversion takes seconds instead of a full re-encode. Audio streams the container doesn't accept are re-encoded next to the copied video, text subtitles converted. The output duration is checked, with a re-encode if it doesn't match. Option "Copy streams without re-encoding when possible".
+- New: libvips image engine for JPEG, PNG, WebP, TIFF and AVIF (1.2 to 2.7 times faster than ImageMagick on its own, much more with the parallel scheduler), ImageMagick for every other format and as fallback. Option "Image engine".
+- New: Scheduler with separate limits for GPU encodes, CPU video encodes and Office documents, automatic number of simultaneous conversions (one per physical core, the old default of 2 becomes automatic), thread budgets per job, at most 2 large files at a time per hard disk drive.
+- New: Settings > Performance tab: detected hardware encoders with GPU names and a Re-detect button, image engine status, job limits (total, GPU, CPU video).
+- New: Diagnostics: each job logs its conversion path (remux, nvenc, cpu-fallback, vips, imagemagick-fallback...) and duration, and each batch a summary.
+- Fixes: Conversions of long videos hung forever (ffmpeg blocked writing its progress to an unread pipe).
+- Fixes: Opus / WebM conversions reported as failed because of a harmless ffmpeg 8 message.
+- Fixes: French translation of the hardware acceleration settings.
+- Tech: ffprobe bundled with ffmpeg (8.0.1); libvips 8.18.7 and NetVips 3.2.0 added.
+- Tech: Unit tests (xUnit, 155 tests) and integration tests on a test corpus (`Tests/`), benchmark scripts (`bench/`).
+
 ## Version 2.2
 
 - New: AMD AMF hardware acceleration option for MP4/MKV H.264 conversions (thanks to bharatvansh).

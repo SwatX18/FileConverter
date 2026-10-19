@@ -10,6 +10,30 @@ You can download it here: [file-converter.io](https://file-converter.io/?from=re
 
 You can find more information about what's in File converter and how to use it on the [wiki](https://github.com/Tichau/FileConverter/wiki).
 
+## About this fork (fast-convert)
+
+This fork of [Tichau/FileConverter](https://github.com/Tichau/FileConverter) makes conversions faster without changing how File Converter is used. Every optimization falls back automatically to the original behavior when it can't be used, and existing settings files keep working.
+
+- **Hardware video encoding** (NVIDIA NVENC, AMD AMF, Intel Quick Sync), detected with a test encode and used by default, with the CPU encoder as fallback. Quality settings are calibrated to give the same quality as the CPU encoders. [docs/HARDWARE-ENCODING.md](docs/HARDWARE-ENCODING.md)
+- **Stream copy**: a conversion that only changes the container (mkv to mp4, mov to mp4...) copies the streams instead of re-encoding them. [docs/REMUXING.md](docs/REMUXING.md)
+- **libvips** for JPEG, PNG, WebP, TIFF and AVIF images, ImageMagick for everything else. [docs/IMAGES.md](docs/IMAGES.md)
+- **Parallel scheduling**: one conversion per CPU core, with separate limits for GPU encodes, CPU video encodes and Office documents. [docs/SCHEDULING.md](docs/SCHEDULING.md)
+- **Settings > Performance** tab and per-file diagnostics (conversion path and duration). [docs/SETTINGS.md](docs/SETTINGS.md)
+
+Measured on a Ryzen 9 7950X3D with an RTX 5070 Ti, against the original at its default settings ([bench/REPORT.md](bench/REPORT.md)):
+
+| Conversion | Original | This fork |
+|---|---:|---:|
+| Sintel 1080p, 15 min MKV → To Mp4 | 81.5 s | 2.3 s (stream copy) |
+| H.264 4K 30 s → To Mp4 | 20.2 s | 7.1 s (NVENC) |
+| 200 × 24 MP JPEG → Scale 25%/To Webp | 55.8 s | 3.6 s |
+| 10 × 24 MP WebP → To Png | 22.4 s | 4.9 s |
+| 20 × 24 MP JPEG → To Avif | 24.9 s | 10.7 s |
+
+Audio conversions and RAW / HEIC images are unchanged; extracting the audio of a video file takes about 0.3 s more (the file is probed to see whether its audio can be copied). The original also hangs on long video conversions (ffmpeg blocked on its progress output); this is fixed here.
+
+Tests: unit tests in `Tests/FileConverter.Tests` (xUnit, in the solution) and integration tests on a test corpus (`Tests/integration.ps1`), see [Tests/README.md](Tests/README.md). Benchmarks: [bench/README.md](bench/README.md).
+
 ## Donate
 
 File Converter is a personal open source project started in 2014. I have put hundreds of hours adding, refining and tuning File Converter with the goal of making the conversion and compression of files an easy task for everyone.
@@ -72,7 +96,7 @@ Thanks to all the contributors of File Converter project.
 
 File converter uses the following middlewares:
 
-**ffmpeg** (v8.0.1) as file conversion software.
+**ffmpeg** and **ffprobe** (v8.0.1) as file conversion and media analysis software.
 Thanks to ffmpeg devs for this awesome open source file conversion tool. [Web site link](https://ffmpeg.org)
 
 **ImageMagick** (v14.10) as image edition and conversion software.
@@ -102,3 +126,5 @@ Thanks to Thomas Levesque for his work on WpfAnimatedGif. [GitHub link](https://
 
 File Converter is licensed under the GPL version 3 License.
 For more information check the LICENSE.md file in your installation folder or the [gnu website](https://www.gnu.org/licenses/gpl.html).
+
+libvips is distributed under the LGPL-2.1-or-later as unmodified DLLs in the `libvips` folder of the installation, with its license, its source and the versions of every library (`Middleware/libvips`); it is loaded dynamically and can be replaced by another build of the same version. NetVips is under the MIT license.
