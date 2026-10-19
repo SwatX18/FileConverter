@@ -171,6 +171,13 @@
             <Component Guid="{F082B788-F2C8-4D86-A43E-AB09CBE04D6A}">
                 <File Id="LICENSE.md" Source="..\LICENSE.md" KeyPath="yes" />
             </Component>
+            <!-- GPL: the ffmpeg build's license and source (README) are installed next to ffmpeg.exe. -->
+            <Component Guid="{16305948-583A-4082-AA44-E6A1CD2B391B}">
+                <File Id="ffmpeg_LICENSE.txt" Name="ffmpeg-LICENSE.txt" Source="..\Middleware\ffmpeg\LICENSE" KeyPath="yes" />
+            </Component>
+            <Component Guid="{0E0A48E4-9F39-4CA8-9E67-3697BED1058F}">
+                <File Id="ffmpeg_README.md" Name="ffmpeg-README.md" Source="..\Middleware\ffmpeg\README.md" KeyPath="yes" />
+            </Component>
 
             <!-- Registry entries -->
             <Component Id="RegistryEntries" Guid="{1862E9DC-1B37-4AFD-85BF-2E9CFFAFA9F8}">

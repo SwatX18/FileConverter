@@ -127,4 +127,6 @@ Thanks to Thomas Levesque for his work on WpfAnimatedGif. [GitHub link](https://
 File Converter is licensed under the GPL version 3 License.
 For more information check the LICENSE.md file in your installation folder or the [gnu website](https://www.gnu.org/licenses/gpl.html).
 
+ffmpeg and ffprobe are the GPLv3 "essentials" build of [gyan.dev](https://www.gyan.dev/ffmpeg/builds/); their license and the location of their source are installed as `ffmpeg-LICENSE.txt` and `ffmpeg-README.md` (`Middleware/ffmpeg`).
+
 libvips is distributed under the LGPL-2.1-or-later as unmodified DLLs in the `libvips` folder of the installation, with its license, its source and the versions of every library (`Middleware/libvips`); it is loaded dynamically and can be replaced by another build of the same version. NetVips is under the MIT license.
