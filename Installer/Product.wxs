@@ -145,6 +145,23 @@
             <Component Guid="{DC549AF7-6004-423E-BFE3-3508F4AC4682}">
                 <File Id="gswin64c.exe" Source="$(var.FileConverter.TargetDir)gswin64c.exe" KeyPath="yes" Checksum="yes" />
             </Component>
+            <!-- AGPL: the Ghostscript license and source (README) are installed next to it. -->
+            <Component Guid="{02CC4679-D575-424C-A3AD-BF6F71FB4427}">
+                <File Id="ghostscript_LICENSE.txt" Name="ghostscript-LICENSE.txt" Source="..\Middleware\gs\LICENSE" KeyPath="yes" />
+            </Component>
+            <Component Guid="{5CAC1DF6-9FBB-4080-806D-703BA5D8A06F}">
+                <File Id="ghostscript_README.md" Name="ghostscript-README.md" Source="..\Middleware\gs\README.md" KeyPath="yes" />
+            </Component>
+            <!-- Visual C++ runtime needed by Ghostscript (app-local: it is not part of Windows, see Middleware\vcruntime\README.md). -->
+            <Component Guid="{693ECD9D-5452-4D3F-9341-003C29CBB520}">
+                <File Id="msvcp140.dll" Source="$(var.FileConverter.TargetDir)msvcp140.dll" KeyPath="yes" Checksum="yes" />
+            </Component>
+            <Component Guid="{0767FC4E-3020-43D0-AF4D-469F96DC9C87}">
+                <File Id="vcruntime140.dll" Source="$(var.FileConverter.TargetDir)vcruntime140.dll" KeyPath="yes" Checksum="yes" />
+            </Component>
+            <Component Guid="{E77CBB08-98F6-4E54-966B-EEB70EC700E9}">
+                <File Id="vcruntime140_1.dll" Source="$(var.FileConverter.TargetDir)vcruntime140_1.dll" KeyPath="yes" Checksum="yes" />
+            </Component>
             <Component Guid="{12B808AB-C4E3-4B0D-B34B-0124C75B2279}">
                 <File Id="Markdown.Xaml.dll" KeyPath="yes" Source="$(var.FileConverter.TargetDir)Markdown.Xaml.dll" Checksum="yes" />
             </Component>
