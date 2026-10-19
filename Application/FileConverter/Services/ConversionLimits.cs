@@ -47,19 +47,26 @@ namespace FileConverter.Services
 
         /// <param name="maximumSimultaneousConversions">The user setting; 0 (or less) means automatic: one job per physical core.</param>
         /// <param name="maximumSimultaneousGpuConversions">The GPU encode session limit (see <see cref="Hardware.GpuSessionLimiter"/>).</param>
-        public static ConversionLimits Compute(int maximumSimultaneousConversions, int maximumSimultaneousGpuConversions, int physicalCores)
+        /// <param name="maximumSimultaneousCpuVideoConversions">The user setting; 0 (or less) means automatic (see <see cref="GetAutomaticCpuVideoLimit"/>).</param>
+        public static ConversionLimits Compute(int maximumSimultaneousConversions, int maximumSimultaneousGpuConversions, int maximumSimultaneousCpuVideoConversions, int physicalCores)
         {
             physicalCores = Math.Max(1, physicalCores);
             int total = maximumSimultaneousConversions > 0 ? maximumSimultaneousConversions : physicalCores;
-
-            // Software video encoders already use many threads each: 2 to 4 jobs keep the cores busy without thrashing.
-            int cpuVideo = Math.Max(2, Math.Min(4, physicalCores / 4));
+            int cpuVideo = maximumSimultaneousCpuVideoConversions > 0 ? maximumSimultaneousCpuVideoConversions : GetAutomaticCpuVideoLimit(physicalCores);
 
             return new ConversionLimits(
                 total,
                 Math.Min(total, Math.Max(1, maximumSimultaneousGpuConversions)),
                 Math.Min(total, cpuVideo),
                 Math.Min(total, MaximumDocumentJobs));
+        }
+
+        /// <summary>
+        /// Software video encoders already use many threads each: 2 to 4 jobs keep the cores busy without thrashing.
+        /// </summary>
+        public static int GetAutomaticCpuVideoLimit(int physicalCores)
+        {
+            return Math.Max(2, Math.Min(4, physicalCores / 4));
         }
 
         /// <summary>

@@ -63,7 +63,7 @@ namespace FileConverter.Services
             System.Diagnostics.Stopwatch batchTime = System.Diagnostics.Stopwatch.StartNew();
             int jobCount = this.conversionJobs.Count;
             Settings settings = this.settingsService.Settings;
-            ConversionLimits limits = ConversionLimits.Compute(settings.MaximumNumberOfSimultaneousConversions, settings.MaximumNumberOfSimultaneousGpuConversions, SystemInfo.PhysicalCoreCount);
+            ConversionLimits limits = ConversionLimits.Compute(settings.MaximumNumberOfSimultaneousConversions, settings.MaximumNumberOfSimultaneousGpuConversions, settings.MaximumNumberOfSimultaneousCpuVideoConversions, SystemInfo.PhysicalCoreCount);
             Debug.Log($"Conversion limits: {limits} ({SystemInfo.PhysicalCoreCount} cores, {SystemInfo.LogicalProcessorCount} threads).");
 
             object sync = new object();

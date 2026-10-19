@@ -24,6 +24,7 @@ namespace FileConverter
         private bool copyFilesInClipboardAfterConversion = false;
         private Helpers.HardwareAccelerationMode hardwareAccelerationMode = Helpers.HardwareAccelerationMode.Auto;
         private int maximumNumberOfSimultaneousGpuConversions = Hardware.GpuSessionLimiter.DefaultMaximumSessions;
+        private int maximumNumberOfSimultaneousCpuVideoConversions;
         private bool copyStreamsWhenPossible = true;
         private Helpers.ImageEngine imageEngine = Helpers.ImageEngine.Auto;
 
@@ -194,6 +195,26 @@ namespace FileConverter
             set
             {
                 this.maximumNumberOfSimultaneousGpuConversions = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Maximum number of simultaneous software video encodes (x264, x265...), within
+        /// <see cref="MaximumNumberOfSimultaneousConversions"/>. 0 means automatic (see <see cref="Services.ConversionLimits"/>).
+        /// A missing element (settings from older versions) means automatic.
+        /// </summary>
+        [XmlElement]
+        public int MaximumNumberOfSimultaneousCpuVideoConversions
+        {
+            get
+            {
+                return this.maximumNumberOfSimultaneousCpuVideoConversions;
+            }
+
+            set
+            {
+                this.maximumNumberOfSimultaneousCpuVideoConversions = value;
                 this.OnPropertyChanged();
             }
         }
