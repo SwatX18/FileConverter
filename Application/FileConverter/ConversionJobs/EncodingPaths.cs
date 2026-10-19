@@ -50,5 +50,20 @@ namespace FileConverter.ConversionJobs
         public const string Qsv = "qsv";
 
         public const string QsvCpuDecode = "qsv-cpu-decode";
+
+        /// <summary>
+        /// Image converted by libvips (see <see cref="ConversionJob_Vips"/>).
+        /// </summary>
+        public const string Vips = "vips";
+
+        /// <summary>
+        /// Image converted by ImageMagick because libvips doesn't handle it (format, setting).
+        /// </summary>
+        public const string ImageMagick = "imagemagick";
+
+        /// <summary>
+        /// Image converted by ImageMagick after libvips failed or found the file unsupported once opened.
+        /// </summary>
+        public const string ImageMagickFallback = "imagemagick-fallback";
     }
 }

@@ -25,6 +25,7 @@ namespace FileConverter
         private Helpers.HardwareAccelerationMode hardwareAccelerationMode = Helpers.HardwareAccelerationMode.Auto;
         private int maximumNumberOfSimultaneousGpuConversions = Hardware.GpuSessionLimiter.DefaultMaximumSessions;
         private bool copyStreamsWhenPossible = true;
+        private Helpers.ImageEngine imageEngine = Helpers.ImageEngine.Auto;
 
         public ConversionPreset GetPresetFromName(string presetName)
         {
@@ -212,6 +213,24 @@ namespace FileConverter
             set
             {
                 this.copyStreamsWhenPossible = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Image conversion engine: Auto (libvips, then ImageMagick) or ImageMagick only.
+        /// </summary>
+        [XmlElement]
+        public Helpers.ImageEngine ImageEngine
+        {
+            get
+            {
+                return this.imageEngine;
+            }
+
+            set
+            {
+                this.imageEngine = value;
                 this.OnPropertyChanged();
             }
         }

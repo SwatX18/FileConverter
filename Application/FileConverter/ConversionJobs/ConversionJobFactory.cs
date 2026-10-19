@@ -48,7 +48,8 @@ namespace FileConverter.ConversionJobs
                 conversionPreset.OutputType == OutputType.Png ||
                 conversionPreset.OutputType == OutputType.Webp)
             {
-                return new ConversionJob_ImageMagick(conversionPreset, inputFilePath);
+                // libvips when it handles the file, ImageMagick otherwise (see ConversionJob_Vips).
+                return new ConversionJob_Vips(conversionPreset, inputFilePath);
             }
             
             return new ConversionJob_FFMPEG(conversionPreset, inputFilePath);

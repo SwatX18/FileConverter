@@ -362,5 +362,14 @@ namespace FileConverter
             CUDA,
             AMF
         }
+
+        public enum ImageEngine
+        {
+            /// <summary>
+            /// libvips for the formats it handles (see <see cref="Imaging.VipsEngine"/>), ImageMagick for the others and on failure.
+            /// </summary>
+            Auto,
+            ImageMagick
+        }
     }
 }

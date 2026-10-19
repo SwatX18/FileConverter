@@ -125,6 +125,7 @@
     <Compile Include="ConversionJobs\ConversionJob_Excel.cs" />
     <Compile Include="ConversionJobs\ConversionJob_Word.cs" />
     <Compile Include="ConversionJobs\ConversionJob_ImageMagick.cs" />
+    <Compile Include="ConversionJobs\ConversionJob_Vips.cs" />
     <Compile Include="ConversionJobs\ConversionState.cs" />
     <Compile Include="ConversionJobs\EncodingPaths.cs" />
     <Compile Include="ConversionJobs\VideoEncodingSpeed.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Hardware\ProcessRunner.cs" />
     <Compile Include="Hardware\VideoCodec.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="Imaging\VipsEngine.cs" />
     <Compile Include="Media\MediaInfo.cs" />
     <Compile Include="Media\MediaProbe.cs" />
     <Compile Include="Media\RemuxCompatibility.cs" />
