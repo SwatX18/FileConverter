@@ -5,7 +5,7 @@ This is a discovery summary for the `fast-convert` fork (see `PLAN.md`). Paths a
 ## 1. Process model and entry point
 
 - The shell extension (`Application/FileConverterExtension`, SharpShell) builds the right-click menu from the presets in `%LOCALAPPDATA%\FileConverter\Settings.user.xml`. It then launches
-  `FileConverter.exe --conversion-preset "<preset name>" --input-files <tmp list>` (or with the paths as plain arguments).
+  `FileConverterPlusPlus.exe --conversion-preset "<preset name>" --input-files <tmp list>` (or with the paths as plain arguments).
 - `Application.xaml.cs` `Initialize()` parses the arguments, then `RunConversions()` creates one `ConversionJob` per file with `ConversionJobFactory.Create()`, registers it with `ConversionService`, and calls `ConvertFilesAsync()`.
 - At the end, the app exits by itself only if `Settings.ExitApplicationWhenConversionsFinished` is true, after `DurationBetweenEndOfConversionsAndApplicationExit` seconds (0–10). The default is **false**.
 - The app resolves its install directory, and therefore `Settings.default.xml`, from `HKCU\Software\FileConverter\Path`, which the installer writes. User data and diagnostics logs live in `%LOCALAPPDATA%\FileConverter\` (not `%APPDATA%`).

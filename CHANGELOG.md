@@ -1,6 +1,8 @@
 # Change Log
 
-## fast-convert (fork of 2.2, unreleased)
+## FileConverter++ 2.3.0 (fork of File Converter 2.2, unreleased)
+
+- New: Renamed FileConverter++ (`FileConverterPlusPlus.exe`, `C:\Program Files\FileConverter++`), published by SwatX18. It replaces File Converter when installed and keeps its settings; updates are checked on github.com/SwatX18/FileConverter.
 
 Performance work, every optimization with an automatic fallback to the previous behavior. Details in `docs/`, measurements in `bench/REPORT.md`.
 

@@ -10,7 +10,7 @@ powershell -ExecutionPolicy Bypass -File bench\run-bench.ps1
 powershell -ExecutionPolicy Bypass -File bench\run-bench.ps1 -Output bench\results.csv -Label phase1
 ```
 
-`run-bench.ps1` drives `FileConverter.exe --conversion-preset <name> --input-files <list>` (the same entry point as the
+`run-bench.ps1` drives `FileConverterPlusPlus.exe --conversion-preset <name> --input-files <list>` (the same entry point as the
 shell extension). It temporarily sets `HKCU\Software\FileConverter\Path` and `%LOCALAPPDATA%\FileConverter\Settings.user.xml`
 (auto-exit on, everything else at the defaults) and restores both afterwards. See the header of the script for the
 stall/hang detection and the CSV columns.

@@ -18,7 +18,7 @@ Visual Studio's Test Explorer runs them too (the project is in `FileConverter.sl
 | `SchedulingAndSettingsTests` | Limits per lane, thread budgets, settings migrations (v5 hardware acceleration, v6 simultaneous conversions), defaults |
 
 The tests don't touch the registry, the user's settings or the GPU. The libvips routing cases load the libvips DLLs
-copied next to `FileConverter.exe` (xUnit shadow copying is disabled for that, `xunit.runner.json`). Logs go to a
+copied next to `FileConverterPlusPlus.exe` (xUnit shadow copying is disabled for that, `xunit.runner.json`). Logs go to a
 `Diagnostics-*` folder in `%LOCALAPPDATA%\FileConverter`, like the application's.
 
 ## Integration tests (`integration.ps1`)

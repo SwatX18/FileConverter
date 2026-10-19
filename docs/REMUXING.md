@@ -1,6 +1,6 @@
 # Smart remuxing (Phase 2)
 
-When the output container accepts the source's streams and the preset asks for no change, File Converter copies the
+When the output container accepts the source's streams and the preset asks for no change, FileConverter++ copies the
 streams (`-c copy`) instead of re-encoding them. The conversion is then limited by disk speed (a 15-minute 1080p film in
 2.4 s) and lossless. If anything goes wrong, the normal conversion runs instead.
 
@@ -174,7 +174,7 @@ Notes:
 ## Pre-existing bug fixed on the way: Opus in WebM
 
 ffmpeg 8 logs `Error parsing Opus packet header.` for Opus audio in Matroska/WebM files that decode correctly (exit code
-0; the same stream in Ogg logs nothing). File Converter treats any stderr line containing "Error" as a failure, so **any
+0; the same stream in Ogg logs nothing). FileConverter++ treats any stderr line containing "Error" as a failure, so **any
 conversion of a WebM/MKV with Opus audio failed**, remux or not (verified: Opus WebM → To Mp3 failed before the fix). The
 message is now ignored like the existing transport-stream exception; a real failure still makes ffmpeg exit with an
 error code, which is checked since Phase 0.5.

@@ -6,8 +6,8 @@ version 14.44.35211, copied unmodified from Visual Studio 2022
 
 Ghostscript (`gsdll64.dll`, `gswin64c.exe`) needs them, and they are not part of Windows: without them, PDF conversions
 only work on computers where another program installed the Visual C++ Redistributable. They are installed next to
-`FileConverter.exe` ("app-local" deployment), where Windows finds them first; the Universal CRT
-(`api-ms-win-crt-*.dll`) is part of Windows 10 and 11. Nothing else in File Converter uses them: ffmpeg, ffprobe,
+`FileConverterPlusPlus.exe` ("app-local" deployment), where Windows finds them first; the Universal CRT
+(`api-ms-win-crt-*.dll`) is part of Windows 10 and 11. Nothing else in FileConverter++ uses them: ffmpeg, ffprobe,
 ImageMagick and libvips bring their own runtimes.
 
 These files are redistributable under the Visual Studio license (https://aka.ms/vs/17/redist.txt, "Visual C++ Runtime Files": any file of `VC\redist`, unmodified);

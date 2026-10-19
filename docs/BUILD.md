@@ -1,4 +1,4 @@
-# Building File Converter (fast-convert fork)
+# Building FileConverter++
 
 These are the exact steps verified on Windows 11 (2026-10-18). A full Release x64 build of the solution, including the MSI, takes about 40 s.
 
@@ -45,9 +45,9 @@ $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere
 
 Outputs:
 
-- `Application\FileConverter\bin\x64\Release\FileConverter.exe`, with `ffmpeg.exe`, `ffprobe.exe`, `gswin64c.exe`, `gsdll64.dll`, the Visual C++ runtime DLLs (`Middleware\vcruntime`) and `Settings.default.xml` copied next to it by the post-build event (paths relative to the project, so building `FileConverter.csproj` alone works too), and satellite assemblies moved to `Languages\`
-- `Application\FileConverterExtension\bin\x64\Release\FileConverterExtension.dll` (the shell extension, strong-named with `FileConverterExtensionKey.snk`)
-- `Installer\bin\x64\Release\FileConverter-setup.msi` (unsigned)
+- `Application\FileConverter\bin\x64\Release\FileConverterPlusPlus.exe`, with `ffmpeg.exe`, `ffprobe.exe`, `gswin64c.exe`, `gsdll64.dll`, the Visual C++ runtime DLLs (`Middleware\vcruntime`) and `Settings.default.xml` copied next to it by the post-build event (paths relative to the project, so building `FileConverter.csproj` alone works too), and satellite assemblies moved to `Languages\`
+- `Application\FileConverterExtension\bin\x64\Release\FileConverterPlusPlusExtension.dll` (the shell extension, strong-named with `FileConverterExtensionKey.snk`)
+- `Installer\bin\x64\Release\FileConverterPlusPlus-setup.msi` (unsigned)
 
 Notes:
 
@@ -56,11 +56,11 @@ Notes:
 
 ## Running a dev build without installing
 
-`FileConverter.exe` locates `Settings.default.xml` through the registry value `HKCU\Software\FileConverter\Path`, which the installer normally writes. Without it the app throws "Can't retrieve file converter registry entry." For a dev build:
+`FileConverterPlusPlus.exe` locates `Settings.default.xml` through the registry value `HKCU\Software\FileConverter\Path`, which the installer normally writes. Without it the app throws "Can't retrieve FileConverter++ registry entry." For a dev build:
 
 ```powershell
 New-Item -Force HKCU:\Software\FileConverter | Out-Null
-Set-ItemProperty HKCU:\Software\FileConverter Path "$PWD\Application\FileConverter\bin\x64\Release\FileConverter.exe"
+Set-ItemProperty HKCU:\Software\FileConverter Path "$PWD\Application\FileConverter\bin\x64\Release\FileConverterPlusPlus.exe"
 ```
 
 User settings live in `%LOCALAPPDATA%\FileConverter\Settings.user.xml`, and diagnostics logs go in `%LOCALAPPDATA%\FileConverter\Diagnostics*`.
@@ -68,10 +68,22 @@ User settings live in `%LOCALAPPDATA%\FileConverter\Settings.user.xml`, and diag
 Command line (the same one the shell extension uses):
 
 ```
-FileConverter.exe --conversion-preset "To Mp4" [--verbose] file1 file2 ...
-FileConverter.exe --conversion-preset "To Mp4" --input-files list.txt
+FileConverterPlusPlus.exe --conversion-preset "To Mp4" [--verbose] file1 file2 ...
+FileConverterPlusPlus.exe --conversion-preset "To Mp4" --input-files list.txt
 ```
 
 `bench/run-bench.ps1` sets up (and afterwards restores) the registry value and a temporary `Settings.user.xml` automatically.
 
-The shell extension (right-click menu) needs an elevated `FileConverter.exe --register-shell-extension <path-to-FileConverterExtension.dll>`. Installing the MSI is the simpler way to test it.
+The shell extension (right-click menu) needs an elevated `FileConverterPlusPlus.exe --register-shell-extension <path-to-FileConverterPlusPlusExtension.dll>`. Installing the MSI is the simpler way to test it.
+
+## Publishing an update
+
+The update check (`Services/UpgradeService.cs`) reads `version.xml` and `CHANGELOG.md` from the `fast-convert` branch
+of github.com/SwatX18/FileConverter, at most once a day, and offers the update if `Latest` is above the running version.
+To publish version X.Y.Z:
+
+1. Set the version in `Application/FileConverter/Application.xaml.cs` (`Version`), `Properties/AssemblyInfo.cs` and
+   `Installer/Product.wxs` (`Package Version`, which must increase for the installer to replace the previous one).
+2. Build, and attach `FileConverterPlusPlus-setup.msi` to a GitHub release `vX.Y.Z` as
+   `FileConverterPlusPlus-X.Y.Z-x64-setup.msi`.
+3. Then push `version.xml` with `Latest` X.Y.Z and that asset's download URL: installed copies offer it from then on.

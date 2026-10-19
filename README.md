@@ -1,18 +1,20 @@
-# File Converter
+# FileConverter++
 
 ## Description
 
-**File Converter** is a very simple tool which allows you to convert and compress one or several file(s) using the context menu of windows explorer.
+**FileConverter++** is a faster fork of [File Converter](https://github.com/Tichau/FileConverter) by Adrien Allard: a very simple tool which allows you to convert and compress one or several file(s) using the context menu of windows explorer.
 
-![File Converter Usage](Resources/FileConverterUsage.gif)
+![FileConverter++ Usage](Resources/FileConverterUsage.gif)
 
-You can download it here: [file-converter.io](https://file-converter.io/?from=readme.md).
+Releases: [github.com/SwatX18/FileConverter/releases](https://github.com/SwatX18/FileConverter/releases). The original File Converter is at [file-converter.io](https://file-converter.io/?from=readme.md).
 
-You can find more information about what's in File converter and how to use it on the [wiki](https://github.com/Tichau/FileConverter/wiki).
+The presets and their settings work as in File Converter: see its [wiki](https://github.com/Tichau/FileConverter/wiki).
 
-## About this fork (fast-convert)
+Installing FileConverter++ replaces File Converter (same installer identity, version 2.3.0 above the official 2.2) and keeps your settings and presets (`%LOCALAPPDATA%\FileConverter`). It installs in `C:\Program Files\FileConverter++` as `FileConverterPlusPlus.exe`, and checks for updates on this repository.
 
-This fork of [Tichau/FileConverter](https://github.com/Tichau/FileConverter) makes conversions faster without changing how File Converter is used. Every optimization falls back automatically to the original behavior when it can't be used, and existing settings files keep working.
+## What FileConverter++ changes
+
+FileConverter++ makes conversions faster without changing how File Converter is used. Every optimization falls back automatically to the original behavior when it can't be used, and existing settings files keep working.
 
 - **Hardware video encoding** (NVIDIA NVENC, AMD AMF, Intel Quick Sync), detected with a test encode and used by default, with the CPU encoder as fallback. Quality settings are calibrated to give the same quality as the CPU encoders. [docs/HARDWARE-ENCODING.md](docs/HARDWARE-ENCODING.md)
 - **Stream copy**: a conversion that only changes the container (mkv to mp4, mov to mp4...) copies the streams instead of re-encoding them. [docs/REMUXING.md](docs/REMUXING.md)
@@ -34,7 +36,7 @@ Audio conversions and RAW / HEIC images are unchanged; extracting the audio of a
 
 Tests: unit tests in `Tests/FileConverter.Tests` (xUnit, in the solution) and integration tests on a test corpus (`Tests/integration.ps1`), see [Tests/README.md](Tests/README.md). Benchmarks: [bench/README.md](bench/README.md).
 
-## Donate
+## Donate (to File Converter's author)
 
 File Converter is a personal open source project started in 2014. I have put hundreds of hours adding, refining and tuning File Converter with the goal of making the conversion and compression of files an easy task for everyone.
 
@@ -42,16 +44,16 @@ You can help me by [contributing to the project](https://github.com/Tichau/FileC
 
 ## Troubleshooting
 
-If you encounter any problem with File Converter, you can:
+If you encounter any problem with FileConverter++, you can:
 
-* See the already known problems in the [troubleshooting section of the documentation](https://github.com/Tichau/FileConverter/wiki/Troubleshooting).
-* Or report an issue on the [bug tracker](https://github.com/Tichau/FileConverter/issues).
+* See the already known problems in the [troubleshooting section of File Converter's documentation](https://github.com/Tichau/FileConverter/wiki/Troubleshooting).
+* Or report an issue on the [FileConverter++ bug tracker](https://github.com/SwatX18/FileConverter/issues).
 
 ## Setup development environment
 
 ### Requirements
 
-For File Converter and its explorer extension:
+For FileConverter++ and its explorer extension:
 
 * Visual Studio 2022
 
@@ -124,7 +126,7 @@ Thanks to Thomas Levesque for his work on WpfAnimatedGif. [GitHub link](https://
 
 ## License
 
-File Converter is licensed under the GPL version 3 License.
+FileConverter++, like File Converter, is licensed under the GPL version 3 License (copyright Adrien Allard; FileConverter++ changes by SwatX18).
 For more information check the LICENSE.md file in your installation folder or the [gnu website](https://www.gnu.org/licenses/gpl.html).
 
 ffmpeg and ffprobe are the GPLv3 "essentials" build of [gyan.dev](https://www.gyan.dev/ffmpeg/builds/); their license and the location of their source are installed as `ffmpeg-LICENSE.txt` and `ffmpeg-README.md` (`Middleware/ffmpeg`).
