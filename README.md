@@ -79,6 +79,10 @@ Thanks to ffmpeg devs for this awesome open source file conversion tool. [Web si
 Thanks to image magick devs for this awesome open source image edition software suite.  [Web site link](http://imagemagick.net)
 And thanks to dlemstra for the C# wrapper of this software. [Github link](https://github.com/ImageMagick/ImageMagick)
 
+**libvips** (v8.18.7, LGPL-2.1-or-later) as fast image conversion library for JPEG, PNG, WebP, TIFF and AVIF.
+Thanks to John Cupitt, Kleis Auke Wolthuizen and the libvips contributors. [Web site link](https://www.libvips.org)
+And thanks to Kleis Auke Wolthuizen for **NetVips** (v3.2.0, MIT), the C# binding of libvips. [GitHub link](https://github.com/kleisauke/net-vips)
+
 **Ghostscript** (10.02.1) as pdf edition software.
 Thanks to ghostscript devs. [Download link](https://www.ghostscript.com/download/gsdnld.html)
 

@@ -5,6 +5,10 @@
       <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Source folder of the harvested libvips DLLs (Heat replaces the harvested folder path with this variable). -->
+    <DefineConstants>$(DefineConstants);LibvipsDir=..\Application\FileConverter\$(OutputPath)libvips</DefineConstants>
+  </PropertyGroup>
   <Target Name="CollectSuggestedVisualStudioComponentIds" />
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>Debug</DefineConstants>
@@ -37,6 +41,12 @@
       <ComponentGroupName>Languages</ComponentGroupName>
       <DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
       <PreprocessorVariable>var.FileConverter.TargetDir</PreprocessorVariable>
+      <SuppressRegistry>true</SuppressRegistry>
+    </HarvestDirectory>
+    <HarvestDirectory Include="..\Application\FileConverter\$(OutputPath)libvips">
+      <ComponentGroupName>Libvips</ComponentGroupName>
+      <DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
+      <PreprocessorVariable>var.LibvipsDir</PreprocessorVariable>
       <SuppressRegistry>true</SuppressRegistry>
     </HarvestDirectory>
   </ItemGroup>

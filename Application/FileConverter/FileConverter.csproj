@@ -420,6 +420,9 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
       <Version>1.1.135</Version>
     </PackageReference>
+    <PackageReference Include="NetVips">
+      <Version>3.2.0</Version>
+    </PackageReference>
     <PackageReference Include="NetOffice.Excel">
       <Version>1.7.4.11</Version>
     </PackageReference>
@@ -435,6 +438,14 @@
     <PackageReference Include="WpfAnimatedGif">
       <Version>2.0.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Native libvips (shared build, see Middleware\libvips\README.md), loaded from the libvips sub-folder. -->
+    <None Include="..\..\Middleware\libvips\*.dll">
+      <Link>libvips\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
