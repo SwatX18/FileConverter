@@ -45,6 +45,7 @@ Machine: Ryzen 9 7950X3D, RTX 5070 Ti + Radeon iGPU, 64 GB. Default settings: 2 
   Cases that convert a file to its own format (`video_h264_1080p_to_mp4`, `video_sintel_mkv_to_mkv`) are re-encoded by
   design, so they measure the same path as Phase 1.
 - **`phase3.csv`**: Phase 3 (libvips), image cases, `-Repeat 3`. See `docs/IMAGES.md`.
+- **`phase4.csv`**: Phase 4 (scheduler, Auto = one job per physical core), all cases, `-Repeat 3`. See `docs/SCHEDULING.md`.
 - **`image-engines.csv`**: `compare-engines.ps1` output: each image case converted with libvips and with ImageMagick
   only, with time, size, dimensions and SSIM against the source and between the two outputs.
 

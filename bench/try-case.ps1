@@ -26,7 +26,9 @@ param(
     # Write Settings.user.xml with this SerializationVersion (e.g. 4 to exercise the settings migration).
     [int]$SettingsVersion = 0,
     # Print the whole diagnostics log instead of the encoding-path lines.
-    [switch]$AllLog
+    [switch]$AllLog,
+    # Folder for the inputs (hard links, or copies on another volume) and outputs; default bench/work/try-case.
+    [string]$WorkDir = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -51,7 +53,7 @@ $hwCacheKeep = Join-Path $env:TEMP 'FileConverter-hw-cache.json'
 if (Test-Path $regPath) { throw "$regPath exists (FileConverter installed?): refusing to modify it." }
 if ((Test-Path $userDir) -and @(Get-ChildItem $userDir -Exclude 'hw-cache.json', 'Diagnostics-*').Count -gt 0) { throw "$userDir is in use: refusing to modify it." }
 
-$work = Join-Path $here 'work\try-case'
+$work = if ($WorkDir) { $WorkDir } else { Join-Path $here 'work\try-case' }
 if (Test-Path $work) { Remove-Item -Recurse -Force $work }
 New-Item -ItemType Directory -Force $work | Out-Null
 $linkedFiles = @()
@@ -104,7 +106,7 @@ try {
     if (-not $exited) { & taskkill.exe /T /F /PID $proc.Id 2>&1 | Out-Null; [void]$proc.WaitForExit(5000); Start-Sleep 1 }
     Write-Host ('exit: {0} in {1:N1}s' -f $(if ($exited) { 'auto-exit (all conversions succeeded)' } else { 'did not exit (failure or timeout), killed' }), $sw.Elapsed.TotalSeconds)
 
-    $patterns = 'imported from version|Hardware encoders|unavailable|Image engine|libvips|Remux|Output validation|Encoding path|Falling back|fallback encoding path|exited with code|^Fail: |hardware encoder cache'
+    $patterns = 'imported from version|Hardware encoders|unavailable|Conversion limits|Start job|Hard disk|Image engine|libvips|Remux|Output validation|Encoding path|Falling back|fallback encoding path|exited with code|^Fail: |hardware encoder cache'
     if ($AllLog) { $patterns = '.' }
     Get-ChildItem $userDir -Recurse -Filter *.log | Get-Content | Select-String -Pattern $patterns | ForEach-Object { '  log> ' + $_.Line }
     Get-ChildItem $userDir -Recurse -Filter *.log | Get-Content | Select-String -Pattern '^Execute command: ' | ForEach-Object { '  cmd> ' + ($_.Line -replace '^Execute command: \S+ ', '') }
