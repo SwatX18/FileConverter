@@ -1,6 +1,6 @@
 # Change Log
 
-## FileConverter++ 2.3.0 (fork of File Converter 2.2, unreleased)
+## FileConverter++ 2.3.0 (2026-10-19, fork of File Converter 2.2)
 
 - New: Renamed FileConverter++ (`FileConverterPlusPlus.exe`, `C:\Program Files\FileConverter++`), published by SwatX18. It replaces File Converter when installed and keeps its settings; updates are checked on github.com/SwatX18/FileConverter.
 
