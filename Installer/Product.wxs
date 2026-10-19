@@ -5,7 +5,7 @@
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
         <Property Id="ARPURLINFOABOUT" Value="https://github.com/SwatX18/FileConverter" />
         <Property Id="ARPHELPLINK" Value="https://github.com/SwatX18/FileConverter/issues" />
-        <SetProperty Id="ARPINSTALLLOCATION" Value="[ApplicationFolder]" After="CostFinalize" />
+        <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
       
         <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit." />
         
