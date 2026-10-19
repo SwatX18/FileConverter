@@ -28,7 +28,10 @@ param(
     # Print the whole diagnostics log instead of the encoding-path lines.
     [switch]$AllLog,
     # Folder for the inputs (hard links, or copies on another volume) and outputs; default bench/work/try-case.
-    [string]$WorkDir = ''
+    [string]$WorkDir = '',
+    # Keep the input file names (no index prefix; the names must differ), e.g. to check that a.mp4 and a.mkv to Mp3
+    # give two outputs.
+    [switch]$KeepNames
 )
 
 $ErrorActionPreference = 'Stop'
@@ -59,7 +62,7 @@ New-Item -ItemType Directory -Force $work | Out-Null
 $linkedFiles = @()
 for ($i = 0; $i -lt $inputFiles.Count; $i++) {
     # Prefix with the index so the same sample can be listed several times.
-    $name = if ($inputFiles.Count -gt 1) { '{0:D2}_{1}' -f $i, (Split-Path $inputFiles[$i] -Leaf) } else { Split-Path $inputFiles[$i] -Leaf }
+    $name = if ($inputFiles.Count -gt 1 -and -not $KeepNames) { '{0:D2}_{1}' -f $i, (Split-Path $inputFiles[$i] -Leaf) } else { Split-Path $inputFiles[$i] -Leaf }
     $dst = Join-Path $work $name
     try { New-Item -ItemType HardLink -Path $dst -Target $inputFiles[$i] | Out-Null } catch { Copy-Item $inputFiles[$i] $dst }
     $linkedFiles += $dst

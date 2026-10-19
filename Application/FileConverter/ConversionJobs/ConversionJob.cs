@@ -3,7 +3,9 @@
 namespace FileConverter.ConversionJobs
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
     
@@ -23,6 +25,7 @@ namespace FileConverter.ConversionJobs
         private readonly string initialInputPath;
         private int currentOutputFilePathIndex;
         private string encodingPath;
+        private ISet<string> reservedOutputPaths;
 
         public ConversionJob()
         {
@@ -238,6 +241,16 @@ namespace FileConverter.ConversionJobs
             return (conversionFlags & ConversionFlags.CdDriveExtraction) == 0;
         }
 
+        /// <summary>
+        /// Prepares a job of a batch: its generated output paths avoid <paramref name="reservedOutputPaths"/> (the outputs of
+        /// the jobs prepared before it, which may not exist yet), and are added to it.
+        /// </summary>
+        public void PrepareConversion(ISet<string> reservedOutputPaths)
+        {
+            this.reservedOutputPaths = reservedOutputPaths;
+            this.PrepareConversion();
+        }
+
         public void PrepareConversion(params string[] outputFilePaths)
         {
             if (this.ConversionPreset == null)
@@ -303,7 +316,8 @@ namespace FileConverter.ConversionJobs
                 // Make the output path valid.
                 try
                 {
-                    path = PathHelpers.GenerateUniquePath(path, this.OutputFilePaths);
+                    string[] blacklist = this.reservedOutputPaths == null ? this.OutputFilePaths : this.OutputFilePaths.Concat(this.reservedOutputPaths).ToArray();
+                    path = PathHelpers.GenerateUniquePath(path, blacklist);
                 }
                 catch (Exception exception)
                 {
@@ -313,6 +327,7 @@ namespace FileConverter.ConversionJobs
                 }
 
                 this.OutputFilePaths[index] = path;
+                this.reservedOutputPaths?.Add(path);
             }
 
             this.CurrentOutputFilePathIndex = 0;

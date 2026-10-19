@@ -76,9 +76,12 @@ namespace FileConverter.Services
 
             Thread preparationThread = Helpers.InstantiateThread("ConversionPreparationThread", () =>
             {
+                // Outputs given to the jobs so far: two inputs of the batch that give the same output name (a.mkv and
+                // a.mp4 to Mp3) get distinct outputs, even though the first one's doesn't exist yet.
+                HashSet<string> reservedOutputPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 for (int index = 0; index < jobCount; index++)
                 {
-                    this.conversionJobs[index].PrepareConversion();
+                    this.conversionJobs[index].PrepareConversion(reservedOutputPaths);
                     lock (sync)
                     {
                         prepared[index] = true;

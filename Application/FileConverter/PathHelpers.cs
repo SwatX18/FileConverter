@@ -101,7 +101,7 @@ namespace FileConverter
             string basePath = path.Substring(0, path.Length - baseExtension.Length);
             int index = 2;
             while (System.IO.File.Exists(path) ||
-                (blacklist != null && System.Array.Exists(blacklist, match => match == path)))
+                (blacklist != null && System.Array.Exists(blacklist, match => string.Equals(match, path, System.StringComparison.OrdinalIgnoreCase))))
             {
                 path = $"{basePath} ({index}){baseExtension}";
                 index++;
