@@ -40,6 +40,19 @@ namespace FileConverter.Tests
             { "a.mkv", OutputType.Mkv, "v:h264 a:aac:128", "re-encode" },
             { "a.wmv", OutputType.Mp4, "v:h264 a:aac:128", "re-encode" },
             { "a.mkv", OutputType.Avi, "v:h264 a:aac:128", "re-encode" },
+
+            // Pixel formats: only 4:2:0 is copied, and only 8-bit for H.264.
+            { "a.mkv", OutputType.Mp4, "v:h264@yuvj420p a:aac:128", "copy copy" },
+            { "a.mkv", OutputType.Mp4, "v:h264@yuv422p10le a:aac:128", "re-encode" },
+            { "a.mkv", OutputType.Mp4, "v:h264@yuv444p a:aac:128", "re-encode" },
+            { "a.mkv", OutputType.Mp4, "v:h264@yuv420p10le a:aac:128", "re-encode" },
+            { "a.mov", OutputType.Mp4, "v:hevc@yuv420p10le a:aac:128", "copy copy" },
+            { "a.mov", OutputType.Mp4, "v:hevc@p010le a:aac:128", "copy copy" },
+            { "a.mov", OutputType.Mp4, "v:hevc@yuv422p10le a:aac:128", "re-encode" },
+            { "a.mp4", OutputType.Mkv, "v:mpeg2video@yuv422p a:mp2", "re-encode" },
+            { "a.mkv", OutputType.Webm, "v:vp9@yuv420p10le a:opus:96", "copy copy" },
+            { "a.mkv", OutputType.Webm, "v:vp9@yuv444p a:opus:96", "re-encode" },
+            { "a.mkv", OutputType.Mp4, "v:h264@ a:aac:128", "copy copy" },
         };
 
         public static TheoryData<string, OutputType, string, string> AudioCases => new TheoryData<string, OutputType, string, string>
@@ -164,7 +177,8 @@ namespace FileConverter.Tests
         }
 
         /// <summary>
-        /// Builds a probe result from "type:codec[:kbps|:cover]" items: v (video, 1920x1080), a (audio, stereo), s, t (attachment).
+        /// Builds a probe result from "type:codec[@pixfmt][:kbps|:cover]" items: v (video, 1920x1080, yuv420p by default),
+        /// a (audio, stereo), s, t (attachment). "codec@" gives an unknown pixel format.
         /// </summary>
         private static MediaInfo Source(string streams)
         {
@@ -175,12 +189,13 @@ namespace FileConverter.Tests
                 bool cover = parts.Length > 2 && parts[2] == "cover";
                 long? bitRate = parts.Length > 2 && !cover ? long.Parse(parts[2]) * 1000 : (long?)null;
                 bool isVideo = type == "video";
+                string[] codec = parts[1].Split('@');
                 return new MediaStream(
                     index,
                     type,
-                    parts[1],
+                    codec[0],
                     profile: null,
-                    pixelFormat: isVideo ? "yuv420p" : null,
+                    pixelFormat: codec.Length > 1 ? codec[1] : isVideo ? "yuv420p" : null,
                     width: isVideo ? 1920 : (int?)null,
                     height: isVideo ? 1080 : (int?)null,
                     bitRate: bitRate,

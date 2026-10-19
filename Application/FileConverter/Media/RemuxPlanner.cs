@@ -276,6 +276,18 @@ namespace FileConverter.Media
                 return $"{outputType} can't contain {video.CodecName} video";
             }
 
+            // The presets always write 4:2:0 (8-bit for H.264): a 4:2:2 / 4:4:4 or 10-bit H.264 stream would be copied
+            // as is into a file few players can play (most hardware decoders, browsers, phones and TVs can't).
+            if (!video.IsChroma420)
+            {
+                return $"the source's {video.PixelFormat} pixel format is not widely playable (not 4:2:0)";
+            }
+
+            if (string.Equals(video.CodecName, "h264", StringComparison.OrdinalIgnoreCase) && video.BitsPerComponent > 8)
+            {
+                return $"{video.BitsPerComponent}-bit H.264 is not widely playable";
+            }
+
             // Mp4 / Mkv presets choose a codec. H.264, the default, means "most compatible": any codec the container
             // accepts is kept. HEVC and AV1 are explicit requests: the source must already use that codec.
             if (outputType == OutputType.Mp4 || outputType == OutputType.Mkv)

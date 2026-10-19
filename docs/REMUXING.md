@@ -63,7 +63,11 @@ A **video output** (Mp4, Mkv, Webm, Ogv) is remuxed only if its main video strea
    smaller file;
 4. Mp4/Mkv codec: **H.264, the default, means "most compatible": any codec the container accepts is kept** (an iPhone
    HEVC MOV becomes an HEVC MP4, as PLAN's "iPhone MOV → MP4 losslessly" requires). HEVC or AV1 are explicit requests:
-   the source must already use that codec.
+   the source must already use that codec;
+5. the video is 4:2:0 (`yuv420p`, `yuv420p10le`, `nv12`, `p010le`...), and 8-bit if it is H.264. The presets always
+   write 4:2:0, 8-bit for H.264: a copied 4:2:2 / 4:4:4 stream, or 10-bit H.264 (High 10), would give a file most
+   hardware decoders, browsers, phones and TVs can't play. HEVC and AV1 10-bit 4:2:0 (iPhone) are copied. An unknown
+   pixel format doesn't block the copy.
 
 Then, stream by stream:
 
@@ -125,6 +129,7 @@ The partial output is deleted before the fallback runs. The log shows
 | Opus WebM → To Ogg | remux; → To Mp3 re-encodes (Mp3 can't hold Opus) |
 | MP3 in MKV → To Mp3 | remux with ID3 tags |
 | ProRes MOV → To Mp4 | no (Mp4 can't contain prores) → GPU encode |
+| H.264 4:2:2 10-bit MKV → To Mp4 | no (yuv422p10le is not 4:2:0) → GPU encode to 4:2:0 8-bit, 3.6 s, 32 MB |
 | H.264 MP4 → To Mp4 | no (same format) → GPU encode |
 | HEVC MKV → To Mp4 (low quality) / Scale 720p | no (lower quality / resize) → GPU encode |
 | FLAC album → To Ogg | no (899 kb/s above 160) → Vorbis encode |
@@ -144,7 +149,7 @@ Median of 3 runs, commit 030316c, Auto mode (NVENC), 2 simultaneous conversions.
 | iPhone HEVC 10-bit MOV → To Mp4 | 9.0 s | 5.0 s | **1.5 s** | remux | 78 → 58 |
 | H.264 MP4 → To Mkv | 10.7 s | 4.3 s | **1.8 s** | remux | 66 → 205 |
 | MKV H.264 + FLAC + SRT → To Mp4 | 10.6 s | 4.2 s | **2.3 s** | remux (FLAC → AAC) | 66 → 204 |
-| H.264 4:2:2 10-bit MKV → To Mp4 | 5.8 s | 3.2 s | **1.7 s** | remux | 32 → 126 |
+| H.264 4:2:2 10-bit MKV → To Mp4 | 5.8 s | 3.2 s | **1.7 s** | remux² | 32 → 126 |
 | H.264 MP4 → To Mp4 / 4K | 10.7 / 20.2 s | 4.3 / 7.0 s | 4.3 / 7.1 s | same format: nvenc | = |
 | Sintel MKV → To Mkv | 80.9 s | 35.7 s | 35.8 s | same format: nvenc | = |
 | ProRes MOV → To Mp4 | 3.9 s | 2.4 s | 2.8 s | probed, prores not copyable: nvenc | = |
@@ -154,6 +159,7 @@ Median of 3 runs, commit 030316c, Auto mode (NVENC), 2 simultaneous conversions.
 | tiny wav / flac / wav audio cases | — | — | ± 0.1 s | not probed | = |
 
 ¹ `phase1-fixes.csv`.
+² No longer remuxed since rule 5 (4:2:0 only): re-encoded to 4:2:0 8-bit, 3.6 s, 32 MB (`bench/results.csv`).
 
 Notes:
 

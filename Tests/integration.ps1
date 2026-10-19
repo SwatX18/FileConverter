@@ -58,6 +58,8 @@ $cases = @(
     @{ Name = 'video_remux_flac_subs_to_mp4'; Preset = 'To Mp4'; Inputs = 'video\h264_flac_subs.mkv'; Path = 'remux'; Streams = 'video:h264+audio:aac+subtitle:mov_text+subtitle:mov_text'; Size = '1920x1080'; Duration = 'source' }
     @{ Name = 'video_remux_mp4_to_mkv'; Preset = 'To Mkv'; Inputs = 'video\h264_1080p.mp4'; Path = 'remux'; Streams = 'video:h264+audio:aac'; Size = '1920x1080'; Duration = 'source' }
     @{ Name = 'video_remux_sintel_to_mp4'; Preset = 'To Mp4'; Inputs = 'video\sintel_1080p.mkv'; Path = 'remux'; Streams = '*'; Size = '1920x818'; Duration = 'source' }
+    @{ Name = 'video_remux_iphone_hevc10_to_mp4'; Preset = 'To Mp4'; Inputs = 'video\iphone_hevc10.mov'; Path = 'remux'; Streams = 'video:hevc+audio:aac'; Size = '3840x2160'; Duration = 'source' }
+    @{ Name = 'video_422_10bit_reencoded'; Preset = 'To Mp4'; Inputs = 'video\h264_422_10bit.mkv'; Path = 'hw'; Streams = 'video:h264+audio:aac'; Size = '1920x1080'; Duration = 'source' }
     # Video: hardware encode, fallbacks, CPU
     @{ Name = 'video_gpu_prores_to_mp4'; Preset = 'To Mp4'; Inputs = 'video\prores422_1080p.mov'; Path = 'hw'; Streams = 'video:h264+audio:aac'; Size = '1920x1080'; Duration = 'source' }
     @{ Name = 'video_gpu_4k_to_mkv'; Preset = 'To Mkv'; Inputs = 'video\h264_4k.mp4'; Settings = 'CopyStreamsWhenPossible=false'; Path = 'hw'; Streams = 'video:h264+audio:aac'; Size = '3840x2160'; Duration = 'source' }

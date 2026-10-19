@@ -45,6 +45,8 @@ namespace FileConverter.Media
     {
         private static readonly Regex BitDepthRegex = new Regex(@"(?:p|gray)0?(\d{1,2})(?:le|be)?$", RegexOptions.Compiled);
 
+        private static readonly Regex Chroma420Regex = new Regex(@"^(?:yuvj?420p|yuva420p|nv12|nv21|p01[026])", RegexOptions.Compiled);
+
         public MediaStream(int index, string codecType, string codecName, string profile, string pixelFormat, int? width, int? height, long? bitRate, int? sampleRate, int? channels, string language, bool isAttachedPicture, TimeSpan? duration = null)
         {
             this.Index = index;
@@ -122,6 +124,12 @@ namespace FileConverter.Media
                 return 8;
             }
         }
+
+        /// <summary>
+        /// Gets whether a video stream uses 4:2:0 chroma subsampling (<c>yuv420p</c>, <c>yuv420p10le</c>, <c>nv12</c>,
+        /// <c>p010le</c>...), the only one hardware decoders and browsers play everywhere. True when the pixel format is unknown.
+        /// </summary>
+        public bool IsChroma420 => this.PixelFormat.Length == 0 || Chroma420Regex.IsMatch(this.PixelFormat);
 
         public override string ToString()
         {
