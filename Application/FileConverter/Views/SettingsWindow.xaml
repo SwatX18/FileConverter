@@ -371,6 +371,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Grid.Column="0" Content="{x:Static project:Resources.Language}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
@@ -414,6 +415,16 @@
 
                     <Label Grid.Row="7" Grid.Column="0" Content="{x:Static project:Resources.CopyStreamsWhenPossible}" ToolTip="{x:Static project:Resources.CopyStreamsWhenPossibleTooltip}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                     <CheckBox Grid.Row="7" Grid.Column="1" IsChecked="{Binding Settings.CopyStreamsWhenPossible, Mode=TwoWay}" ToolTip="{x:Static project:Resources.CopyStreamsWhenPossibleTooltip}" Margin="0,5,0,5" />
+
+                    <Label Grid.Row="8" Grid.Column="0" Content="{x:Static project:Resources.ImageEngine}" ToolTip="{x:Static project:Resources.ImageEngineTooltip}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                    <ComboBox Grid.Row="8" Grid.Column="1" ItemsSource="{Binding ImageEngines, Mode=OneTime}" Margin="0,0,0,1" ToolTip="{x:Static project:Resources.ImageEngineTooltip}"
+                              SelectedValue="{Binding Settings.ImageEngine, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Converter={StaticResource ImageEngineToString}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </Grid>
             </TabItem>
 

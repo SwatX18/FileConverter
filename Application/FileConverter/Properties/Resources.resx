@@ -652,4 +652,16 @@ use maj for uppercase version</value>
   <data name="CopyStreamsWhenPossibleTooltip" xml:space="preserve">
     <value>When the output format accepts the source's video and audio codecs and the preset changes neither size, rotation nor quality, the streams are copied as they are: the conversion is almost instant and lossless. Converting a file to its own format always re-encodes it.</value>
   </data>
+  <data name="ImageEngine" xml:space="preserve">
+    <value>Image engine</value>
+  </data>
+  <data name="ImageEngineAutoName" xml:space="preserve">
+    <value>Auto (libvips, then ImageMagick)</value>
+  </data>
+  <data name="ImageEngineImageMagickName" xml:space="preserve">
+    <value>ImageMagick only</value>
+  </data>
+  <data name="ImageEngineTooltip" xml:space="preserve">
+    <value>Auto converts JPEG, PNG, WebP, TIFF and AVIF images with libvips (much faster on large images and batches), and uses ImageMagick for every other format (RAW, HEIC, GIF, PSD, SVG, PDF...) or when libvips fails.</value>
+  </data>
 </root>

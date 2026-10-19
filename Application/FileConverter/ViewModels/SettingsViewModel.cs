@@ -48,6 +48,7 @@ namespace FileConverter.ViewModels
         private ListCollectionView outputTypes;
         private CultureInfo[] supportedCultures;
         private Helpers.HardwareAccelerationMode[] hardwareAccelerationModes = { Helpers.HardwareAccelerationMode.Auto, Helpers.HardwareAccelerationMode.Off, Helpers.HardwareAccelerationMode.CUDA, Helpers.HardwareAccelerationMode.AMF };
+        private Helpers.ImageEngine[] imageEngines = { Helpers.ImageEngine.Auto, Helpers.ImageEngine.ImageMagick };
 
         public event Action OnPresetCreated;
         public event Action OnFolderCreated;
@@ -239,6 +240,16 @@ namespace FileConverter.ViewModels
             set
             {
                 this.hardwareAccelerationModes = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public Helpers.ImageEngine[] ImageEngines
+        {
+            get => this.imageEngines;
+            set
+            {
+                this.imageEngines = value;
                 this.OnPropertyChanged();
             }
         }

@@ -1632,5 +1632,41 @@ namespace FileConverter.Properties {
                 return ResourceManager.GetString("CopyStreamsWhenPossibleTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image engine.
+        /// </summary>
+        public static string ImageEngine {
+            get {
+                return ResourceManager.GetString("ImageEngine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto (libvips, then ImageMagick).
+        /// </summary>
+        public static string ImageEngineAutoName {
+            get {
+                return ResourceManager.GetString("ImageEngineAutoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ImageMagick only.
+        /// </summary>
+        public static string ImageEngineImageMagickName {
+            get {
+                return ResourceManager.GetString("ImageEngineImageMagickName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto converts JPEG, PNG, WebP, TIFF, GIF and AVIF images with libvips (much faster on large images and batches), and uses ImageMagick for every other format (RAW, HEIC, PSD, SVG, PDF...) or when libvips fails..
+        /// </summary>
+        public static string ImageEngineTooltip {
+            get {
+                return ResourceManager.GetString("ImageEngineTooltip", resourceCulture);
+            }
+        }
     }
 }
