@@ -79,7 +79,7 @@ The shell extension (right-click menu) needs an elevated `FileConverterPlusPlus.
 ## Publishing an update
 
 The update check (`Services/UpgradeService.cs`) reads `version.xml` and `CHANGELOG.md` from the `fast-convert` branch
-of github.com/SwatX18/FileConverter, at most once a day, and offers the update if `Latest` is above the running version.
+of github.com/SwatX18/FileConverterPlusPlus, at most once a day, and offers the update if `Latest` is above the running version.
 To publish version X.Y.Z:
 
 1. Set the version in `Application/FileConverter/Application.xaml.cs` (`Version`), `Properties/AssemblyInfo.cs` and

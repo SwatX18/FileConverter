@@ -4,7 +4,7 @@
 
 ![FileConverter++ Usage](Resources/FileConverterUsage.gif)
 
-**[Download FileConverter++ (latest release)](https://github.com/SwatX18/FileConverter/releases/latest)** · Windows 10/11, 64-bit · free and open source (GPL-3.0)
+**[Download FileConverter++ (latest release)](https://github.com/SwatX18/FileConverterPlusPlus/releases/latest)** · Windows 10/11, 64-bit · free and open source (GPL-3.0)
 
 - [FileConverter++ vs. File Converter at a glance](#fileconverter-vs-file-converter-at-a-glance)
 - [How much faster?](#how-much-faster)
@@ -107,7 +107,7 @@ A new tab groups the new settings: hardware acceleration mode and the detected e
 
 ## Install, upgrade, uninstall
 
-1. Download `FileConverterPlusPlus-<version>-x64-setup.msi` from the [releases](https://github.com/SwatX18/FileConverter/releases/latest) and run it.
+1. Download `FileConverterPlusPlus-<version>-x64-setup.msi` from the [releases](https://github.com/SwatX18/FileConverterPlusPlus/releases/latest) and run it.
 2. The installer is not code-signed: Windows shows "Unknown publisher" (and SmartScreen may ask you to confirm).
 3. In Explorer, right-click files → **Show more options** (Windows 11) → **FileConverter++**.
 
@@ -115,7 +115,7 @@ A new tab groups the new settings: hardware acceleration mode and the detected e
 - **Updates**: FileConverter++ checks this repository for new versions (Settings → Application → "Automatically check for updates").
 - **Uninstall**: Settings → Apps → FileConverter++ → Uninstall.
 - How to use the presets and customize them: File Converter's [wiki](https://github.com/Tichau/FileConverter/wiki) applies as is.
-- Problems with FileConverter++: [report an issue here](https://github.com/SwatX18/FileConverter/issues).
+- Problems with FileConverter++: [report an issue here](https://github.com/SwatX18/FileConverterPlusPlus/issues).
 
 ## For developers
 
@@ -140,7 +140,7 @@ You can help me by [contributing to the project](https://github.com/Tichau/FileC
 If you encounter any problem with FileConverter++, you can:
 
 * See the already known problems in the [troubleshooting section of File Converter's documentation](https://github.com/Tichau/FileConverter/wiki/Troubleshooting).
-* Or report an issue on the [FileConverter++ bug tracker](https://github.com/SwatX18/FileConverter/issues).
+* Or report an issue on the [FileConverter++ bug tracker](https://github.com/SwatX18/FileConverterPlusPlus/issues).
 
 ## Setup development environment
 
