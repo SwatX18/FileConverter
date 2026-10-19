@@ -715,4 +715,31 @@ utilisez MAJ pour une version en majuscules</value>
   <data name="HardwareAccelerationModeVulkanName" xml:space="preserve">
     <value>Vulkan</value>
   </data>
+  <data name="CreateANewFolder" xml:space="preserve">
+    <value>Nouveau dossier</value>
+  </data>
+  <data name="DefaultFolderName" xml:space="preserve">
+    <value>Nouveau dossier</value>
+  </data>
+  <data name="PresetFolder" xml:space="preserve">
+    <value>Dossier</value>
+  </data>
+  <data name="PresetFolderName" xml:space="preserve">
+    <value>Nom du dossier</value>
+  </data>
+  <data name="NoPresetSelected" xml:space="preserve">
+    <value>Aucun preset sélectionné</value>
+  </data>
+  <data name="ExportSelectedPresets" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="ImportPresets" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="DuplicatePreset" xml:space="preserve">
+    <value>Dupliquer le preset</value>
+  </data>
+  <data name="CopyFilesInClipboardAfterConversion" xml:space="preserve">
+    <value>Copier les fichiers dans le presse-papiers après la conversion</value>
+  </data>
 </root>
