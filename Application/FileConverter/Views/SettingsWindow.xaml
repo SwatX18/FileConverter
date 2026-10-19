@@ -560,14 +560,14 @@
 
                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
                         <Button ToolTip="{x:Static project:Resources.GitHubButtonDescription}" Padding="1" Margin="5,0,5,0" 
-                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/?from=about"
+                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/SwatX18/FileConverter"
                                 Style="{DynamicResource TileButton}">
                             <Button.Content>
                                 <Image Source="/FileConverterPlusPlus;component/Resources/GitHub-Icon.png"></Image>
                             </Button.Content>
                         </Button>
                         <Button ToolTip="{x:Static project:Resources.IssueButtonDescription}" Padding="1" Margin="5,0,5,0" 
-                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/Tichau/FileConverter/issues?from=about"
+                                Command="{Binding OpenUrlCommand, Mode=OneWay}" CommandParameter="https://github.com/SwatX18/FileConverter/issues"
                                 Style="{DynamicResource TileButton}">
                             <Button.Content>
                                 <Image Source="/FileConverterPlusPlus;component/Resources/GitHub-Issue-Icon.png"></Image>
@@ -589,7 +589,7 @@
                         </Button>
                     </StackPanel>
 
-                    <Label Grid.Row="3" Grid.Column="0" Content="Copyright @ 2026, Adrien Allard. All right reserved." Foreground="{DynamicResource LighterForegroundBrush}" Margin="0,2,0,2"/>
+                    <Label Grid.Row="3" Grid.Column="0" Content="Copyright @ 2026, Adrien Allard. All right reserved. FileConverter++ changes: SwatX18." Foreground="{DynamicResource LighterForegroundBrush}" Margin="0,2,0,2"/>
                 </Grid>
             </TabItem>
         </TabControl>

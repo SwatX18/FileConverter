@@ -17,11 +17,8 @@ namespace FileConverter.Services
 
     public class UpgradeService : ObservableObject, IUpgradeService
     {
-#if DEBUG
-        private const string BaseURI = "https://raw.githubusercontent.com/Tichau/FileConverter/integration/";
-#else
-        private const string BaseURI = "https://raw.githubusercontent.com/Tichau/FileConverter/master/";
-#endif
+        // FileConverter++ releases: version.xml (latest version and installer URL) and CHANGELOG.md on this branch.
+        private const string BaseURI = "https://raw.githubusercontent.com/SwatX18/FileConverter/fast-convert/";
 
         [NotNull]
         private readonly WebClient webClient = new WebClient();
